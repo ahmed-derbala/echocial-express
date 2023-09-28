@@ -1,8 +1,7 @@
-# express-starter
-a clean project to start an express app faster. This made using node v18
-
+# echocial
+The backend of echocial, the social echo
 # features
-- javascript with nodejs v18 and express 5
+- javascript with express 5
 - everything is configurable in /configs
 - clean architecture
 - pm2 
@@ -15,9 +14,10 @@ a clean project to start an express app faster. This made using node v18
 - api limiter, helmet, compression
 - use_strict: true by default
 - --max-old-space-size=32000
+- prettier before commit and push (npm run push -- "commit message")
 
 
-# first run: set config.js, install modules with --force, open the project in vscode and run. Default port = 5000, can be changed in /src/configs/config.js
+# first run: set config.js, install modules and run. Default port = 5000, can be changed in /src/configs/config.js
 ```
 npm run start:first-time
 ```
@@ -25,7 +25,7 @@ npm run start:first-time
 # postman collection
 you can import postman collection located in
 ```
-docs/express-starter.postman_collection.json
+docs/echocial.postman_collection.json
 ```
 
 # swagger

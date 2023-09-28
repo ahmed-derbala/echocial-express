@@ -1,6 +1,6 @@
 {
   "name": "echocial",
-  "version": "0.8.0",
+  "version": "1.0.1",
   "description": "Backend of Echocial. A mobile-first app for online reputation",
   "author": "Ahmed Derbala <ahmed.derbala@esprit.tn>",
   "private": true,
@@ -9,6 +9,7 @@
   },
   "scripts": {
     "i": "npm i --force",
+    "format": "prettier --write \"src/**/*.js\"",
     "start": "node --max-old-space-size=32000 src/main.js",
     "start:prod": "NODE_ENV=production node --max-old-space-size=32000 src/main.js",
     "start:prod-pm2": "npm run i && NODE_ENV=production pm2 start src/main.js -i max --node-args='--max-old-space-size=32000' -f",
@@ -24,13 +25,13 @@
     "logs": "pm2 monit",
     "stop": "pm2 stop all",
     "delete": "pm2 delete all",
-    "push": "git add . && git commit -m",
+    "push": "npm run format && git add . && git commit -m",
     "postpush": "git push && npm run start:default",
     "clean:a": "rm -f package-lock.json && rm -r -f node_modules",
     "clean:ai": "npm run clean:a && npm run i",
     "clean:air": "npm run clean:ai && npm run start:default",
-    "update:a": "rm -r -f .backups/* && cp package.json .backups/package.json.backup && cp package-lock.json .backups/package-lock.json.backup 2>/dev/null; true && mv node_modules .backups/node_modules.backup 2>/dev/null; true && npm i -D npm-check-updates --force && ncu -u && npm run clean:air",
-    "update:r": "cp .backups/package.json.backup package.json && cp .backups/package-lock.json.backup package-lock.json && mv .backups/node_modules.backup node_modules && npm run start:default"
+    "update": "rm -r -f .backups/* && cp package.json .backups/package.json.backup && cp package-lock.json .backups/package-lock.json.backup 2>/dev/null; true && mv node_modules .backups/node_modules.backup 2>/dev/null; true && npm i -D npm-check-updates --force && ncu -u && npm run clean:air",
+    "restore": "cp .backups/package.json.backup package.json && cp .backups/package-lock.json.backup package-lock.json && mv .backups/node_modules.backup node_modules && npm run start:default"
   },
   "repository": {
     "type": "git",
@@ -40,21 +41,21 @@
     "echocial"
   ],
   "dependencies": {
-    "bcrypt": "^5.1.0",
+    "bcrypt": "^5.1.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^5.0.0-beta.1",
-    "express-rate-limit": "^6.8.0",
+    "express-rate-limit": "^7.0.2",
     "express-useragent": "^1.0.15",
     "express-validator": "^7.0.1",
     "express-winston": "^4.2.0",
     "helmet": "^7.0.0",
-    "jsonwebtoken": "^9.0.1",
-    "mongoose": "^7.4.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^7.5.3",
     "mongoose-unique-validator": "^4.0.0",
     "morgan": "^1.10.0",
-    "socket.io": "^4.7.1",
+    "socket.io": "^4.7.2",
     "swagger-ui-express": "^5.0.0",
     "use-strict": "^1.0.1",
     "winston": "^3.10.0",
@@ -62,7 +63,8 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
-    "npm-check-updates": "^16.10.16",
-    "pm2": "^5.3.0"
+    "npm-check-updates": "^16.14.4",
+    "pm2": "^5.3.0",
+    "prettier": "^3.0.3"
   }
 }

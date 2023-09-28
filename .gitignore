@@ -7,9 +7,6 @@ uploads/*
 #config files
 src/configs/config.js
 
-#package.json backup file
-docs/package.json.backup
-
 # Logs
 logs/*
 *.log
