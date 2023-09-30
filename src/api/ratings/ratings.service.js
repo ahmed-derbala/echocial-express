@@ -1,8 +1,8 @@
 //const { ReputationsModel } = require(`./reputations.schema`)
-const { errorHandler } = require("../../core/utils/error")
-const { paginate } = require("../../core/helpers/pagination")
+const { errorHandler } = require('../../core/utils/error')
+const { paginate } = require('../../core/helpers/pagination')
 const { RatingsModel } = require(`./ratings.schema`)
-const reputationsSrvc = require("../reputations/reputations.service")
+const reputationsSrvc = require('../reputations/reputations.service')
 
 /*
 module.exports.getReputations = async (params) => {
@@ -32,15 +32,15 @@ module.exports.setRating = async ({ currentValue, userId, reputationId }) => {
 				history: {
 					$push: {
 						value: currentValue,
-						createdAt: Date.now()
-					}
-				}
-			}
+						createdAt: Date.now(),
+					},
+				},
+			},
 		)
 			.then(async (updatedRating) => {
 				const reputationUpdatedRating = await reputationsSrvc.updateRating({
 					reputationId,
-					rating: { currentValue }
+					rating: { currentValue },
 				})
 				return { reputationUpdatedRating, updatedRating }
 			})
@@ -52,7 +52,7 @@ module.exports.setRating = async ({ currentValue, userId, reputationId }) => {
 		currentValue,
 		history: [{ value: currentValue, createdAt: Date.now() }],
 		userId,
-		reputationId
+		reputationId,
 	})
 	/*return RatingsModel.create({facebook})
         .then(newRating => {

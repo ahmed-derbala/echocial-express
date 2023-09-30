@@ -2,16 +2,16 @@
  * the default config.js
  */
 const packagejson = require(`../../package.json`)
-const os = require("os")
-const ip = require("ip")
+const os = require('os')
+const ip = require('ip')
 
 const backend = {
 	port: 5001,
 	host: `${ip.address()}`,
-	protocol: "http://",
+	protocol: 'http://',
 	get url() {
 		return `${this.protocol}${this.host}:${this.port}`
-	}
+	},
 }
 /**
  * app
@@ -22,19 +22,19 @@ let app = {
 	description: packagejson.description,
 	author: packagejson.author,
 	swagger: {
-		endpoint: "/swagger",
+		endpoint: '/swagger',
 		get url() {
 			return `${backend.url}${this.endpoint}`
-		}
+		},
 	},
 	backend,
 	frontend: {
 		port: 5000,
 		host: `${ip.address()}`,
-		protocol: "http://",
+		protocol: 'http://',
 		get url() {
 			return `${this.protocol}${this.host}:${this.port}`
-		}
+		},
 	},
 	//a number, 0 to disable
 	cluster: 0, //os.cpus().length,
@@ -42,20 +42,20 @@ let app = {
 	morgan: {
 		//more infos: https://www.npmjs.com/package/morgan
 		tokenString: `{"status"::status,"method":":method", "url":":url", "ip":":ip", "user": :user ,"body": :body,"browser":":browser", "os":":os", "platform":":platform" ,"origin":":origin", "isBot":":isBot", "referrer":":referrer","tid":":tid" ,"responseTime":":response-time"}`,
-		hiddenBodyFields: ["password", "user.password"] //[] for none, display these keys as *** in terminal
+		hiddenBodyFields: ['password', 'user.password'], //[] for none, display these keys as *** in terminal
 	},
 	apiLimiter: {
 		windowMs: 15 * 60 * 1000, // 15 minutes
 		max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
 		standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-		legacyHeaders: false // Disable the `X-RateLimit-*` headers
+		legacyHeaders: false, // Disable the `X-RateLimit-*` headers
 	},
 	use_strict: true,
 	corsOptions: {
-		origin: "*",
+		origin: '*',
 		//methods: "GET,PUT,POST,DELETE,PATCH",
-		credentials: true
-	}
+		credentials: true,
+	},
 }
 
 /**
@@ -63,7 +63,7 @@ let app = {
  */
 const user = null
 const password = null
-const host = process.env.DATABASE_HOST || "127.0.0.1"
+const host = process.env.DATABASE_HOST || '127.0.0.1'
 const port = parseInt(process.env.DATABASE_PORT, 10) || 27017
 const name = packagejson.name
 const maxPoolSize = 200 //number > 0 otherwise ignored, default 200, more infos: https://mongoosejs.com/docs/connections.html#connection_pools
@@ -83,20 +83,20 @@ let db = {
 		connectionName: name,
 		options: {
 			maxPoolSize,
-			minPoolSize
-		}
-	}
+			minPoolSize,
+		},
+	},
 }
 
 /**
  * log
  */
-const { createLogger, format, transports } = require("winston")
+const { createLogger, format, transports } = require('winston')
 const { combine, timestamp, label, prettyPrint, colorize } = format
-require("winston-mongodb")
+require('winston-mongodb')
 const transportsOptions = {
 	file: {
-		level: "verbose", //the level to start logging to file
+		level: 'verbose', //the level to start logging to file
 		filename: `${process.cwd()}/logs/${app.name}.json`,
 		handleExceptions: true,
 		maxsize: 1000000, //1 million = 1 mb
@@ -105,36 +105,36 @@ const transportsOptions = {
 		json: true,
 		format: format.combine(
 			format.timestamp({
-				format: "YYYY-MM-DD--HH:mm:ss.SSS"
-			})
-		)
+				format: 'YYYY-MM-DD--HH:mm:ss.SSS',
+			}),
+		),
 	},
 
 	console: {
-		level: "startup", //the level to start logging to console
+		level: 'startup', //the level to start logging to console
 		json: true,
 		handleExceptions: true,
 		format: format.combine(
 			format.timestamp({
-				format: "YYYY-MM-DD--HH:mm:ss.SSS"
+				format: 'YYYY-MM-DD--HH:mm:ss.SSS',
 			}),
 			format.json(),
 			prettyPrint(), //print every json key in a seperate row for clearer reading
-			colorize({ all: true }) //this must be always called at the end to make sure of colors
-		)
+			colorize({ all: true }), //this must be always called at the end to make sure of colors
+		),
 	},
 
 	mongo: {
-		level: "startup", //the level to start logging to mongodb
+		level: 'startup', //the level to start logging to mongodb
 		db: db.mongo.uri,
 		options: {
-			useUnifiedTopology: true
+			useUnifiedTopology: true,
 		},
 		decolorize: true,
 		expireAfterSeconds: 3600,
-		collection: "logs",
-		format: format.metadata()
-	}
+		collection: 'logs',
+		format: format.metadata(),
+	},
 }
 
 const levels = {
@@ -144,27 +144,27 @@ const levels = {
 	socket: 3,
 	debug: 4,
 	success: 5,
-	startup: 6
+	startup: 6,
 }
 
 const colors = {
-	error: "black redBG",
-	warn: "black yellowBG",
-	verbose: "black greenBG",
-	socket: "magenta",
-	debug: "white",
-	success: "green",
-	startup: "white blueBG"
+	error: 'black redBG',
+	warn: 'black yellowBG',
+	verbose: 'black greenBG',
+	socket: 'magenta',
+	debug: 'white',
+	success: 'green',
+	startup: 'white blueBG',
 }
 
 const levelNames = {
-	error: "error",
-	warn: "warn",
-	verbose: "verbose",
-	socket: "socket",
-	debug: "debug",
-	success: "success",
-	startup: "startup"
+	error: 'error',
+	warn: 'warn',
+	verbose: 'verbose',
+	socket: 'socket',
+	debug: 'debug',
+	success: 'success',
+	startup: 'startup',
 }
 
 let createLoggerOptions = {
@@ -172,21 +172,21 @@ let createLoggerOptions = {
 		//comment or delete transports you dont want to use
 		//new transports.File(transportsOptions.file),//Error: write after end
 		new transports.Console(transportsOptions.console),
-		new transports.MongoDB(transportsOptions.mongo)
+		new transports.MongoDB(transportsOptions.mongo),
 	],
 	exitOnError: false,
 	levels,
-	silent: false //silent all transports
+	silent: false, //silent all transports
 }
 
 module.exports = {
-	NODE_ENV: process.env.NODE_ENV || "local",
+	NODE_ENV: process.env.NODE_ENV || 'local',
 	app,
 	auth: {
 		saltRounds: 10,
 		jwt: {
-			privateKey: packagejson.name
-		}
+			privateKey: packagejson.name,
+		},
 	},
 	db,
 	log: {
@@ -196,27 +196,27 @@ module.exports = {
 		colors,
 		levels,
 		levelNames,
-		memory: true
+		memory: true,
 	},
 	pagination: {
 		minLimit: 1,
 		defaultLimit: 100, //limit to use when no limit is provided
-		maxLimit: 300
+		maxLimit: 300,
 	},
 	socketio: {
 		options: {
 			cors: {
 				// origin: "*",//doesnt work
-				origin: ["http://127.0.0.1:3666", "http://localhost:3666"],
+				origin: ['http://127.0.0.1:3666', 'http://localhost:3666'],
 				credentials: true,
-				method: ["GET", "POST"],
-				transports: ["websocket", "polling"]
+				method: ['GET', 'POST'],
+				transports: ['websocket', 'polling'],
 			},
-			allowEIO3: true
-		}
+			allowEIO3: true,
+		},
 	},
 	users: {
-		roles: ["admin", "user"],
-		types: ["type1", "type2"]
-	}
+		roles: ['admin', 'user'],
+		types: ['type1', 'type2'],
+	},
 }

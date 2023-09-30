@@ -1,46 +1,46 @@
-const mongoose = require("mongoose")
-const uniqueValidator = require("mongoose-unique-validator")
-const enums = require("../../core/enums/enums")
-const schemas = require("../../core/schemas/schemas")
+const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
+const enums = require('../../core/enums/enums')
+const schemas = require('../../core/schemas/schemas')
 
 const schema = new mongoose.Schema(
 	{
 		name: {
 			type: String,
-			required: true
+			required: true,
 		},
 		category: {
 			type: String,
-			enum: enums.categories.products
+			enum: enums.categories.products,
 		},
 		userId: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: "users"
+			ref: 'users',
 		},
 		shopId: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: "shops"
+			ref: 'shops',
 		},
 		enterpriseId: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: "enterprises"
+			ref: 'enterprises',
 		},
 		isActive: {
 			type: Boolean,
-			default: true
+			default: true,
 		},
 		price: {
-			type: schemas.price
-		}
+			type: schemas.price,
+		},
 	},
-	{ timestamps: true }
+	{ timestamps: true },
 )
 
 schema.plugin(uniqueValidator)
 
-const productsSchemaName = "products"
+const productsSchemaName = 'products'
 
 module.exports = {
 	ProductsModel: mongoose.model(productsSchemaName, schema),
-	productsSchemaName
+	productsSchemaName,
 }

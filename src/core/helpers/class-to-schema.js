@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 /**
@@ -12,13 +12,13 @@ const Schema = mongoose.Schema
 module.exports = function (c, options) {
 	let f = null
 	// Figure out if f is an object or a function, and take appropriate action
-	if (typeof c === "function") {
+	if (typeof c === 'function') {
 		f = new c()
-	} else if (typeof f === "object") {
+	} else if (typeof f === 'object') {
 		f = c
 	} else {
 		throw new TypeError(
-			"Class schema cannot work with that type. Whatever it was you supplied, probably a simple type. "
+			'Class schema cannot work with that type. Whatever it was you supplied, probably a simple type. ',
 		)
 	}
 
@@ -39,7 +39,7 @@ module.exports = function (c, options) {
 				o[prop] = p
 				break
 			default:
-				if (!typeof p === "function") {
+				if (!typeof p === 'function') {
 					o[prop] = p
 				}
 		}
@@ -61,7 +61,7 @@ module.exports = function (c, options) {
 				case Array:
 					continue
 			}
-			if (typeof func === "function") {
+			if (typeof func === 'function') {
 				sch.methods[prop] = func
 			}
 		}

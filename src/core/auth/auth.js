@@ -1,6 +1,6 @@
-const jwt = require("jsonwebtoken")
+const jwt = require('jsonwebtoken')
 const Sessions = require(`../../api/sessions/sessions.schema`)
-const { errorHandler } = require("../utils/error")
+const { errorHandler } = require('../utils/error')
 const conf = require(`../../configs/config`)
 
 exports.authenticate = (params) => {
@@ -11,19 +11,19 @@ exports.authenticate = (params) => {
 		//search for token
 		if (req.headers.token == null) {
 			if (req.cookies.token != null) req.headers.token = req.cookies.token
-			else if (req.headers["x-access-token"] != null)
-				req.headers.token = req.headers["x-access-token"]
-			else if (req.headers["authorization"] != null)
-				req.headers.token = req.headers["authorization"]
+			else if (req.headers['x-access-token'] != null)
+				req.headers.token = req.headers['x-access-token']
+			else if (req.headers['authorization'] != null)
+				req.headers.token = req.headers['authorization']
 			else if (req.query.token != null) req.headers.token = req.query.token
 		}
 
 		if (req.headers.token == null && params.isTokenRequired == true) {
 			return res
 				.status(403)
-				.json({ message: "No token found on headers, cookies or query" })
+				.json({ message: 'No token found on headers, cookies or query' })
 		}
-		req.headers.token = req.headers.token.replace("Bearer ", "")
+		req.headers.token = req.headers.token.replace('Bearer ', '')
 
 		//verify token
 		return jwt.verify(
@@ -39,23 +39,23 @@ exports.authenticate = (params) => {
 				}
 				//check if token is in session
 				return Sessions.findOne({ token: req.headers.token })
-					.select("token")
+					.select('token')
 					.lean()
 					.then((session) => {
 						if (session == null) {
 							return res
 								.status(403)
-								.json({ message: "No session created with provided token" })
+								.json({ message: 'No session created with provided token' })
 						}
 						//console.log(decoded, 'decoded');
 						//check if we have valid user object
 						if (decoded.user == null) {
 							return res.status(401).json({
 								message: `token has no valid user object`,
-								data: decoded
+								data: decoded,
 							})
 						}
-						if (req.headers["user-agent"] != decoded.userAgent) {
+						if (req.headers['user-agent'] != decoded.userAgent) {
 							return res
 								.status(401)
 								.json({ message: `token must be used in one device` })
@@ -64,7 +64,7 @@ exports.authenticate = (params) => {
 						return next()
 					})
 					.catch((err) => errorHandler({ err, res }))
-			}
+			},
 		)
 	}
 }

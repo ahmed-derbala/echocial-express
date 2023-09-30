@@ -1,14 +1,14 @@
-const express = require("express")
+const express = require('express')
 const router = express.Router()
-const { check, query, param } = require("express-validator")
+const { check, query, param } = require('express-validator')
 const validatorCheck = require(`../../core/utils/error`).validatorCheck
 const { authenticate } = require(`../../core/auth/auth`)
-const reputationsSrvc = require("./reputations.service")
+const reputationsSrvc = require('./reputations.service')
 
-const { errorHandler } = require("../../core/utils/error")
+const { errorHandler } = require('../../core/utils/error')
 
 router.get(
-	"/",
+	'/',
 	// authenticate(),
 	async (req, res) => {
 		return reputationsSrvc
@@ -17,18 +17,18 @@ router.get(
 				return res.status(200).json({ data, status: 200 })
 			})
 			.catch((err) => errorHandler({ err, req, res }))
-	}
+	},
 )
 
 router.post(
-	"/",
+	'/',
 	// authenticate(),
 	[
-		check("facebook").isObject(),
-		check("facebook.id").notEmpty(),
-		check("facebook.url").notEmpty(),
-		check("rating").isObject(),
-		check("rating.currentValue").notEmpty()
+		check('facebook').isObject(),
+		check('facebook.id').notEmpty(),
+		check('facebook.url').notEmpty(),
+		check('rating').isObject(),
+		check('rating.currentValue').notEmpty(),
 	],
 	validatorCheck,
 	async (req, res) => {
@@ -36,23 +36,23 @@ router.post(
 			const { facebook, rating } = req.body
 			const reputation = await reputationsSrvc.createReputation({
 				facebook,
-				rating
+				rating,
 			})
 			return res.status(200).json({ data: reputation, status: 200 })
 		} catch (err) {
 			errorHandler({ err, res, req })
 		}
-	}
+	},
 )
 
 router.post(
-	"/:reputationId",
+	'/:reputationId',
 	// authenticate(),
 	[
-		check("facebook").notEmpty(),
-		check("facebook.id").notEmpty(),
-		check("facebook.url").notEmpty(),
-		param("reputationId").notEmpty()
+		check('facebook').notEmpty(),
+		check('facebook.id').notEmpty(),
+		check('facebook.url').notEmpty(),
+		param('reputationId').notEmpty(),
 	],
 	validatorCheck,
 	async (req, res) => {
@@ -63,7 +63,7 @@ router.post(
 				return res.status(200).json(data)
 			})
 			.catch((err) => errorHandler({ err, req, res }))
-	}
+	},
 )
 
 module.exports = router

@@ -1,4 +1,4 @@
-const { validationResult } = require("express-validator")
+const { validationResult } = require('express-validator')
 const { log } = require(`../log/log`)
 /**
  * handle errors
@@ -16,16 +16,16 @@ exports.errorHandler = ({ err, req, res, next, caller }) => {
 
 	let status = 500
 	let errObject = {}
-	errObject.level = "error"
+	errObject.level = 'error'
 	//errObject.arguments=arguments
 
 	if (err) {
-		if (typeof err == "object") {
+		if (typeof err == 'object') {
 			if (err.errors) {
 				errObject.error = err.errors
 				status = 422
-				errObject.message = "validation error"
-				errObject.level = "warn"
+				errObject.message = 'validation error'
+				errObject.level = 'warn'
 			}
 			if (err.message) {
 				errObject.message = err.message
@@ -35,22 +35,22 @@ exports.errorHandler = ({ err, req, res, next, caller }) => {
 				errObject.error = err.stack
 			}
 			if (err.name) {
-				if (err.name == "ValidationError" || err.code == 11000) {
+				if (err.name == 'ValidationError' || err.code == 11000) {
 					status = 409
 				}
-				if (err.name == "TokenExpiredError") {
+				if (err.name == 'TokenExpiredError') {
 					status = 401
 				}
 			}
 		}
 
-		if (typeof err == "string") {
+		if (typeof err == 'string') {
 			errObject.message = err
 			errObject.error = err
 		}
 	}
 
-	if (!errObject.message) errObject.message = "error"
+	if (!errObject.message) errObject.message = 'error'
 
 	if (req) {
 		errObject.req = {}
@@ -58,16 +58,16 @@ exports.errorHandler = ({ err, req, res, next, caller }) => {
 		errObject.req.method = req.method
 		errObject.req.url = req.originalUrl
 		errObject.req.ip =
-			req.connection.remoteAddress || req.headers["x-forwarded-for"]
+			req.connection.remoteAddress || req.headers['x-forwarded-for']
 		errObject.req.user = req.user
 		errObject.req.body = req.body
 	}
 	log(errObject)
 	if (res) {
-		console.log("error returned with res")
+		console.log('error returned with res')
 		return res.status(status).json(errObject)
 	}
-	console.log("errObject no res")
+	console.log('errObject no res')
 	return errObject
 }
 

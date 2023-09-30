@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 const conf = require(`../../configs/config`)
 const { minLimit, defaultLimit, maxLimit } = conf.pagination
 
@@ -7,9 +7,9 @@ exports.paginate = async ({
 	page,
 	limit,
 	match = {},
-	select = "",
+	select = '',
 	sort = {},
-	populate = []
+	populate = [],
 }) => {
 	page = processPage(page)
 	limit = processLimit(limit)
@@ -22,11 +22,11 @@ exports.paginate = async ({
 	let options = {
 		allowDiskUse: true,
 		lean: true,
-		collation: { locale: "en" },
+		collation: { locale: 'en' },
 		sort,
 		skip,
 		limit,
-		populate
+		populate,
 	}
 
 	const data = await model.find(match, select, options)
@@ -41,9 +41,9 @@ exports.paginate = async ({
 			nextPage,
 			hasPrevPage,
 			prevPage,
-			returnedDocsCount: data.length
+			returnedDocsCount: data.length,
 		},
-		data
+		data,
 	}
 }
 
@@ -51,21 +51,21 @@ exports.aggregatePaginate = async ({ model, page, limit, pipeline = [] }) => {
 	page = processPage(page)
 	limit = processLimit(limit)
 	const skip = processSkip({ page, limit })
-	const matchIndex = pipeline.findIndex((p) => p["$match"])
-	let sortIndex = pipeline.findIndex((p) => p["$sort"])
+	const matchIndex = pipeline.findIndex((p) => p['$match'])
+	let sortIndex = pipeline.findIndex((p) => p['$sort'])
 	//console.log(sortIndex, 'sortIndex');
 	//console.log(pipeline, 'pipeline');
 	//process sort, $sort must be not empty
 	if (
 		sortIndex > -1 &&
-		Object.keys(pipeline[sortIndex]["$sort"]).length === 0
+		Object.keys(pipeline[sortIndex]['$sort']).length === 0
 	) {
 		pipeline.splice(sortIndex, 1)
 		sortIndex = -1
 	}
 
-	let skipIndex = pipeline.findIndex((p) => p["$skip"])
-	let limitIndex = pipeline.findIndex((p) => p["$limit"])
+	let skipIndex = pipeline.findIndex((p) => p['$skip'])
+	let limitIndex = pipeline.findIndex((p) => p['$limit'])
 
 	if (skipIndex < 0) {
 		if (sortIndex > -1) skipIndex = sortIndex + 1
@@ -83,16 +83,16 @@ exports.aggregatePaginate = async ({ model, page, limit, pipeline = [] }) => {
 
 	let options = {
 		allowDiskUse: true,
-		collation: { locale: "en" }
+		collation: { locale: 'en' },
 	}
 	//sanitize pipeline object
 	if (matchIndex > -1) {
-		if (pipeline[matchIndex]["$match"]["_id"]) {
-			if (pipeline[matchIndex]["$match"]["_id"]["$in"]) {
+		if (pipeline[matchIndex]['$match']['_id']) {
+			if (pipeline[matchIndex]['$match']['_id']['$in']) {
 				//make sure the _ids are ObjectId and not strings. it doesnt work with strings
-				pipeline[matchIndex]["$match"]["_id"]["$in"] = pipeline[matchIndex][
-					"$match"
-				]["_id"]["$in"].map((el) => new mongoose.Types.ObjectId(el))
+				pipeline[matchIndex]['$match']['_id']['$in'] = pipeline[matchIndex][
+					'$match'
+				]['_id']['$in'].map((el) => new mongoose.Types.ObjectId(el))
 			}
 		}
 	}
@@ -108,7 +108,7 @@ exports.aggregatePaginate = async ({ model, page, limit, pipeline = [] }) => {
 	result.pagination = {}
 	//console.log(pipeline[matchIndex]['$match'], '$match');
 	result.pagination.totalDocs = await model.countDocuments(
-		pipeline[matchIndex]["$match"] || {}
+		pipeline[matchIndex]['$match'] || {},
 	)
 	//console.log(result.pagination.totalDocs, 'result.pagination.totalDocs');
 

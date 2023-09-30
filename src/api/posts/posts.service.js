@@ -1,7 +1,6 @@
 const { PostsModel } = require(`./posts.schema`)
-const { errorHandler } = require("../../core/utils/error")
-const { paginate } = require("../../core/helpers/pagination")
-const { log, levelNames } = require(`../../core/log/log`)
+const { errorHandler } = require('../../core/utils/error')
+const { paginate } = require('../../core/helpers/pagination')
 
 module.exports.create = ({ post }) => {
 	return new Promise((resolve, reject) => {

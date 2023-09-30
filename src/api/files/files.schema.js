@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+const mongoose = require('mongoose')
 
 const schema = new mongoose.Schema(
 	{
@@ -15,17 +15,17 @@ const schema = new mongoose.Schema(
 				kind: String, //name of the associated collection, schema name
 				kindId: {
 					type: mongoose.Schema.Types.ObjectId,
-					refPath: "linkedData.kind"
+					refPath: 'linkedData.kind',
 				},
 				kindTag: {
 					type: String,
-					enum: ["crm_timeline_file_not_linked_to_note"]
-				}
-			}
+					enum: ['crm_timeline_file_not_linked_to_note'],
+				},
+			},
 		], //if the file is associated to another model , kind refers to a collection. makes it so easy to share the same file between multiple collection
 		byUser: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: "uses"
+			ref: 'uses',
 		},
 		mimetype: String,
 		size: Number, // in bytes, 1 million ~ 1 mb
@@ -34,26 +34,26 @@ const schema = new mongoose.Schema(
 			public: {
 				type: String,
 				required: true,
-				enum: ["registered", "all", "not_public"],
-				default: "not_public"
+				enum: ['registered', 'all', 'not_public'],
+				default: 'not_public',
 			},
 			userIds: [
 				{
 					type: mongoose.Schema.Types.ObjectId,
-					ref: "users",
-					required: true
-				}
+					ref: 'users',
+					required: true,
+				},
 			],
 			enterprisesIds: [
 				{
 					type: mongoose.Schema.Types.ObjectId,
-					ref: "enterprises",
-					required: false
-				}
-			]
-		}
+					ref: 'enterprises',
+					required: false,
+				},
+			],
+		},
 	},
-	{ timestamps: true }
+	{ timestamps: true },
 )
 
-mongoose.model("files", schema)
+mongoose.model('files', schema)

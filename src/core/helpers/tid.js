@@ -1,10 +1,10 @@
-const { randomUUID } = require("crypto")
+const { randomUUID } = require('crypto')
 
 //process transaction id
-exports.tidHandler = (request, response, next) => {
-	if (!request.headers.tid) {
-		request.headers.tid = randomUUID()
+exports.tidHandler = (req, res, next) => {
+	if (!req.headers.tid) {
+		req.headers.tid = randomUUID()
 	}
-	response.append("tid", request.headers.tid)
+	res.append('tid', req.headers.tid)
 	next()
 }

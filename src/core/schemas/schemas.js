@@ -1,65 +1,65 @@
-const mongoose = require("mongoose")
-const uniqueValidator = require("mongoose-unique-validator")
+const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 
 exports.phone = new mongoose.Schema(
 	{
 		fullNumber: { type: String, required: false },
 		countryCode: { type: String, required: false },
-		shortNumber: { type: String, required: false }
+		shortNumber: { type: String, required: false },
 	},
-	{ _id: false, timestamps: true }
+	{ _id: false, timestamps: true },
 )
 
 let photo = (exports.photo = new mongoose.Schema(
 	{
-		url: { type: String, required: false }
+		url: { type: String, required: false },
 	},
-	{ _id: false, timestamps: true }
+	{ _id: false, timestamps: true },
 ))
 
 exports.profile = new mongoose.Schema(
 	{
-		firstname: {
+		firstName: {
 			type: String,
-			required: true
+			required: true,
 		},
-		middlename: {
+		middleName: {
 			type: String,
-			required: false
+			required: false,
 		},
-		lastname: {
+		lastName: {
 			type: String,
-			required: true
+			required: true,
 		},
-		displayname: {
+		displayName: {
 			type: String,
-			required: true
+			required: true,
 		},
-		birthdate: {
+		birthDate: {
 			type: Date,
-			required: false
+			required: false,
 		},
-		photo
+		photo,
 	},
-	{ _id: false, timestamps: true }
+	{ _id: false, timestamps: true },
 )
 
 exports.price = new mongoose.Schema(
 	{
 		tnd: { type: Number, required: false },
 		eur: { type: Number, required: false },
-		usd: { type: Number, required: false }
+		usd: { type: Number, required: false },
 	},
-	{ _id: false, timestamps: true }
+	{ _id: false, timestamps: true },
 )
 
 let location = (exports.location = new mongoose.Schema(
 	{
 		lat: { type: String, required: false },
 		lon: { type: String, required: false },
-		alt: { type: String, required: false }
+		alt: { type: String, required: false },
 	},
-	{ _id: false, timestamps: true }
+	{ _id: false, timestamps: true },
 ))
 
 exports.address = new mongoose.Schema(
@@ -68,7 +68,7 @@ exports.address = new mongoose.Schema(
 		country: { type: String, required: false },
 		city: { type: String, required: false },
 		street: { type: String, required: false },
-		location
+		location,
 	},
-	{ _id: false, timestamps: true }
+	{ _id: false, timestamps: true },
 )

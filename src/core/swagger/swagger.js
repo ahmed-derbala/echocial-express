@@ -1,7 +1,7 @@
 const packagejson = require(`../../../package.json`)
-const fs = require("fs")
-const ignoreFolders = ["node_modules", "helpers", ".git", "config", ".vscode"]
-const config = require("../../configs/config")
+const fs = require('fs')
+const ignoreFolders = ['node_modules', 'helpers', '.git', 'config', '.vscode']
+const config = require('../../configs/config')
 
 /**
  * load files in a directory based on discriminator
@@ -17,17 +17,17 @@ const getAllFiles = function (dirPath, arrayOfFiles, discriminator) {
 
 	files.forEach(function (file) {
 		if (
-			fs.statSync(dirPath + "/" + file).isDirectory() &&
+			fs.statSync(dirPath + '/' + file).isDirectory() &&
 			!ignoreFolders.includes(file)
 		) {
 			arrayOfFiles = getAllFiles(
-				dirPath + "/" + file,
+				dirPath + '/' + file,
 				arrayOfFiles,
-				discriminator
+				discriminator,
 			)
 		} else {
 			if (file.includes(discriminator)) {
-				newElem = require(dirPath + "/" + file)
+				newElem = require(dirPath + '/' + file)
 				arrayOfFiles = { ...arrayOfFiles, ...newElem }
 			}
 		}
@@ -36,40 +36,40 @@ const getAllFiles = function (dirPath, arrayOfFiles, discriminator) {
 	return arrayOfFiles
 }
 
-let paths = getAllFiles(process.cwd(), [], ".path.swagger.js")
-let tags = getAllFiles(process.cwd(), [], ".tag.swagger.js")
+let paths = getAllFiles(process.cwd(), [], '.path.swagger.js')
+let tags = getAllFiles(process.cwd(), [], '.tag.swagger.js')
 
 module.exports = {
 	mainDef: {
-		swagger: "2.0",
+		swagger: '2.0',
 		info: {
 			description: packagejson.description,
 			version: packagejson.version,
 			title: packagejson.name,
-			termsOfService: "http://swagger.io/terms/",
+			termsOfService: 'http://swagger.io/terms/',
 			contact: {
-				email: ["ahmed.derbala@kaspr.io", "omar@kaspr.io"]
+				email: ['ahmed.derbala@kaspr.io', 'omar@kaspr.io'],
 			},
 			license: {
-				name: "Apache 2.0",
-				url: "http://server.apache.org/licenses/LICENSE-2.0.html"
-			}
+				name: 'Apache 2.0',
+				url: 'http://server.apache.org/licenses/LICENSE-2.0.html',
+			},
 		},
 		host: `${config.app.backend.url}`,
-		basePath: "/",
+		basePath: '/',
 		tags: Object.values(tags),
-		schemes: ["http", "https"],
+		schemes: ['http', 'https'],
 		paths: paths,
 		securityDefinitions: {
 			bearerAuth: {
-				type: "apiKey",
-				name: "authorization",
-				scheme: "bearer",
-				in: "header",
+				type: 'apiKey',
+				name: 'authorization',
+				scheme: 'bearer',
+				in: 'header',
 				description:
-					"please make sure to prefix the token with Bearer. B is uppercase"
-			}
+					'please make sure to prefix the token with Bearer. B is uppercase',
+			},
 		},
-		definitions: {}
-	}
+		definitions: {},
+	},
 }

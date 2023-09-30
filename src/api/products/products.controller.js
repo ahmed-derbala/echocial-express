@@ -1,14 +1,14 @@
-const express = require("express")
+const express = require('express')
 const router = express.Router()
-const { check, query, param } = require("express-validator")
+const { check, query, param } = require('express-validator')
 const validatorCheck = require(`../../core/utils/error`).validatorCheck
 const { authenticate } = require(`../../core/auth/auth`)
 
-const { errorHandler } = require("../../core/utils/error")
-const productsSrvc = require("./products.service")
+const { errorHandler } = require('../../core/utils/error')
+const productsSrvc = require('./products.service')
 
 router.get(
-	"/",
+	'/',
 	authenticate(),
 	/* [
     //  check('user').exists(),
@@ -31,12 +31,12 @@ router.get(
 		} catch (err) {
 			return errorHandler({ err })
 		}
-	}
+	},
 )
 
 router.post(
-	"/",
-	[check("name").isString()],
+	'/',
+	[check('name').isString()],
 	validatorCheck,
 	async (req, res) => {
 		const { name } = req.body
@@ -46,13 +46,13 @@ router.post(
 				return res.status(200).json({ data })
 			})
 			.catch((err) => errorHandler({ err, req, res }))
-	}
+	},
 )
 
-router.post("/signout", authenticate(), async (req, res) => {
+router.post('/signout', authenticate(), async (req, res) => {
 	return Sessions.deleteOne({ token: req.headers.token })
 		.then((deletedSession) => {
-			return res.status(200).json({ msg: "singedout", data: deletedSession })
+			return res.status(200).json({ msg: 'singedout', data: deletedSession })
 		})
 		.catch((err) => errorHandler({ err, res }))
 })

@@ -1,71 +1,71 @@
-const mongoose = require("mongoose")
-const uniqueValidator = require("mongoose-unique-validator")
+const mongoose = require('mongoose')
+const uniqueValidator = require('mongoose-unique-validator')
 const conf = require(`../../configs/config`)
-const schemas = require("../../core/schemas/schemas")
-const enums = require("../../core/enums/enums")
+const schemas = require('../../core/schemas/schemas')
+const enums = require('../../core/enums/enums')
 
 const schema = new mongoose.Schema(
 	{
 		profile: {
 			type: schemas.profile,
-			select: false
+			select: false,
 		},
-		username: {
+		userName: {
 			type: String,
-			required: false
+			required: false,
 		},
 		email: {
 			type: String,
 			required: true,
-			unique: false //true
+			unique: false, //true
 		},
 		password: {
 			type: String,
 			required: true,
-			select: false
+			select: false,
 		},
 		phone: {
 			type: schemas.phone,
-			select: false
+			select: false,
 		},
 		role: {
 			type: Object,
 			enum: conf.users.roles,
-			default: conf.users.roles[0]
+			default: conf.users.roles[0],
 		},
 		type: {
 			type: Object,
 			enum: conf.users.types,
-			default: conf.users.types[0]
+			default: conf.users.types[0],
 		},
 		isActive: {
 			type: Boolean,
-			default: true
+			default: true,
 		},
 		jobs: [
 			{
 				name: {
 					type: String,
-					enum: enums.jobs.names
+					enum: enums.jobs.names,
 				},
 				shopId: {
 					type: mongoose.Schema.Types.ObjectId,
-					ref: "shops"
-				}
-			}
+					ref: 'shops',
+				},
+			},
 		],
 		address: {
 			type: schemas.address,
-			select: false
-		}
+			select: false,
+		},
 	},
-	{ timestamps: true }
+	{ timestamps: true },
 )
 
 schema.plugin(uniqueValidator)
-const usersSchemaName = "users"
+const usersCollection = 'users'
 
 module.exports = {
-	UsersModel: mongoose.model(usersSchemaName, schema),
-	usersSchemaName
+	UsersModel: mongoose.model(usersCollection, schema),
+	usersCollection,
 }

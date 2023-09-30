@@ -1,132 +1,132 @@
-const { exampleTag } = require("./example.tag.swagger.js")
+const { exampleTag } = require('./example.tag.swagger.js')
 
 module.exports = {
-	"/swagger/example/{pathName}": {
+	'/swagger/example/{pathName}': {
 		post: {
 			//get, delete, put
 			tags: [exampleTag.name],
-			summary: "test summary",
-			description: "test description",
-			operationId: "testOperationId",
-			consumes: ["application/json"],
-			produces: ["application/json"],
+			summary: 'test summary',
+			description: 'test description',
+			operationId: 'testOperationId',
+			consumes: ['application/json'],
+			produces: ['application/json'],
 			parameters: [
 				{
-					in: "body",
-					description: "body description",
-					name: "bodyName",
+					in: 'body',
+					description: 'body description',
+					name: 'bodyName',
 					schema: {
-						type: "object",
+						type: 'object',
 						properties: {
 							email: {
-								type: "string",
-								default: "ahmed.derbala@kaspr.io",
+								type: 'string',
+								default: 'ahmed.derbala@kaspr.io',
 								required: false,
-								description: "email description"
+								description: 'email description',
 							},
 							arrayOfString: {
-								type: "array",
+								type: 'array',
 								default: `["12345678","ahmed"]`,
 								required: false,
-								description: "test description",
+								description: 'test description',
 								items: {
-									type: "string"
-								}
+									type: 'string',
+								},
 							},
 							arrayOfObject: {
-								type: "array",
+								type: 'array',
 								required: false,
-								description: "test description",
+								description: 'test description',
 								items: {
-									type: "object",
+									type: 'object',
 									properties: {
 										email: {
-											type: "string",
-											default: "ahmed.derbala@kaspr.io",
+											type: 'string',
+											default: 'ahmed.derbala@kaspr.io',
 											required: false,
-											description: "user email"
+											description: 'user email',
 										},
 										password: {
-											type: "string",
-											default: "12345678",
-											required: false
-										}
-									}
+											type: 'string',
+											default: '12345678',
+											required: false,
+										},
+									},
 								},
 								default: [
-									{ id: 1, name: "ahmed" },
-									{ id: 2, name: "omar" }
-								]
+									{ id: 1, name: 'ahmed' },
+									{ id: 2, name: 'omar' },
+								],
 							},
 							arrayOfArrays: {
-								type: "array",
+								type: 'array',
 								required: false,
-								description: "test description",
+								description: 'test description',
 								items: {
-									type: "array",
+									type: 'array',
 									items: {
-										type: "object",
+										type: 'object',
 										properties: {
 											id: {
-												type: "integer",
-												default: "ahmed.derbala@kaspr.io",
+												type: 'integer',
+												default: 'ahmed.derbala@kaspr.io',
 												required: false,
-												description: "user id"
+												description: 'user id',
 											},
 											name: {
-												type: "string",
-												default: "12345678",
+												type: 'string',
+												default: '12345678',
 												required: false,
-												description: "user name"
-											}
-										}
-									}
+												description: 'user name',
+											},
+										},
+									},
 								},
 								default: [
 									[
-										{ id: 1, name: "ahmed" },
-										{ id: 2, name: "omar" }
+										{ id: 1, name: 'ahmed' },
+										{ id: 2, name: 'omar' },
 									],
 									[
-										{ id: 1, name: "ali" },
-										{ id: 2, name: "salah" }
-									]
-								]
-							}
-						}
-					}
+										{ id: 1, name: 'ali' },
+										{ id: 2, name: 'salah' },
+									],
+								],
+							},
+						},
+					},
 				},
 				{
-					in: "path",
-					description: "path description",
-					name: "pathName"
+					in: 'path',
+					description: 'path description',
+					name: 'pathName',
 				},
 				{
-					in: "query",
-					description: "query param 1",
-					name: "param1"
+					in: 'query',
+					description: 'query param 1',
+					name: 'param1',
 				},
 				{
-					in: "query",
-					description: "query param 2",
-					name: "param2"
-				}
+					in: 'query',
+					description: 'query param 2',
+					name: 'param2',
+				},
 			],
 			components: {
 				securitySchemes: {
 					bearerAuth: {
-						type: "http",
-						scheme: "bearer",
-						bearerFormat: "JWT"
-					}
-				}
+						type: 'http',
+						scheme: 'bearer',
+						bearerFormat: 'JWT',
+					},
+				},
 			},
 			security: [{ bearerAuth: [] }], //components.securitySchemes and security are a must to send JWT
 			responses: {
 				200: {
-					description: "responses is a must to execute the request"
-				}
-			} //responses is a must to execute the request
-		}
-	}
+					description: 'responses is a must to execute the request',
+				},
+			}, //responses is a must to execute the request
+		},
+	},
 }

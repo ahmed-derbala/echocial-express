@@ -1,6 +1,7 @@
 const { UsersModel } = require(`./users.schema`)
-const { errorHandler } = require("../../core/utils/error")
-const { paginate } = require("../../core/helpers/pagination")
+const { errorHandler } = require('../../core/utils/error')
+const { paginate } = require('../../core/helpers/pagination')
+const { ReputationsModel } = require(`../reputations/reputations.schema`)
 
 module.exports.getUsers = async (params) => {
 	return paginate({ model: UsersModel })
@@ -12,7 +13,7 @@ module.exports.getUsers = async (params) => {
 
 module.exports.getProfile = async ({ username }) => {
 	return UsersModel.findOne({ username })
-		.select("profile")
+		.select('profile')
 		.lean()
 		.then((user) => {
 			return user
@@ -30,6 +31,14 @@ module.exports.getMyProfile = async ({ username }) => {
 					return user
 				})
 		)
+	} catch (err) {
+		errorHandler({ err })
+	}
+}
+
+module.exports.getMyReputation = async ({ userId }) => {
+	try {
+		return ReputationsModel.findOne({ userId }).lean()
 	} catch (err) {
 		errorHandler({ err })
 	}

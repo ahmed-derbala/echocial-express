@@ -1,17 +1,17 @@
-const express = require("express")
+const express = require('express')
 const router = express.Router()
-const { check, query, param } = require("express-validator")
+const { check, query, param } = require('express-validator')
 const validatorCheck = require(`../../core/utils/error`).validatorCheck
 const { authenticate } = require(`../../core/auth/auth`)
-const authSrvc = require("./auth.service")
-const { errorHandler } = require("../../core/utils/error")
+const authSrvc = require('./auth.service')
+const { errorHandler } = require('../../core/utils/error')
 
 router.post(
-	"/signup",
+	'/signup',
 	[
 		//  check('user').exists(),
-		check("email").isEmail(),
-		check("password").isString().notEmpty()
+		check('email').isEmail(),
+		check('password').isString().notEmpty(),
 		//   check('user.phones').isArray(),
 		//  check('user.phones.*.countryCode').isString().notEmpty(),
 		//  check('user.phones.*.shortNumber').isString().notEmpty()
@@ -26,32 +26,32 @@ router.post(
 				return res.status(200).json({ data })
 			})
 			.catch((err) => errorHandler({ err, res }))
-	}
+	},
 )
 
 router.post(
-	"/signin",
+	'/signin',
 	[
-		check("email").isEmail().optional(),
-		check("username").isString().optional(),
-		check("password").isString().notEmpty()
+		check('email').isEmail().optional(),
+		check('username').isString().optional(),
+		check('password').isString().notEmpty(),
 	],
 	validatorCheck,
 	async (req, res) => {
-		const { email, password, username } = req.body
+		const { email, password, userName } = req.body
 		return authSrvc
-			.signin({ email, username, password, req })
+			.signin({ email, userName, password, req })
 			.then((result) => {
 				return res.status(result.status).json(result)
 			})
 			.catch((err) => errorHandler({ err, req, res }))
-	}
+	},
 )
 
-router.post("/signout", authenticate(), async (req, res) => {
+router.post('/signout', authenticate(), async (req, res) => {
 	return Sessions.deleteOne({ token: req.headers.token })
 		.then((deletedSession) => {
-			return res.status(200).json({ msg: "singedout", data: deletedSession })
+			return res.status(200).json({ msg: 'singedout', data: deletedSession })
 		})
 		.catch((err) => errorHandler({ err, res }))
 })
