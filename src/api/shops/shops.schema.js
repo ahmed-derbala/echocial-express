@@ -3,7 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 const enums = require('../../helpers/enums')
 const schemas = require('../../helpers/schemas')
 const { log } = require(`../../utils/log`)
-const conf = require('../../configs/config')
+const config = require('../../config/config')
 
 const ShopsSchema = new mongoose.Schema(
 	{
@@ -46,7 +46,7 @@ const ShopsSchemaName = 'shops'
 
 const ShopsModel = mongoose.model(ShopsSchemaName, ShopsSchema)
 ShopsModel.on('index', (error) => {
-	if (error) log({ level: conf.log.levelNames.error, message: error })
+	if (error) log({ level: config.log.levelNames.error, message: error })
 })
 
 module.exports = {

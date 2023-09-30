@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const Sessions = require(`../../api/sessions/sessions.schema`)
 const { errorHandler } = require('../utils/error')
-const conf = require(`../../configs/config`)
+const config = require(`../../config/config`)
 
 exports.authenticate = (params) => {
 	return function (req, res, next) {
@@ -28,7 +28,7 @@ exports.authenticate = (params) => {
 		//verify token
 		return jwt.verify(
 			req.headers.token,
-			conf.auth.jwt.privateKey,
+			config.auth.jwt.privateKey,
 			(err, decoded) => {
 				if (err) {
 					//if token is not required move on

@@ -1,5 +1,5 @@
-const winston = require('winston') //logging module
-const conf = require(`../../configs/config`)
+const winston = require('winston')
+const config = require(`../../config/config`)
 
-winston.addColors(conf.log.colors)
-module.exports = winston.createLogger(conf.log.createLoggerOptions)
+winston.addColors(config.log.colors)
+module.exports = winston.createLogger(config.log.createLoggerOptions)

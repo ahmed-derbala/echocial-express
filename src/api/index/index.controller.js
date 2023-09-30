@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const config = require(`../../configs/config`)
+const config = require(`../../config/config`)
 
 router.get('/', function (req, res, next) {
 	const { NODE_ENV, app } = config

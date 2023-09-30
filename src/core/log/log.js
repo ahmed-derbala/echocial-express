@@ -2,7 +2,7 @@
  * this file has the logging system
  * logging system written in seperate file to make it easy to integrates in other projects and to be extensible as possible
  */
-const conf = require(`../../configs/config`)
+const config = require(`../../config/config`)
 const logger = require('./logger')
 /**
  * log function
@@ -12,12 +12,13 @@ const logger = require('./logger')
  * @param {string} log.message
  */
 module.exports.log = ({ level, error, message, req }) => {
-	if (!conf.log.allowedLevels.includes(level)) return null
+	if (!config.log.allowedLevels.includes(level)) return null
 	if (!message) message = 'no_message'
 	if (!level) level = 'debug'
 
 	let memory = null
-	if (conf.log.memory) memory = Math.ceil(process.memoryUsage.rss() / 1000000) // in MB
+	if (config.log.memory)
+		memory = parseFloat((process.memoryUsage.rss() / 1000000000).toFixed(3)) // in GB
 
 	logger[level]({ level, error: error ? error : false, message, req, memory })
 }

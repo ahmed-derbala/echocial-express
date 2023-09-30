@@ -27,21 +27,13 @@ let app = {
 			return `${backend.url}${this.endpoint}`
 		},
 	},
-	backend,
-	frontend: {
-		port: 5000,
-		host: `${ip.address()}`,
-		protocol: 'http://',
-		get url() {
-			return `${this.protocol}${this.host}:${this.port}`
-		},
-	},
 	//a number, 0 to disable
 	cluster: 0, //os.cpus().length,
 	responseTimeAlert: 20000, //time in ms before considering a request timeout
 	morgan: {
 		//more infos: https://www.npmjs.com/package/morgan
-		tokenString: `{"status"::status,"method":":method", "url":":url", "ip":":ip", "user": :user ,"body": :body,"browser":":browser", "os":":os", "platform":":platform" ,"origin":":origin", "isBot":":isBot", "referrer":":referrer","tid":":tid" ,"responseTime":":response-time"}`,
+		tokenString: `{"status"::status,"method":":method", "url":":url", "user": :user ,"body": :body,"tid":":tid" ,"responseTime"::response-time}`,
+		//tokenString: `{"status"::status,"method":":method", "url":":url", "user": :user ,"body": :body,"tid":":tid" ,"responseTime"::response-time,"ip":":ip","browser":":browser", "os":":os", "platform":":platform" ,"origin":":origin", "isBot":":isBot", "referrer":":referrer"}`,
 		hiddenBodyFields: ['password', 'user.password'], //[] for none, display these keys as *** in terminal
 	},
 	apiLimiter: {
@@ -96,8 +88,8 @@ const { combine, timestamp, label, prettyPrint, colorize } = format
 require('winston-mongodb')
 const transportsOptions = {
 	file: {
-		level: 'verbose', //the level to start logging to file
-		filename: `${process.cwd()}/logs/${app.name}.json`,
+		level: 'startup', //the level to start logging to file
+		filename: `${process.cwd()}/logs/${app.name}.log`,
 		handleExceptions: true,
 		maxsize: 1000000, //1 million = 1 mb
 		maxFiles: 2,
@@ -125,13 +117,13 @@ const transportsOptions = {
 	},
 
 	mongo: {
-		level: 'startup', //the level to start logging to mongodb
+		level: 'warn', //the level to start logging to mongodb
 		db: db.mongo.uri,
 		options: {
 			useUnifiedTopology: true,
 		},
 		decolorize: true,
-		expireAfterSeconds: 3600,
+		expireAfterSeconds: 360000, //100 hours
 		collection: 'logs',
 		format: format.metadata(),
 	},
@@ -170,7 +162,7 @@ const levelNames = {
 let createLoggerOptions = {
 	transports: [
 		//comment or delete transports you dont want to use
-		//new transports.File(transportsOptions.file),//Error: write after end
+		new transports.File(transportsOptions.file),
 		new transports.Console(transportsOptions.console),
 		new transports.MongoDB(transportsOptions.mongo),
 	],
@@ -182,6 +174,15 @@ let createLoggerOptions = {
 module.exports = {
 	NODE_ENV: process.env.NODE_ENV || 'local',
 	app,
+	backend,
+	frontend: {
+		port: 5000,
+		host: `${ip.address()}`,
+		protocol: 'http://',
+		get url() {
+			return `${this.protocol}${this.host}:${this.port}`
+		},
+	},
 	auth: {
 		saltRounds: 10,
 		jwt: {
@@ -190,13 +191,21 @@ module.exports = {
 	},
 	db,
 	log: {
-		isEnabled: true,
+		allowedLevels: [
+			levelNames.error,
+			levelNames.warn,
+			levelNames.verbose,
+			levelNames.socket,
+			levelNames.debug,
+			levelNames.success,
+			levelNames.startup,
+		],
 		createLoggerOptions,
 		transportsOptions,
 		colors,
 		levels,
 		levelNames,
-		memory: true,
+		memory: true, //in GB
 	},
 	pagination: {
 		minLimit: 1,

@@ -21,16 +21,9 @@ module.exports.getProfile = async ({ username }) => {
 		.catch((err) => errorHandler({ err }))
 }
 
-module.exports.getMyProfile = async ({ username }) => {
+module.exports.getMyProfile = async ({ userId }) => {
 	try {
-		return (
-			UsersModel.findOne({ username })
-				//.select("profile")
-				.lean()
-				.then((user) => {
-					return user
-				})
-		)
+		return UsersModel.findOne({ _id: userId }).select('profile').lean()
 	} catch (err) {
 		errorHandler({ err })
 	}

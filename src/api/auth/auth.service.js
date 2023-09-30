@@ -4,11 +4,11 @@ const Sessions = require(`../sessions/sessions.schema`)
 const bcrypt = require('bcrypt')
 const { errorHandler } = require('../../core/utils/error')
 const jwt = require('jsonwebtoken')
-const conf = require(`../../configs/config`)
+const config = require(`../../config/config`)
 
 module.exports.signup = async ({ email, password, phone, profile }) => {
 	//console.log(params,"servc params")
-	const salt = bcrypt.genSaltSync(conf.auth.saltRounds)
+	const salt = bcrypt.genSaltSync(config.auth.saltRounds)
 	password = bcrypt.hashSync(password, salt)
 	if (profile && !profile.displayName)
 		profile.displayName = `${profile.firstName} ${profile.lastName}`
@@ -59,7 +59,7 @@ module.exports.signin = async ({ email, username, password, req }) => {
 			}
 			const token = jwt.sign(
 				{ user: fetchedUser, ip: req.ip, userAgent: req.headers['user-agent'] },
-				conf.auth.jwt.privateKey,
+				config.auth.jwt.privateKey,
 				{ expiresIn: '30d' },
 			)
 

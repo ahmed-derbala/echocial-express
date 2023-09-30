@@ -2,14 +2,14 @@
 The backend of echocial, the social echo
 # features
 - javascript with express 5
-- everything is configurable in /configs
+- everything is configurable in /config
 - clean architecture
 - pm2 
 - socketio
-- logs: winston (file, console, mongo) with memory infos 
+- logs: winston (file, console, mongo) with memory (in GB) 
 - mongoose
 - custom json requests logs with morgan and winston
-- cluster: configurable in configs
+- cluster: configurable in config
 - load config file based on NODE_ENV
 - api limiter, helmet, compression
 - use_strict: true by default
@@ -17,7 +17,7 @@ The backend of echocial, the social echo
 - prettier before commit and push (npm run push -- "commit message")
 
 
-# first run: set config.js, install modules and run. Default port = 5000, can be changed in /src/configs/config.js
+# first time: set config.js, install modules and run. Default port = 5000, can be changed in /src/config/config.js
 ```
 npm run start:first-time
 ```

@@ -1,4 +1,4 @@
-const conf = require(`../../configs/config`)
+const config = require(`../../config/config`)
 const { log } = require(`../log/log`)
 
 /**
@@ -10,7 +10,7 @@ const http = require('http')
 /**
  * Get port from environment
  */
-app.set('port', conf.app.backend.port)
+app.set('port', config.backend.port)
 
 /**
  * Create HTTP server.
@@ -20,15 +20,15 @@ const server = http.createServer(app)
 /**
  * Listen on provided port, on all network interfaces.
  */
-if (conf.app.cluster > 0) {
+if (config.app.cluster > 0) {
 	let cluster = require('cluster')
 	if (cluster.isMaster) {
 		log({
-			message: `cluster is enabled. ${conf.app.cluster} cpus are in use`,
+			message: `cluster is enabled. ${config.app.cluster} cpus are in use`,
 			level: 'success',
 		})
 		// Create a worker for each CPU
-		for (let c = 1; c <= conf.app.cluster; c++) {
+		for (let c = 1; c <= config.app.cluster; c++) {
 			cluster.fork()
 		}
 
@@ -40,9 +40,9 @@ if (conf.app.cluster > 0) {
 	} else {
 		//launching the server
 		server.listen(
-			conf.app.backend.port,
+			config.app.backend.port,
 			log({
-				message: `${conf.app.name} ${conf.app.version} ${conf.app.backend.url} NODE_ENV=${conf.NODE_ENV} fork ${cluster.worker.id} pid ${cluster.worker.process.pid}`,
+				message: `${config.app.name} ${config.app.version} ${config.app.backend.url} NODE_ENV=${config.NODE_ENV} fork ${cluster.worker.id} pid ${cluster.worker.process.pid}`,
 				level: 'startup',
 			}),
 		)
@@ -52,9 +52,9 @@ if (conf.app.cluster > 0) {
 } else {
 	//launching the server without cluster
 	server.listen(
-		conf.app.backend.port,
+		config.backend.port,
 		log({
-			message: `${conf.app.name} ${conf.app.version} ${conf.app.backend.url} NODE_ENV=${conf.NODE_ENV}`,
+			message: `${config.app.name} ${config.app.version} ${config.backend.url} NODE_ENV=${config.NODE_ENV}`,
 			level: 'startup',
 		}),
 	)
@@ -74,9 +74,9 @@ function onError(error) {
 	}
 
 	const bind =
-		typeof conf.app.backend.port === 'string'
-			? 'Pipe ' + conf.app.backend.port
-			: 'Port ' + conf.app.backend.port
+		typeof config.app.backend.port === 'string'
+			? 'Pipe ' + config.app.backend.port
+			: 'Port ' + config.app.backend.port
 
 	// handle specific listen errors with friendly messages
 	switch (error.code) {

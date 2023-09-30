@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-const conf = require(`../../configs/config`)
-const { minLimit, defaultLimit, maxLimit } = conf.pagination
+const config = require(`../../config/config`)
+const { minLimit, defaultLimit, maxLimit } = config.pagination
 
 exports.paginate = async ({
 	model,

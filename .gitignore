@@ -5,7 +5,7 @@ uploads/*
 /.backups/*
 
 #config files
-src/configs/config.js
+src/config/config.js
 
 # Logs
 logs/*

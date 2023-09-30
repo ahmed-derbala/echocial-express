@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { usersCollection } = require('../users/users.schema')
 const { log } = require(`../../core/log/log`)
-const conf = require('../../configs/config')
+const config = require('../../config/config')
 
 const PostsSchema = new mongoose.Schema(
 	{
@@ -27,7 +27,7 @@ const PostsSchemaName = 'posts'
 
 const PostsModel = mongoose.model(PostsSchemaName, PostsSchema)
 PostsModel.on('index', (error) => {
-	if (error) log({ level: conf.log.levelNames.error, message: error })
+	if (error) log({ level: config.log.levelNames.error, message: error })
 })
 
 module.exports = {

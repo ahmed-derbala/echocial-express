@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
-const conf = require(`../../configs/config`)
+const config = require(`../../config/config`)
 const schemas = require('../../core/schemas/schemas')
 const enums = require('../../core/enums/enums')
 
@@ -30,13 +30,13 @@ const schema = new mongoose.Schema(
 		},
 		role: {
 			type: Object,
-			enum: conf.users.roles,
-			default: conf.users.roles[0],
+			enum: config.users.roles,
+			default: config.users.roles[0],
 		},
 		type: {
 			type: Object,
-			enum: conf.users.types,
-			default: conf.users.types[0],
+			enum: config.users.types,
+			default: config.users.types[0],
 		},
 		isActive: {
 			type: Boolean,

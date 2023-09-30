@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 console.clear()
-const conf = require(`./configs/config`)
-if (conf.app.use_strict) require('use-strict')
+const config = require(`./config/config`)
+if (config.app.use_strict) require('use-strict')
 const { log } = require(`./core/log/log`)
 const db = require('./core/utils/db')
 

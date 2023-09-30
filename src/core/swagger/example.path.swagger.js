@@ -1,7 +1,7 @@
 const { exampleTag } = require('./example.tag.swagger.js')
 
 module.exports = {
-	'/swagger/example/{pathName}': {
+	'/example/{pathName}': {
 		post: {
 			//get, delete, put
 			tags: [exampleTag.name],
@@ -20,7 +20,7 @@ module.exports = {
 						properties: {
 							email: {
 								type: 'string',
-								default: 'ahmed.derbala@kaspr.io',
+								default: 'ahmed.derbala@esprit.tn',
 								required: false,
 								description: 'email description',
 							},
@@ -42,7 +42,7 @@ module.exports = {
 									properties: {
 										email: {
 											type: 'string',
-											default: 'ahmed.derbala@kaspr.io',
+											default: 'ahmed.derbala@esprit.tn',
 											required: false,
 											description: 'user email',
 										},
@@ -55,7 +55,7 @@ module.exports = {
 								},
 								default: [
 									{ id: 1, name: 'ahmed' },
-									{ id: 2, name: 'omar' },
+									{ id: 2, name: 'mahdi' },
 								],
 							},
 							arrayOfArrays: {
@@ -69,7 +69,7 @@ module.exports = {
 										properties: {
 											id: {
 												type: 'integer',
-												default: 'ahmed.derbala@kaspr.io',
+												default: 'ahmed.derbala@esprit.tn',
 												required: false,
 												description: 'user id',
 											},
@@ -85,7 +85,7 @@ module.exports = {
 								default: [
 									[
 										{ id: 1, name: 'ahmed' },
-										{ id: 2, name: 'omar' },
+										{ id: 2, name: 'mahdi' },
 									],
 									[
 										{ id: 1, name: 'ali' },
@@ -125,6 +125,26 @@ module.exports = {
 			responses: {
 				200: {
 					description: 'responses is a must to execute the request',
+				},
+				'resp-example': {
+					description: 'example description',
+					schema: {
+						type: 'object',
+						properties: {
+							id: {
+								type: 'integer',
+								default: 'ahmed.derbala@esprit.tn',
+								required: false,
+								description: 'user id',
+							},
+							name: {
+								type: 'string',
+								default: '12345678',
+								required: false,
+								description: 'user name',
+							},
+						},
+					},
 				},
 			}, //responses is a must to execute the request
 		},

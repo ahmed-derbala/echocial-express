@@ -4,7 +4,7 @@ module.exports = {
 		description: 'a sample endpoint',
 		externalDocs: {
 			description: 'optionnal external link for more documentation',
-			url: 'http://kaspr.io',
+			url: 'http://esprit.tn',
 		}, //externalDocs is optionnal
 	},
 }

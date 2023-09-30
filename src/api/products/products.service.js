@@ -4,7 +4,7 @@ const Sessions = require(`../sessions/sessions.schema`)
 const bcrypt = require('bcrypt')
 const { errorHandler } = require('../../core/utils/error')
 const jwt = require('jsonwebtoken')
-const conf = require(`../../configs/config`)
+const config = require(`../../config/config`)
 const { paginate } = require('../../core/helpers/pagination')
 
 module.exports.findAll = async ({ page, limit }) => {

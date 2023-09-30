@@ -1,7 +1,7 @@
 const packagejson = require(`../../../package.json`)
 const fs = require('fs')
 const ignoreFolders = ['node_modules', 'helpers', '.git', 'config', '.vscode']
-const config = require('../../configs/config')
+const config = require('../../config/config')
 
 /**
  * load files in a directory based on discriminator
@@ -48,14 +48,14 @@ module.exports = {
 			title: packagejson.name,
 			termsOfService: 'http://swagger.io/terms/',
 			contact: {
-				email: ['ahmed.derbala@kaspr.io', 'omar@kaspr.io'],
+				email: ['ahmed.derbala@esprit.tn', 'mahdi@esprit.tn'],
 			},
 			license: {
 				name: 'Apache 2.0',
 				url: 'http://server.apache.org/licenses/LICENSE-2.0.html',
 			},
 		},
-		host: `${config.app.backend.url}`,
+		host: `127.0.0.1:${config.backend.port}`,
 		basePath: '/',
 		tags: Object.values(tags),
 		schemes: ['http', 'https'],

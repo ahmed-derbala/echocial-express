@@ -57,8 +57,7 @@ exports.errorHandler = ({ err, req, res, next, caller }) => {
 		errObject.req.status = status
 		errObject.req.method = req.method
 		errObject.req.url = req.originalUrl
-		errObject.req.ip =
-			req.connection.remoteAddress || req.headers['x-forwarded-for']
+		errObject.req.ip = req.headers['x-forwarded-for']
 		errObject.req.user = req.user
 		errObject.req.body = req.body
 	}

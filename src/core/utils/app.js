@@ -6,7 +6,7 @@ const winston = require('winston') //logging module
 const loaders = require('./loaders')
 const morganLogger = require(`../log/morgan`)
 const rateLimit = require('express-rate-limit')
-const conf = require(`../../configs/config`)
+const config = require(`../../config/config`)
 const compression = require('compression')
 const cors = require('cors')
 const helmet = require('helmet')
@@ -16,14 +16,10 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerSpec = require('../swagger/swagger')
 
 let app = express()
-app.use(cors(conf.app.corsOptions))
-app.use('/', rateLimit(conf.app.apiLimiter))
+app.use(cors(config.app.corsOptions))
+app.use('/', rateLimit(config.app.apiLimiter))
 app.use(compression())
-app.use(
-	helmet({
-		crossOriginResourcePolicy: false,
-	}),
-)
+app.use(helmet({ crossOriginResourcePolicy: false }))
 app.use(tidHandler)
 app.use(useragent.express())
 app.use(express.json())
@@ -37,14 +33,14 @@ app.use(morganLogger())
 app.use(
 	expressWinston.logger({
 		transports: [
-			new winston.transports.MongoDB(conf.log.transportsOptions.mongo),
+			new winston.transports.MongoDB(config.log.transportsOptions.mongo),
 		],
 		expressFormat: true,
 	}),
 )
 
 app.use(
-	conf.app.swagger.endpoint,
+	config.app.swagger.endpoint,
 	swaggerUi.serve,
 	swaggerUi.setup(swaggerSpec.mainDef),
 )

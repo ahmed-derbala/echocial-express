@@ -3,7 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 //const enums = require('../../helpers/enums')
 //const schemas = require('../../helpers/schemas')
 const { log } = require(`../../core/log/log`)
-const conf = require('../../configs/config')
+const config = require('../../config/config')
 
 const ReputationsSchema = new mongoose.Schema(
 	{
@@ -81,7 +81,7 @@ const ReputationsModel = mongoose.model(
 	ReputationsSchema,
 )
 ReputationsModel.on('index', (error) => {
-	if (error) log({ level: conf.log.levelNames.error, message: error })
+	if (error) log({ level: config.log.levelNames.error, message: error })
 })
 
 module.exports = {
