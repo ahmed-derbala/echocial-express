@@ -39,7 +39,7 @@ router.post(
 	// authenticate(),
 	[
 		check('currentValue').notEmpty().isNumeric(),
-		check('reputationId').notEmpty(),
+		check('reputationId').notEmpty()
 	],
 	validatorCheck,
 	async (req, res) => {
@@ -52,7 +52,7 @@ router.post(
 				return res.status(200).json(data)
 			})
 			.catch((err) => errorHandler({ err, req, res }))
-	},
+	}
 )
 
 module.exports = router

@@ -11,7 +11,7 @@ router.post(
 	[
 		//  check('user').exists(),
 		check('email').isEmail(),
-		check('password').isString().notEmpty(),
+		check('password').isString().notEmpty()
 		//   check('user.phones').isArray(),
 		//  check('user.phones.*.countryCode').isString().notEmpty(),
 		//  check('user.phones.*.shortNumber').isString().notEmpty()
@@ -26,7 +26,7 @@ router.post(
 				return res.status(200).json({ data })
 			})
 			.catch((err) => errorHandler({ err, res }))
-	},
+	}
 )
 
 router.post(
@@ -34,7 +34,7 @@ router.post(
 	[
 		check('email').isEmail().optional(),
 		check('username').isString().optional(),
-		check('password').isString().notEmpty(),
+		check('password').isString().notEmpty()
 	],
 	validatorCheck,
 	async (req, res) => {
@@ -45,7 +45,7 @@ router.post(
 				return res.status(result.status).json(result)
 			})
 			.catch((err) => errorHandler({ err, req, res }))
-	},
+	}
 )
 
 router.post('/signout', authenticate(), async (req, res) => {

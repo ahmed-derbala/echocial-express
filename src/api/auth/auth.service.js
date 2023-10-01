@@ -25,7 +25,7 @@ module.exports.signup = async ({ email, password, phone, profile }) => {
 			if (createdUser.username == null) {
 				return UsersModel.updateOne(
 					{ _id: createdUser._id },
-					{ username: createdUser._id },
+					{ username: createdUser._id }
 				)
 					.then((updatedUser) => {
 						createdUser.username = createdUser._id
@@ -60,20 +60,20 @@ module.exports.signin = async ({ email, username, password, req }) => {
 			const token = jwt.sign(
 				{ user: fetchedUser, ip: req.ip, userAgent: req.headers['user-agent'] },
 				config.auth.jwt.privateKey,
-				{ expiresIn: '30d' },
+				{ expiresIn: '30d' }
 			)
 
 			return Sessions.create({
 				token,
 				user: fetchedUser,
 				headers: req.headers,
-				ip: req.ip,
+				ip: req.ip
 			})
 				.then((session) => {
 					return {
 						status: 200,
 						message: 'success',
-						data: { user: fetchedUser, token },
+						data: { user: fetchedUser, token }
 					}
 				})
 				.catch((err) => errorHandler({ err }))

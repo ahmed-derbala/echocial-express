@@ -25,7 +25,7 @@ if (config.app.cluster > 0) {
 	if (cluster.isMaster) {
 		log({
 			message: `cluster is enabled. ${config.app.cluster} cpus are in use`,
-			level: 'success',
+			level: 'success'
 		})
 		// Create a worker for each CPU
 		for (let c = 1; c <= config.app.cluster; c++) {
@@ -40,11 +40,11 @@ if (config.app.cluster > 0) {
 	} else {
 		//launching the server
 		server.listen(
-			config.app.backend.port,
+			config.backend.port,
 			log({
-				message: `${config.app.name} ${config.app.version} ${config.app.backend.url} NODE_ENV=${config.NODE_ENV} fork ${cluster.worker.id} pid ${cluster.worker.process.pid}`,
-				level: 'startup',
-			}),
+				message: `${config.app.name} ${config.app.version} ${config.backend.url} NODE_ENV=${config.NODE_ENV} fork ${cluster.worker.id} pid ${cluster.worker.process.pid}`,
+				level: 'startup'
+			})
 		)
 		server.on('error', onError)
 		server.on('listening', onListening)
@@ -55,8 +55,8 @@ if (config.app.cluster > 0) {
 		config.backend.port,
 		log({
 			message: `${config.app.name} ${config.app.version} ${config.backend.url} NODE_ENV=${config.NODE_ENV}`,
-			level: 'startup',
-		}),
+			level: 'startup'
+		})
 	)
 	server.on('error', onError)
 	server.on('listening', onListening)
@@ -74,9 +74,9 @@ function onError(error) {
 	}
 
 	const bind =
-		typeof config.app.backend.port === 'string'
-			? 'Pipe ' + config.app.backend.port
-			: 'Port ' + config.app.backend.port
+		typeof config.backend.port === 'string'
+			? 'Pipe ' + config.backend.port
+			: 'Port ' + config.backend.port
 
 	// handle specific listen errors with friendly messages
 	switch (error.code) {
@@ -87,7 +87,7 @@ function onError(error) {
 		case 'EADDRINUSE':
 			log({
 				level: 'error',
-				message: `${bind} is already in use. If you used pm2, try npm run delete`,
+				message: `${bind} is already in use. If you used pm2, try npm run delete`
 			})
 			process.exit(1)
 			break

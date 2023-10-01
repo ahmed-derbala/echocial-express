@@ -16,7 +16,7 @@ router.get(
 				return res.status(200).json(data)
 			})
 			.catch((err) => errorHandler({ err, req, res }))
-	},
+	}
 )
 
 router.get(
@@ -29,7 +29,7 @@ router.get(
 				return res.status(200).json(data)
 			})
 			.catch((err) => errorHandler({ err, req, res }))
-	},
+	}
 )
 
 router.get('/me/profile/', authenticate(), (req, res) => {

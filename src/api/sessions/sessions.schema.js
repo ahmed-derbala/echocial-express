@@ -5,20 +5,20 @@ const schema = new mongoose.Schema(
 	{
 		token: {
 			type: String,
-			required: true,
+			required: true
 		},
 		user: {
 			type: Object,
 			ref: 'users',
-			required: true,
+			required: true
 		},
 		headers: {
 			type: Object,
-			required: true,
+			required: true
 		},
-		ip: { type: String, required: true },
+		ip: { type: String, required: true }
 	},
-	{ timestamps: true },
+	{ timestamps: true }
 )
 
 schema.plugin(uniqueValidator)

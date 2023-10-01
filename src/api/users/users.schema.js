@@ -8,58 +8,58 @@ const schema = new mongoose.Schema(
 	{
 		profile: {
 			type: schemas.profile,
-			select: false,
+			select: false
 		},
 		userName: {
 			type: String,
-			required: false,
+			required: false
 		},
 		email: {
 			type: String,
 			required: true,
-			unique: false, //true
+			unique: false //true
 		},
 		password: {
 			type: String,
 			required: true,
-			select: false,
+			select: false
 		},
 		phone: {
 			type: schemas.phone,
-			select: false,
+			select: false
 		},
 		role: {
 			type: Object,
 			enum: config.users.roles,
-			default: config.users.roles[0],
+			default: config.users.roles[0]
 		},
 		type: {
 			type: Object,
 			enum: config.users.types,
-			default: config.users.types[0],
+			default: config.users.types[0]
 		},
 		isActive: {
 			type: Boolean,
-			default: true,
+			default: true
 		},
 		jobs: [
 			{
 				name: {
 					type: String,
-					enum: enums.jobs.names,
+					enum: enums.jobs.names
 				},
 				shopId: {
 					type: mongoose.Schema.Types.ObjectId,
-					ref: 'shops',
-				},
-			},
+					ref: 'shops'
+				}
+			}
 		],
 		address: {
 			type: schemas.address,
-			select: false,
-		},
+			select: false
+		}
 	},
-	{ timestamps: true },
+	{ timestamps: true }
 )
 
 schema.plugin(uniqueValidator)
@@ -67,5 +67,5 @@ const usersCollection = 'users'
 
 module.exports = {
 	UsersModel: mongoose.model(usersCollection, schema),
-	usersCollection,
+	usersCollection
 }

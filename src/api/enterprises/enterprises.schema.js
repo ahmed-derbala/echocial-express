@@ -6,28 +6,28 @@ const schema = new mongoose.Schema(
 	{
 		username: {
 			type: String,
-			required: false,
+			required: false
 		},
 		email: {
 			type: String,
 			required: true,
-			unique: false, //true
+			unique: false //true
 		},
 		password: {
 			type: String,
 			required: true,
-			select: false,
+			select: false
 		},
 		phone: {
 			type: schemas.phone,
-			select: false,
+			select: false
 		},
 		isActive: {
 			type: Boolean,
-			default: true,
-		},
+			default: true
+		}
 	},
-	{ timestamps: true },
+	{ timestamps: true }
 )
 
 schema.plugin(uniqueValidator)

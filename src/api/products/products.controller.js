@@ -31,7 +31,7 @@ router.get(
 		} catch (err) {
 			return errorHandler({ err })
 		}
-	},
+	}
 )
 
 router.post(
@@ -46,7 +46,7 @@ router.post(
 				return res.status(200).json({ data })
 			})
 			.catch((err) => errorHandler({ err, req, res }))
-	},
+	}
 )
 
 router.post('/signout', authenticate(), async (req, res) => {

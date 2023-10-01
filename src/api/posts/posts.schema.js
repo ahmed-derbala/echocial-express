@@ -7,20 +7,20 @@ const PostsSchema = new mongoose.Schema(
 	{
 		text: {
 			type: String,
-			select: false,
+			select: false
 		},
 		userId: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: usersCollection,
-			required: false,
+			required: false
 		},
 
 		isActive: {
 			type: Boolean,
-			default: true,
-		},
+			default: true
+		}
 	},
-	{ timestamps: true },
+	{ timestamps: true }
 )
 
 const PostsSchemaName = 'posts'
@@ -32,5 +32,5 @@ PostsModel.on('index', (error) => {
 
 module.exports = {
 	PostsModel,
-	PostsSchemaName,
+	PostsSchemaName
 }

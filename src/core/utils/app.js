@@ -33,16 +33,16 @@ app.use(morganLogger())
 app.use(
 	expressWinston.logger({
 		transports: [
-			new winston.transports.MongoDB(config.log.transportsOptions.mongo),
+			new winston.transports.MongoDB(config.log.transportsOptions.mongo)
 		],
-		expressFormat: true,
-	}),
+		expressFormat: true
+	})
 )
 
 app.use(
 	config.app.swagger.endpoint,
 	swaggerUi.serve,
-	swaggerUi.setup(swaggerSpec.mainDef),
+	swaggerUi.setup(swaggerSpec.mainDef)
 )
 
 loaders.routes(app) //load routes

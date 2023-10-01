@@ -9,37 +9,37 @@ const RatingsSchema = new mongoose.Schema(
 	{
 		currentValue: {
 			type: Number,
-			required: true,
+			required: true
 		},
 		history: [
 			{
 				value: {
 					type: Number,
-					required: true,
+					required: true
 				},
 				createdAt: {
 					type: Date,
 					required: true,
-					default: Date.now(),
-				},
-			},
+					default: Date.now()
+				}
+			}
 		],
 		userId: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'users',
-			required: true,
+			required: true
 		},
 		reputationId: {
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'reputations',
-			required: true,
+			required: true
 		},
 		isActive: {
 			type: Boolean,
-			default: true,
-		},
+			default: true
+		}
 	},
-	{ timestamps: true },
+	{ timestamps: true }
 )
 
 RatingsSchema.plugin(uniqueValidator)
@@ -55,5 +55,5 @@ RatingsModel.on('index', (error) => {
 
 module.exports = {
 	RatingsModel,
-	RatingsSchemaName,
+	RatingsSchemaName
 }

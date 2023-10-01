@@ -12,7 +12,7 @@ module.exports.routes = (app) => {
 					endpoint_root = file.substring(0, file.indexOf('.controller.js'))
 					app.use(
 						`/api/${endpoint_root}`,
-						require(`${process.cwd()}/src/api/${dir}/${file}`),
+						require(`${process.cwd()}/src/api/${dir}/${file}`)
 					)
 				}
 			}

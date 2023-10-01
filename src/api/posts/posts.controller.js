@@ -17,7 +17,7 @@ router.post(
 		const createdpost = await postsService.create({ post: req.body })
 		//console.log(JSON.stringify(createdpost),'createdpost');
 		return res.status(201).json(createdpost)
-	},
+	}
 )
 
 /*

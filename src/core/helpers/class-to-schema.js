@@ -18,7 +18,7 @@ module.exports = function (c, options) {
 		f = c
 	} else {
 		throw new TypeError(
-			'Class schema cannot work with that type. Whatever it was you supplied, probably a simple type. ',
+			'Class schema cannot work with that type. Whatever it was you supplied, probably a simple type. '
 		)
 	}
 

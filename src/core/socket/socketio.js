@@ -7,7 +7,7 @@ exports.socketio = ({ server }) => {
 	socket.on('connection', (socketData) => {
 		log({
 			level: config.log.levelNames.socket,
-			message: `socketId=${socketData.id} | ip=${socketData.handshake.address} | userAgent=${socketData.handshake.headers['user-agent']}`,
+			message: `socketId=${socketData.id} | ip=${socketData.handshake.address} | userAgent=${socketData.handshake.headers['user-agent']}`
 		})
 	})
 

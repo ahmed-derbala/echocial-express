@@ -7,33 +7,33 @@ const schema = new mongoose.Schema(
 	{
 		name: {
 			type: String,
-			required: true,
+			required: true
 		},
 		category: {
 			type: String,
-			enum: enums.categories.products,
+			enum: enums.categories.products
 		},
 		userId: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'users',
+			ref: 'users'
 		},
 		shopId: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'shops',
+			ref: 'shops'
 		},
 		enterpriseId: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'enterprises',
+			ref: 'enterprises'
 		},
 		isActive: {
 			type: Boolean,
-			default: true,
+			default: true
 		},
 		price: {
-			type: schemas.price,
-		},
+			type: schemas.price
+		}
 	},
-	{ timestamps: true },
+	{ timestamps: true }
 )
 
 schema.plugin(uniqueValidator)
@@ -42,5 +42,5 @@ const productsSchemaName = 'products'
 
 module.exports = {
 	ProductsModel: mongoose.model(productsSchemaName, schema),
-	productsSchemaName,
+	productsSchemaName
 }

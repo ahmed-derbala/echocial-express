@@ -52,7 +52,7 @@ exports.authenticate = (params) => {
 						if (decoded.user == null) {
 							return res.status(401).json({
 								message: `token has no valid user object`,
-								data: decoded,
+								data: decoded
 							})
 						}
 						if (req.headers['user-agent'] != decoded.userAgent) {
@@ -64,7 +64,7 @@ exports.authenticate = (params) => {
 						return next()
 					})
 					.catch((err) => errorHandler({ err, res }))
-			},
+			}
 		)
 	}
 }

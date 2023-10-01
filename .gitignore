@@ -1,14 +1,14 @@
 #uploaded files
-uploads/*
+uploads/
 
 # backups
-/.backups/*
+backups/
 
 #config files
 src/config/config.js
 
 # Logs
-logs/*
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*

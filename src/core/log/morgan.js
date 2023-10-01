@@ -73,7 +73,7 @@ const stream = {
 		if (_.inRange(req.status, 400, 499)) level = 'warn'
 
 		if (level != 'error') log({ req, level, message: 'morgan_log' }) //we only need to log non error requests cause they will be logged in errorHandler
-	},
+	}
 }
 
 let morganLogger = () => {

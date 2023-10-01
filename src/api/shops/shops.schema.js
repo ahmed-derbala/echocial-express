@@ -9,35 +9,35 @@ const ShopsSchema = new mongoose.Schema(
 	{
 		username: {
 			type: String,
-			required: false,
+			required: false
 		},
 		email: {
 			type: String,
 			required: true,
-			unique: false, //true
+			unique: false //true
 		},
 		phone: {
 			type: schemas.phone,
-			select: false,
+			select: false
 		},
 		category: {
 			type: string,
-			enum: enums.categories.Shops,
+			enum: enums.categories.Shops
 		},
 		userId: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'users',
+			ref: 'users'
 		},
 		enterpriseId: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'enterprises',
+			ref: 'enterprises'
 		},
 		isActive: {
 			type: Boolean,
-			default: true,
-		},
+			default: true
+		}
 	},
-	{ timestamps: true },
+	{ timestamps: true }
 )
 
 ShopsSchema.plugin(uniqueValidator)
@@ -51,5 +51,5 @@ ShopsModel.on('index', (error) => {
 
 module.exports = {
 	ShopsModel,
-	ShopsSchemaName,
+	ShopsSchemaName
 }

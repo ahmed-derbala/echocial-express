@@ -11,7 +11,7 @@ const backend = {
 	protocol: 'http://',
 	get url() {
 		return `${this.protocol}${this.host}:${this.port}`
-	},
+	}
 }
 /**
  * app
@@ -25,7 +25,7 @@ let app = {
 		endpoint: '/swagger',
 		get url() {
 			return `${backend.url}${this.endpoint}`
-		},
+		}
 	},
 	//a number, 0 to disable
 	cluster: 0, //os.cpus().length,
@@ -34,20 +34,20 @@ let app = {
 		//more infos: https://www.npmjs.com/package/morgan
 		tokenString: `{"status"::status,"method":":method", "url":":url", "user": :user ,"body": :body,"tid":":tid" ,"responseTime"::response-time}`,
 		//tokenString: `{"status"::status,"method":":method", "url":":url", "user": :user ,"body": :body,"tid":":tid" ,"responseTime"::response-time,"ip":":ip","browser":":browser", "os":":os", "platform":":platform" ,"origin":":origin", "isBot":":isBot", "referrer":":referrer"}`,
-		hiddenBodyFields: ['password', 'user.password'], //[] for none, display these keys as *** in terminal
+		hiddenBodyFields: ['password', 'user.password'] //[] for none, display these keys as *** in terminal
 	},
 	apiLimiter: {
 		windowMs: 15 * 60 * 1000, // 15 minutes
 		max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
 		standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
-		legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+		legacyHeaders: false // Disable the `X-RateLimit-*` headers
 	},
 	use_strict: true,
 	corsOptions: {
 		origin: '*',
 		//methods: "GET,PUT,POST,DELETE,PATCH",
-		credentials: true,
-	},
+		credentials: true
+	}
 }
 
 /**
@@ -75,9 +75,9 @@ let db = {
 		connectionName: name,
 		options: {
 			maxPoolSize,
-			minPoolSize,
-		},
-	},
+			minPoolSize
+		}
+	}
 }
 
 /**
@@ -97,9 +97,9 @@ const transportsOptions = {
 		json: true,
 		format: format.combine(
 			format.timestamp({
-				format: 'YYYY-MM-DD--HH:mm:ss.SSS',
-			}),
-		),
+				format: 'YYYY-MM-DD--HH:mm:ss.SSS'
+			})
+		)
 	},
 
 	console: {
@@ -108,25 +108,25 @@ const transportsOptions = {
 		handleExceptions: true,
 		format: format.combine(
 			format.timestamp({
-				format: 'YYYY-MM-DD--HH:mm:ss.SSS',
+				format: 'YYYY-MM-DD--HH:mm:ss.SSS'
 			}),
 			format.json(),
 			prettyPrint(), //print every json key in a seperate row for clearer reading
-			colorize({ all: true }), //this must be always called at the end to make sure of colors
-		),
+			colorize({ all: true }) //this must be always called at the end to make sure of colors
+		)
 	},
 
 	mongo: {
 		level: 'warn', //the level to start logging to mongodb
 		db: db.mongo.uri,
 		options: {
-			useUnifiedTopology: true,
+			useUnifiedTopology: true
 		},
 		decolorize: true,
 		expireAfterSeconds: 360000, //100 hours
 		collection: 'logs',
-		format: format.metadata(),
-	},
+		format: format.metadata()
+	}
 }
 
 const levels = {
@@ -136,7 +136,7 @@ const levels = {
 	socket: 3,
 	debug: 4,
 	success: 5,
-	startup: 6,
+	startup: 6
 }
 
 const colors = {
@@ -146,7 +146,7 @@ const colors = {
 	socket: 'magenta',
 	debug: 'white',
 	success: 'green',
-	startup: 'white blueBG',
+	startup: 'white blueBG'
 }
 
 const levelNames = {
@@ -156,7 +156,7 @@ const levelNames = {
 	socket: 'socket',
 	debug: 'debug',
 	success: 'success',
-	startup: 'startup',
+	startup: 'startup'
 }
 
 let createLoggerOptions = {
@@ -164,11 +164,11 @@ let createLoggerOptions = {
 		//comment or delete transports you dont want to use
 		new transports.File(transportsOptions.file),
 		new transports.Console(transportsOptions.console),
-		new transports.MongoDB(transportsOptions.mongo),
+		new transports.MongoDB(transportsOptions.mongo)
 	],
 	exitOnError: false,
 	levels,
-	silent: false, //silent all transports
+	silent: false //silent all transports
 }
 
 module.exports = {
@@ -181,13 +181,13 @@ module.exports = {
 		protocol: 'http://',
 		get url() {
 			return `${this.protocol}${this.host}:${this.port}`
-		},
+		}
 	},
 	auth: {
 		saltRounds: 10,
 		jwt: {
-			privateKey: packagejson.name,
-		},
+			privateKey: packagejson.name
+		}
 	},
 	db,
 	log: {
@@ -198,19 +198,19 @@ module.exports = {
 			levelNames.socket,
 			levelNames.debug,
 			levelNames.success,
-			levelNames.startup,
+			levelNames.startup
 		],
 		createLoggerOptions,
 		transportsOptions,
 		colors,
 		levels,
 		levelNames,
-		memory: true, //in GB
+		memory: true //in GB
 	},
 	pagination: {
 		minLimit: 1,
 		defaultLimit: 100, //limit to use when no limit is provided
-		maxLimit: 300,
+		maxLimit: 300
 	},
 	socketio: {
 		options: {
@@ -219,13 +219,13 @@ module.exports = {
 				origin: ['http://127.0.0.1:3666', 'http://localhost:3666'],
 				credentials: true,
 				method: ['GET', 'POST'],
-				transports: ['websocket', 'polling'],
+				transports: ['websocket', 'polling']
 			},
-			allowEIO3: true,
-		},
+			allowEIO3: true
+		}
 	},
 	users: {
 		roles: ['admin', 'user'],
-		types: ['type1', 'type2'],
-	},
+		types: ['type1', 'type2']
+	}
 }

@@ -17,7 +17,7 @@ router.get(
 				return res.status(200).json({ data, status: 200 })
 			})
 			.catch((err) => errorHandler({ err, req, res }))
-	},
+	}
 )
 
 router.post(
@@ -28,7 +28,7 @@ router.post(
 		check('facebook.id').notEmpty(),
 		check('facebook.url').notEmpty(),
 		check('rating').isObject(),
-		check('rating.currentValue').notEmpty(),
+		check('rating.currentValue').notEmpty()
 	],
 	validatorCheck,
 	async (req, res) => {
@@ -36,13 +36,13 @@ router.post(
 			const { facebook, rating } = req.body
 			const reputation = await reputationsSrvc.createReputation({
 				facebook,
-				rating,
+				rating
 			})
 			return res.status(200).json({ data: reputation, status: 200 })
 		} catch (err) {
 			errorHandler({ err, res, req })
 		}
-	},
+	}
 )
 
 router.post(
@@ -52,7 +52,7 @@ router.post(
 		check('facebook').notEmpty(),
 		check('facebook.id').notEmpty(),
 		check('facebook.url').notEmpty(),
-		param('reputationId').notEmpty(),
+		param('reputationId').notEmpty()
 	],
 	validatorCheck,
 	async (req, res) => {
@@ -63,7 +63,7 @@ router.post(
 				return res.status(200).json(data)
 			})
 			.catch((err) => errorHandler({ err, req, res }))
-	},
+	}
 )
 
 module.exports = router

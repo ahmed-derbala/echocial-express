@@ -23,7 +23,7 @@ const getAllFiles = function (dirPath, arrayOfFiles, discriminator) {
 			arrayOfFiles = getAllFiles(
 				dirPath + '/' + file,
 				arrayOfFiles,
-				discriminator,
+				discriminator
 			)
 		} else {
 			if (file.includes(discriminator)) {
@@ -48,12 +48,12 @@ module.exports = {
 			title: packagejson.name,
 			termsOfService: 'http://swagger.io/terms/',
 			contact: {
-				email: ['ahmed.derbala@esprit.tn', 'mahdi@esprit.tn'],
+				email: ['ahmed.derbala@esprit.tn', 'mahdi@esprit.tn']
 			},
 			license: {
 				name: 'Apache 2.0',
-				url: 'http://server.apache.org/licenses/LICENSE-2.0.html',
-			},
+				url: 'http://server.apache.org/licenses/LICENSE-2.0.html'
+			}
 		},
 		host: `127.0.0.1:${config.backend.port}`,
 		basePath: '/',
@@ -67,9 +67,9 @@ module.exports = {
 				scheme: 'bearer',
 				in: 'header',
 				description:
-					'please make sure to prefix the token with Bearer. B is uppercase',
-			},
+					'please make sure to prefix the token with Bearer. B is uppercase'
+			}
 		},
-		definitions: {},
-	},
+		definitions: {}
+	}
 }

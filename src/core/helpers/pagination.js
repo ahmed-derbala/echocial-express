@@ -9,7 +9,7 @@ exports.paginate = async ({
 	match = {},
 	select = '',
 	sort = {},
-	populate = [],
+	populate = []
 }) => {
 	page = processPage(page)
 	limit = processLimit(limit)
@@ -26,7 +26,7 @@ exports.paginate = async ({
 		sort,
 		skip,
 		limit,
-		populate,
+		populate
 	}
 
 	const data = await model.find(match, select, options)
@@ -41,9 +41,9 @@ exports.paginate = async ({
 			nextPage,
 			hasPrevPage,
 			prevPage,
-			returnedDocsCount: data.length,
+			returnedDocsCount: data.length
 		},
-		data,
+		data
 	}
 }
 
@@ -83,7 +83,7 @@ exports.aggregatePaginate = async ({ model, page, limit, pipeline = [] }) => {
 
 	let options = {
 		allowDiskUse: true,
-		collation: { locale: 'en' },
+		collation: { locale: 'en' }
 	}
 	//sanitize pipeline object
 	if (matchIndex > -1) {
@@ -108,7 +108,7 @@ exports.aggregatePaginate = async ({ model, page, limit, pipeline = [] }) => {
 	result.pagination = {}
 	//console.log(pipeline[matchIndex]['$match'], '$match');
 	result.pagination.totalDocs = await model.countDocuments(
-		pipeline[matchIndex]['$match'] || {},
+		pipeline[matchIndex]['$match'] || {}
 	)
 	//console.log(result.pagination.totalDocs, 'result.pagination.totalDocs');
 

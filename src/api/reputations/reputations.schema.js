@@ -10,75 +10,75 @@ const ReputationsSchema = new mongoose.Schema(
 		facebook: {
 			id: {
 				type: String,
-				required: true,
+				required: true
 			},
 			url: {
 				type: String,
-				required: true,
-			},
+				required: true
+			}
 		},
 		instagram: {
 			id: {
 				type: String,
-				required: false,
+				required: false
 			},
 			url: {
 				type: String,
-				required: false,
-			},
+				required: false
+			}
 		},
 		linkedin: {
 			id: {
 				type: String,
-				required: false,
+				required: false
 			},
 			url: {
 				type: String,
-				required: false,
-			},
+				required: false
+			}
 		},
 		kind: {
 			type: String,
-			enum: ['users', 'shops'],
+			enum: ['users', 'shops']
 		},
 		userId: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'users',
+			ref: 'users'
 		},
 		isActive: {
 			type: Boolean,
-			default: true,
+			default: true
 		},
 		rating: {
 			currentValue: {
 				type: Number,
-				required: true,
+				required: true
 			},
 			ratersCount: {
 				type: Number,
-				required: true,
+				required: true
 			},
 			updatedAt: {
 				type: Date,
-				default: Date.now(),
-			},
-		},
+				default: Date.now()
+			}
+		}
 	},
-	{ timestamps: true },
+	{ timestamps: true }
 )
 
 ReputationsSchema.plugin(uniqueValidator)
 
 ReputationsSchema.index(
 	{ 'facebook.id': 1, 'instagram.id': 1, 'linkdin.id': 1 },
-	{ unique: true },
+	{ unique: true }
 )
 
 const ReputationsSchemaName = 'reputations'
 
 const ReputationsModel = mongoose.model(
 	ReputationsSchemaName,
-	ReputationsSchema,
+	ReputationsSchema
 )
 ReputationsModel.on('index', (error) => {
 	if (error) log({ level: config.log.levelNames.error, message: error })
@@ -86,5 +86,5 @@ ReputationsModel.on('index', (error) => {
 
 module.exports = {
 	ReputationsModel,
-	ReputationsSchemaName,
+	ReputationsSchemaName
 }

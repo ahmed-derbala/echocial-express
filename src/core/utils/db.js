@@ -9,7 +9,7 @@ const connect = async () => {
 		await mongoose.connect(config.db.mongo.uri, config.db.mongo.options)
 		log({
 			message: `db-conn-success | ${config.db.mongo.name} | ${config.db.mongo.host}:${config.db.mongo.port}`,
-			level: 'success',
+			level: 'success'
 		})
 	} catch (err) {
 		errorHandler({ err })
@@ -19,7 +19,7 @@ const connect = async () => {
 		.on('error', () => {
 			log({
 				message: `db-conn-error | ${config.db.mongo.name} | ${config.db.mongo.host}:${config.db.mongo.port}`,
-				level: 'error',
+				level: 'error'
 			})
 		})
 		.on('close', () => {
@@ -28,25 +28,25 @@ const connect = async () => {
 		.on('disconnected', () => {
 			log({
 				message: 'db-conn-disconnecting',
-				level: config.log.levelNames.warn,
+				level: config.log.levelNames.warn
 			})
 		})
 		.on('disconnected', () => {
 			log({
 				message: 'db-conn-disconnected',
-				level: config.log.levelNames.error,
+				level: config.log.levelNames.error
 			})
 		})
 		.on('reconnected', () => {
 			log({
 				message: 'db-conn-reconnected',
-				level: config.log.levelNames.verbose,
+				level: config.log.levelNames.verbose
 			})
 		})
 		.on('fullsetup', () => {
 			log({
 				message: 'db-conn-fullsetup',
-				level: config.log.levelNames.verbose,
+				level: config.log.levelNames.verbose
 			})
 		})
 		.on('all', () => {
@@ -55,5 +55,5 @@ const connect = async () => {
 }
 
 module.exports = {
-	connect,
+	connect
 }
