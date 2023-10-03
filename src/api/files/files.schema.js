@@ -3,13 +3,14 @@ const mongoose = require('mongoose')
 const schema = new mongoose.Schema(
 	{
 		name: { type: String, required: true }, // name without extension
-		url: { type: String, required: true }, //at first, this used as path, but from files v2, this used as url to download the file directly
-		path: { type: String, required: false }, // when downloading files, this should be checked first, else we use url
+		url: { type: String, required: true }, //download file
+		path: { type: String, required: false }, //local file path
 		encoding: { type: String, required: false },
 		originalname: { type: String, required: false }, // name + . + extension
 		extension: { type: String, required: false }, // the extension prefixed with a dot
 		tag: { type: String, required: false }, // a string to identify the source or where the file is displayed in front (source)
-
+		mimetype: String,
+		size: Number, // in bytes, 1 million ~ 1 mb
 		linkedData: [
 			{
 				kind: String, //name of the associated collection, schema name
@@ -18,42 +19,21 @@ const schema = new mongoose.Schema(
 					refPath: 'linkedData.kind'
 				},
 				kindTag: {
-					type: String,
-					enum: ['crm_timeline_file_not_linked_to_note']
+					type: String
 				}
 			}
-		], //if the file is associated to another model , kind refers to a collection. makes it so easy to share the same file between multiple collection
-		byUser: {
+		], //if the file is associated to multiple models , kind refers to collections. makes it so easy to share the same file between multiple collections
+		userId: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'uses'
-		},
-		mimetype: String,
-		size: Number, // in bytes, 1 million ~ 1 mb
-
-		authorize: {
-			public: {
-				type: String,
-				required: true,
-				enum: ['registered', 'all', 'not_public'],
-				default: 'not_public'
-			},
-			userIds: [
-				{
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'users',
-					required: true
-				}
-			],
-			enterprisesIds: [
-				{
-					type: mongoose.Schema.Types.ObjectId,
-					ref: 'enterprises',
-					required: false
-				}
-			]
+			ref: 'users'
 		}
 	},
 	{ timestamps: true }
 )
 
-mongoose.model('files', schema)
+const filesCollection = 'files'
+
+module.exports = {
+	FilesModel: mongoose.model(filesCollection, schema),
+	filesCollection
+}
