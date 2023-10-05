@@ -23,7 +23,7 @@ module.exports.log = ({ level, label, error, message, req }) => {
 	if (config.log.memory.isActive)
 		logObject.memory = parseFloat(
 			(process.memoryUsage.rss() / config.log.memory.unit).toFixed(3)
-		) // in GB
+		)
 
 	logger[level](logObject)
 }

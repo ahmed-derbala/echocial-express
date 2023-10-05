@@ -27,15 +27,8 @@ let app = {
 			return `${backend.url}${this.endpoint}`
 		}
 	},
-	//a number, 0 to disable
-	cluster: 0, //os.cpus().length,
+	cluster: 0, //os.cpus().length,//a number, 0 to disable
 	responseTimeAlert: 20000, //time in ms before considering a request timeout
-	morgan: {
-		//more infos: https://www.npmjs.com/package/morgan
-		tokenString: `{"status"::status,"method":":method", "url":":url", "user": :user ,"body": :body,"tid":":tid" ,"responseTime"::response-time}`,
-		//tokenString: `{"status"::status,"method":":method", "url":":url", "user": :user ,"body": :body,"tid":":tid" ,"responseTime"::response-time,"ip":":ip","browser":":browser", "os":":os", "platform":":platform" ,"origin":":origin", "isBot":":isBot", "referrer":":referrer"}`,
-		hiddenBodyFields: ['password', 'user.password'] //[] for none, display these keys as *** in terminal
-	},
 	apiLimiter: {
 		windowMs: 15 * 60 * 1000, // 15 minutes
 		max: 100, // Limit each IP to 100 requests per `window` (here, per 15 minutes)
@@ -91,7 +84,7 @@ const transportsOptions = {
 		level: 'startup', //the level to start logging to file
 		filename: `${process.cwd()}/logs/${app.name}.log`,
 		handleExceptions: true,
-		maxsize: 1000000, //1 million = 1 mb
+		maxsize: 250_000, //1 million = 1 mb
 		maxFiles: 2,
 		decolorize: true,
 		json: true,
@@ -159,18 +152,6 @@ const levelNames = {
 	startup: 'startup'
 }
 
-let createLoggerOptions = {
-	transports: [
-		//comment or delete transports you dont want to use
-		new transports.File(transportsOptions.file),
-		new transports.Console(transportsOptions.console),
-		new transports.MongoDB(transportsOptions.mongo)
-	],
-	exitOnError: false,
-	levels,
-	silent: false //silent all transports
-}
-
 module.exports = {
 	NODE_ENV: process.env.NODE_ENV || 'local',
 	app,
@@ -191,21 +172,52 @@ module.exports = {
 	},
 	db,
 	log: {
-		allowedLevels: [
-			levelNames.error,
-			levelNames.warn,
-			levelNames.verbose,
-			levelNames.socket,
-			levelNames.debug,
-			levelNames.success,
-			levelNames.startup
-		],
-		createLoggerOptions,
+		isActive: true,
+		createLoggerOptions: {
+			transports: [
+				//comment or delete transports you dont want to use
+				//new transports.File(transportsOptions.file),
+				new transports.Console(transportsOptions.console),
+				new transports.MongoDB(transportsOptions.mongo)
+			],
+			exitOnError: false,
+			levels,
+			silent: false //silent all transports
+		},
 		transportsOptions,
 		colors,
 		levels,
 		levelNames,
-		memory: true //in GB
+		level: {
+			allowed: [
+				levelNames.error,
+				levelNames.warn,
+				levelNames.verbose,
+				levelNames.socket,
+				levelNames.debug,
+				levelNames.success,
+				levelNames.startup
+			]
+		},
+		label: {
+			isActive: true
+		},
+		req: {
+			isActive: true
+		},
+		memory: {
+			isActive: false,
+			unit: 1000000000 //1000000000=GB,1000000=MB
+		},
+		error: {
+			isActive: false
+		},
+		morgan: {
+			//more infos: https://www.npmjs.com/package/morgan
+			tokenString: `{"status"::status,"method":":method", "url":":url", "user": :user ,"body": :body,"tid":":tid" ,"responseTime"::response-time}`,
+			//tokenString: `{"status"::status,"method":":method", "url":":url", "user": :user ,"body": :body,"tid":":tid" ,"responseTime"::response-time,"ip":":ip","browser":":browser", "os":":os", "platform":":platform" ,"origin":":origin", "isBot":":isBot", "referrer":":referrer"}`,
+			hiddenBodyFields: ['password', 'user.password'] //[] for none, display these keys as *** in terminal
+		}
 	},
 	pagination: {
 		minLimit: 1,

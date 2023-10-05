@@ -35,10 +35,10 @@ morgan.token('body', (req) => {
 	if (!req.body) req.body = {}
 
 	for (let [key, value] of Object.entries(req.body)) {
-		if (config.app.morgan.hiddenBodyFields.includes(key)) req.body[key] = '***'
+		if (config.log.morgan.hiddenBodyFields.includes(key)) req.body[key] = '***'
 		if (req.body[key] != null) {
 			for (let [k, v] of Object.entries(req.body[key])) {
-				if (config.app.morgan.hiddenBodyFields.includes(`${key}.${k}`))
+				if (config.log.morgan.hiddenBodyFields.includes(`${key}.${k}`))
 					req.body[key][k] = '***'
 			}
 		}
@@ -77,6 +77,6 @@ const stream = {
 }
 
 let morganLogger = () => {
-	return morgan(config.app.morgan.tokenString, { stream })
+	return morgan(config.log.morgan.tokenString, { stream })
 }
 module.exports = morganLogger
