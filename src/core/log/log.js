@@ -11,14 +11,19 @@ const logger = require('./logger')
  * @param {string} log.level
  * @param {string} log.message
  */
-module.exports.log = ({ level, error, message, req }) => {
-	if (!config.log.allowedLevels.includes(level)) return null
-	if (!message) message = 'no_message'
-	if (!level) level = 'debug'
+module.exports.log = ({ level, label, error, message, req }) => {
+	if (!config.log.isActive || !config.log.level.allowed.includes(level))
+		return null
+	let logObject = {}
+	if (config.log.level.isActive) logObject.level = level ? level : 'debug'
+	if (config.log.label.isActive) logObject.label = label ? label : null
+	if (config.log.error.isActive) logObject.error = error ? error : null
+	logObject.message = message ? message : null
+	if (config.log.req.isActive) logObject.req = req ? req : null
+	if (config.log.memory.isActive)
+		logObject.memory = parseFloat(
+			(process.memoryUsage.rss() / config.log.memory.unit).toFixed(3)
+		) // in GB
 
-	let memory = null
-	if (config.log.memory)
-		memory = parseFloat((process.memoryUsage.rss() / 1000000000).toFixed(3)) // in GB
-
-	logger[level]({ level, error: error ? error : false, message, req, memory })
+	logger[level](logObject)
 }
