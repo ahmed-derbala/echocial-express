@@ -36,22 +36,26 @@ router.post('/',
 
 router.post(
 	'/',
-	// authenticate(),
+	authenticate(),
 	[
 		check('currentValue').notEmpty().isNumeric(),
 		check('reputationId').notEmpty()
 	],
 	validatorCheck,
 	async (req, res) => {
-		const { currentValue } = req.body
-		const { reputationId } = req.params
-		const userId = 'req.user._id'
-		return ratingsSrvc
-			.setRating({ currentValue, userId, reputationId })
-			.then((data) => {
-				return res.status(200).json(data)
-			})
-			.catch((err) => errorHandler({ err, req, res }))
+		try {
+			return ratingsSrvc
+				.setRating({
+					userId: req.user._id,
+					currentValue: req.body.currentValue,
+					reputationId: req.body.reputationId
+				})
+				.then((data) => {
+					return res.status(200).json({ status: 200, data })
+				})
+		} catch (err) {
+			errorHandler({ err, req, res })
+		}
 	}
 )
 

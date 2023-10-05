@@ -1,6 +1,7 @@
 const { ReputationsModel } = require(`./reputations.schema`)
 const { errorHandler } = require('../../core/utils/error')
 const { paginate } = require('../../core/helpers/pagination')
+const { log } = require('../../core/log/log')
 
 module.exports.getReputations = async (params) => {
 	return paginate({ model: ReputationsModel })
@@ -36,7 +37,13 @@ module.exports.updateRating = async ({ reputationId, rating }) => {
 	const fetchedReputation = await ReputationsModel.findOne({
 		_id: reputationId
 	}).lean()
-	if (!fetchedReputation) return null
+	if (!fetchedReputation) {
+		log({
+			level: 'error',
+			message: `[reputations.service.updateRating] no reputation found with _id ${reputationId}`
+		})
+		return null
+	}
 
 	rating.ratersCount = fetchedReputation.rating.ratersCount++
 	rating.currentValue =

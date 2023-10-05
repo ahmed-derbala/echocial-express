@@ -74,10 +74,10 @@ ReputationsSchema.index(
 	{ unique: true }
 )
 
-const ReputationsSchemaName = 'reputations'
+const ReputationsCollection = 'reputations'
 
 const ReputationsModel = mongoose.model(
-	ReputationsSchemaName,
+	ReputationsCollection,
 	ReputationsSchema
 )
 ReputationsModel.on('index', (error) => {
@@ -86,5 +86,5 @@ ReputationsModel.on('index', (error) => {
 
 module.exports = {
 	ReputationsModel,
-	ReputationsSchemaName
+	ReputationsCollection
 }
