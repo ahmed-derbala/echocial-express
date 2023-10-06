@@ -8,7 +8,7 @@
     "node": "18"
   },
   "scripts": {
-    "i": "npm i --force",
+    "i": "npm i -f --no-audit",
     "format": "prettier --write \"src/**/*.js\"",
     "start": "node --max-old-space-size=32000 --trace-deprecation src/main.js",
     "start:prod": "NODE_ENV=production node --max-old-space-size=32000 src/main.js",
@@ -16,7 +16,7 @@
     "start:prod-pm2-monit": "npm run start:prod-pm2 && pm2 monit",
     "start:default": "npm run start:local",
     "start:code": "code . && npm run start:default",
-    "start:local": "NODE_ENV=local nodemon --max-old-space-size=8000 --trace-deprecation src/main.js",
+    "start:local": "NODE_ENV=local nodemon --max-old-space-size=8000 --trace-deprecation --use_strict src/main.js",
     "start:local-pm2": "NODE_ENV=local pm2 start src/main.js -i max --node-args='--max-old-space-size=32000' -f && pm2 monit",
     "start:dev": "NODE_ENV=development nodemon --max-old-space-size=32000 src/main.js",
     "start:pm": "git pull origin main && npm run i && npm run start:code",
@@ -26,10 +26,8 @@
     "delete": "pm2 delete all",
     "push": "npm run format && git add . && git commit -m",
     "postpush": "git push && npm run start:default",
-    "clean:a": "rm -f package-lock.json && rm -r -f node_modules && npm cache clean --force",
-    "clean:ai": "npm run clean:a && npm run i",
-    "clean:air": "npm run clean:ai && npm run start:default",
-    "update": "rm -r -f backups/* && cp package.json backups/package.json.backup && cp package-lock.json backups/package-lock.json.backup 2>/dev/null; true && mv node_modules backups/node_modules.backup 2>/dev/null; true && npm i -D npm-check-updates --force && ncu -u && npm run clean:air",
+    "clean": "rm -f package-lock.json && rm -r -f node_modules && npm cache clean -f && npm run i && npm run start:default",
+    "update": "rm -r -f backups/* && cp package.json backups/package.json.backup && cp package-lock.json backups/package-lock.json.backup 2>/dev/null; true && mv node_modules backups/node_modules.backup 2>/dev/null; true && npm i -D npm-check-updates -f && ncu -u && npm run clean:air",
     "restore": "cp backups/package.json.backup package.json && cp backups/package-lock.json.backup package-lock.json && mv backups/node_modules.backup node_modules && npm run start:default"
   },
   "repository": {
@@ -56,7 +54,6 @@
     "morgan": "^1.10.0",
     "socket.io": "^4.7.2",
     "swagger-ui-express": "^5.0.0",
-    "use-strict": "^1.0.1",
     "winston": "^3.10.0",
     "winston-mongodb": "^5.1.1"
   },

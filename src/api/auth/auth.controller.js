@@ -29,24 +29,15 @@ router.post(
 	}
 )
 
-router.post(
-	'/signin',
-	[
-		check('email').isEmail().optional(),
-		check('username').isString().optional(),
-		check('password').isString().notEmpty()
-	],
-	validatorCheck,
-	async (req, res) => {
-		const { email, password, userName } = req.body
-		return authSrvc
-			.signin({ email, userName, password, req })
-			.then((result) => {
-				return res.status(result.status).json(result)
-			})
-			.catch((err) => errorHandler({ err, req, res }))
-	}
-)
+router.post('/signin', [check('email').isEmail().optional(), check('username').isString().optional(), check('password').isString().notEmpty()], validatorCheck, async (req, res) => {
+	const { email, password, userName } = req.body
+	return authSrvc
+		.signin({ email, userName, password, req })
+		.then((result) => {
+			return res.status(result.status).json(result)
+		})
+		.catch((err) => errorHandler({ err, req, res }))
+})
 
 router.post('/signout', authenticate(), async (req, res) => {
 	return Sessions.deleteOne({ token: req.headers.token })

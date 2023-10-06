@@ -34,29 +34,20 @@ router.post('/',
       .catch(err => errorHandler({ err, req, res }))
   })*/
 
-router.post(
-	'/',
-	authenticate(),
-	[
-		check('currentValue').notEmpty().isNumeric(),
-		check('reputationId').notEmpty()
-	],
-	validatorCheck,
-	async (req, res) => {
-		try {
-			return ratingsSrvc
-				.setRating({
-					userId: req.user._id,
-					currentValue: req.body.currentValue,
-					reputationId: req.body.reputationId
-				})
-				.then((data) => {
-					return res.status(200).json({ status: 200, data })
-				})
-		} catch (err) {
-			errorHandler({ err, req, res })
-		}
+router.post('/', authenticate(), [check('currentValue').notEmpty().isNumeric(), check('reputationId').notEmpty()], validatorCheck, async (req, res) => {
+	try {
+		return ratingsSrvc
+			.setRating({
+				userId: req.user._id,
+				currentValue: req.body.currentValue,
+				reputationId: req.body.reputationId
+			})
+			.then((data) => {
+				return res.status(200).json({ status: 200, data })
+			})
+	} catch (err) {
+		errorHandler({ err, req, res })
 	}
-)
+})
 
 module.exports = router

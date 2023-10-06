@@ -32,26 +32,18 @@ app.use(morganLogger())
 //save logs to db
 app.use(
 	expressWinston.logger({
-		transports: [
-			new winston.transports.MongoDB(config.log.transportsOptions.mongo)
-		],
+		transports: [new winston.transports.MongoDB(config.log.transportsOptions.mongo)],
 		expressFormat: true
 	})
 )
 
-app.use(
-	config.app.swagger.endpoint,
-	swaggerUi.serve,
-	swaggerUi.setup(swaggerSpec.mainDef)
-)
+app.use(config.app.swagger.endpoint, swaggerUi.serve, swaggerUi.setup(swaggerSpec.mainDef))
 
 loaders.routes(app) //load routes
 
 //when no api route matched
 app.use((req, res, next) => {
-	return res
-		.status(404)
-		.json({ message: `${req.originalUrl} does not exist`, data: null })
+	return res.status(404).json({ message: `${req.originalUrl} does not exist`, data: null })
 })
 
 //when error occurs

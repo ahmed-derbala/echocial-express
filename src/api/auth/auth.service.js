@@ -10,8 +10,7 @@ module.exports.signup = async ({ email, password, phone, profile }) => {
 	//console.log(params,"servc params")
 	const salt = bcrypt.genSaltSync(config.auth.saltRounds)
 	password = bcrypt.hashSync(password, salt)
-	if (profile && !profile.displayName)
-		profile.displayName = `${profile.firstName} ${profile.lastName}`
+	if (profile && !profile.displayName) profile.displayName = `${profile.firstName} ${profile.lastName}`
 	if (phone) {
 		phone.countryCode = phone.countryCode.trim()
 		phone.shortNUmber = phone.shortNumber.trim()
@@ -23,10 +22,7 @@ module.exports.signup = async ({ email, password, phone, profile }) => {
 			createdUser = createdUser.toJSON()
 			delete createdUser.password
 			if (createdUser.username == null) {
-				return UsersModel.updateOne(
-					{ _id: createdUser._id },
-					{ username: createdUser._id }
-				)
+				return UsersModel.updateOne({ _id: createdUser._id }, { username: createdUser._id })
 					.then((updatedUser) => {
 						createdUser.username = createdUser._id
 						return createdUser
@@ -57,11 +53,7 @@ module.exports.signin = async ({ email, username, password, req }) => {
 			if (passwordCompare == false) {
 				return { message: 'password incorrect', data: null, status: 409 }
 			}
-			const token = jwt.sign(
-				{ user: fetchedUser, ip: req.ip, userAgent: req.headers['user-agent'] },
-				config.auth.jwt.privateKey,
-				{ expiresIn: '30d' }
-			)
+			const token = jwt.sign({ user: fetchedUser, ip: req.ip, userAgent: req.headers['user-agent'] }, config.auth.jwt.privateKey, { expiresIn: '30d' })
 
 			return Sessions.create({
 				token,

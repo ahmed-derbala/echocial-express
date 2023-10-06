@@ -34,20 +34,15 @@ router.get(
 	}
 )
 
-router.post(
-	'/',
-	[check('name').isString()],
-	validatorCheck,
-	async (req, res) => {
-		const { name } = req.body
-		return productsSrvc
-			.create({ name, req })
-			.then((data) => {
-				return res.status(200).json({ data })
-			})
-			.catch((err) => errorHandler({ err, req, res }))
-	}
-)
+router.post('/', [check('name').isString()], validatorCheck, async (req, res) => {
+	const { name } = req.body
+	return productsSrvc
+		.create({ name, req })
+		.then((data) => {
+			return res.status(200).json({ data })
+		})
+		.catch((err) => errorHandler({ err, req, res }))
+})
 
 router.post('/signout', authenticate(), async (req, res) => {
 	return Sessions.deleteOne({ token: req.headers.token })

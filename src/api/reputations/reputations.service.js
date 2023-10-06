@@ -23,11 +23,9 @@ module.exports.createReputation = async ({ facebook, rating }) => {
 			}
 
 		rating.ratersCount = 1
-		return ReputationsModel.create({ facebook, rating }).then(
-			(createdReputation) => {
-				return createdReputation
-			}
-		)
+		return ReputationsModel.create({ facebook, rating }).then((createdReputation) => {
+			return createdReputation
+		})
 	} catch (err) {
 		errorHandler({ err })
 	}
@@ -46,9 +44,7 @@ module.exports.updateRating = async ({ reputationId, rating }) => {
 	}
 
 	rating.ratersCount = fetchedReputation.rating.ratersCount++
-	rating.currentValue =
-		(fetchedReputation.rating.currentValue + rating.currentValue) /
-		rating.ratersCount
+	rating.currentValue = (fetchedReputation.rating.currentValue + rating.currentValue) / rating.ratersCount
 
 	return ReputationsModel.updateOne({ _id: reputationId }, { rating })
 		.then((updatedReputaion) => {

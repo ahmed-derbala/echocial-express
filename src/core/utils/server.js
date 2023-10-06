@@ -73,10 +73,7 @@ function onError(error) {
 		throw error
 	}
 
-	const bind =
-		typeof config.backend.port === 'string'
-			? 'Pipe ' + config.backend.port
-			: 'Port ' + config.backend.port
+	const bind = typeof config.backend.port === 'string' ? 'Pipe ' + config.backend.port : 'Port ' + config.backend.port
 
 	// handle specific listen errors with friendly messages
 	switch (error.code) {

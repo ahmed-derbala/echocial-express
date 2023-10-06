@@ -69,17 +69,11 @@ const ReputationsSchema = new mongoose.Schema(
 
 ReputationsSchema.plugin(uniqueValidator)
 
-ReputationsSchema.index(
-	{ 'facebook.id': 1, 'instagram.id': 1, 'linkdin.id': 1 },
-	{ unique: true }
-)
+ReputationsSchema.index({ 'facebook.id': 1, 'instagram.id': 1, 'linkdin.id': 1 }, { unique: true })
 
 const ReputationsCollection = 'reputations'
 
-const ReputationsModel = mongoose.model(
-	ReputationsCollection,
-	ReputationsSchema
-)
+const ReputationsModel = mongoose.model(ReputationsCollection, ReputationsSchema)
 ReputationsModel.on('index', (error) => {
 	if (error) log({ level: config.log.levelNames.error, message: error })
 })

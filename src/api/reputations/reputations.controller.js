@@ -23,13 +23,7 @@ router.get(
 router.post(
 	'/',
 	// authenticate(),
-	[
-		check('facebook').isObject(),
-		check('facebook.id').notEmpty(),
-		check('facebook.url').notEmpty(),
-		check('rating').isObject(),
-		check('rating.currentValue').notEmpty()
-	],
+	[check('facebook').isObject(), check('facebook.id').notEmpty(), check('facebook.url').notEmpty(), check('rating').isObject(), check('rating.currentValue').notEmpty()],
 	validatorCheck,
 	async (req, res) => {
 		try {
@@ -48,12 +42,7 @@ router.post(
 router.post(
 	'/:reputationId',
 	// authenticate(),
-	[
-		check('facebook').notEmpty(),
-		check('facebook.id').notEmpty(),
-		check('facebook.url').notEmpty(),
-		param('reputationId').notEmpty()
-	],
+	[check('facebook').notEmpty(), check('facebook.id').notEmpty(), check('facebook.url').notEmpty(), param('reputationId').notEmpty()],
 	validatorCheck,
 	async (req, res) => {
 		const { facebook } = req.body

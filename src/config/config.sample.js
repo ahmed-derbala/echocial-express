@@ -189,15 +189,7 @@ module.exports = {
 		levels,
 		levelNames,
 		level: {
-			allowed: [
-				levelNames.error,
-				levelNames.warn,
-				levelNames.verbose,
-				levelNames.socket,
-				levelNames.debug,
-				levelNames.success,
-				levelNames.startup
-			]
+			allowed: [levelNames.error, levelNames.warn, levelNames.verbose, levelNames.socket, levelNames.debug, levelNames.success, levelNames.startup]
 		},
 		label: {
 			isActive: true

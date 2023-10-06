@@ -2,15 +2,7 @@ const mongoose = require('mongoose')
 const config = require(`../../config/config`)
 const { minLimit, defaultLimit, maxLimit } = config.pagination
 
-exports.paginate = async ({
-	model,
-	page,
-	limit,
-	match = {},
-	select = '',
-	sort = {},
-	populate = []
-}) => {
+exports.paginate = async ({ model, page, limit, match = {}, select = '', sort = {}, populate = [] }) => {
 	page = processPage(page)
 	limit = processLimit(limit)
 	const totalDocs = await model.countDocuments(match)
@@ -56,10 +48,7 @@ exports.aggregatePaginate = async ({ model, page, limit, pipeline = [] }) => {
 	//console.log(sortIndex, 'sortIndex');
 	//console.log(pipeline, 'pipeline');
 	//process sort, $sort must be not empty
-	if (
-		sortIndex > -1 &&
-		Object.keys(pipeline[sortIndex]['$sort']).length === 0
-	) {
+	if (sortIndex > -1 && Object.keys(pipeline[sortIndex]['$sort']).length === 0) {
 		pipeline.splice(sortIndex, 1)
 		sortIndex = -1
 	}
@@ -90,9 +79,7 @@ exports.aggregatePaginate = async ({ model, page, limit, pipeline = [] }) => {
 		if (pipeline[matchIndex]['$match']['_id']) {
 			if (pipeline[matchIndex]['$match']['_id']['$in']) {
 				//make sure the _ids are ObjectId and not strings. it doesnt work with strings
-				pipeline[matchIndex]['$match']['_id']['$in'] = pipeline[matchIndex][
-					'$match'
-				]['_id']['$in'].map((el) => new mongoose.Types.ObjectId(el))
+				pipeline[matchIndex]['$match']['_id']['$in'] = pipeline[matchIndex]['$match']['_id']['$in'].map((el) => new mongoose.Types.ObjectId(el))
 			}
 		}
 	}
@@ -103,13 +90,10 @@ exports.aggregatePaginate = async ({ model, page, limit, pipeline = [] }) => {
 	//console.log(data, 'data in helper');
 
 	let result = {}
-	if (sortIndex > -1 && matchIndex > sortIndex)
-		result.message = `its advised to have $match stage before $sort`
+	if (sortIndex > -1 && matchIndex > sortIndex) result.message = `its advised to have $match stage before $sort`
 	result.pagination = {}
 	//console.log(pipeline[matchIndex]['$match'], '$match');
-	result.pagination.totalDocs = await model.countDocuments(
-		pipeline[matchIndex]['$match'] || {}
-	)
+	result.pagination.totalDocs = await model.countDocuments(pipeline[matchIndex]['$match'] || {})
 	//console.log(result.pagination.totalDocs, 'result.pagination.totalDocs');
 
 	const totalPages = Math.ceil(result.pagination.totalDocs / limit)

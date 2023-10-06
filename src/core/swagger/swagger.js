@@ -16,15 +16,8 @@ const getAllFiles = function (dirPath, arrayOfFiles, discriminator) {
 	let newElem = null
 
 	files.forEach(function (file) {
-		if (
-			fs.statSync(dirPath + '/' + file).isDirectory() &&
-			!ignoreFolders.includes(file)
-		) {
-			arrayOfFiles = getAllFiles(
-				dirPath + '/' + file,
-				arrayOfFiles,
-				discriminator
-			)
+		if (fs.statSync(dirPath + '/' + file).isDirectory() && !ignoreFolders.includes(file)) {
+			arrayOfFiles = getAllFiles(dirPath + '/' + file, arrayOfFiles, discriminator)
 		} else {
 			if (file.includes(discriminator)) {
 				newElem = require(dirPath + '/' + file)
@@ -66,8 +59,7 @@ module.exports = {
 				name: 'authorization',
 				scheme: 'bearer',
 				in: 'header',
-				description:
-					'please make sure to prefix the token with Bearer. B is uppercase'
+				description: 'please make sure to prefix the token with Bearer. B is uppercase'
 			}
 		},
 		definitions: {}

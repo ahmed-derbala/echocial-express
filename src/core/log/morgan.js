@@ -38,8 +38,7 @@ morgan.token('body', (req) => {
 		if (config.log.morgan.hiddenBodyFields.includes(key)) req.body[key] = '***'
 		if (req.body[key] != null) {
 			for (let [k, v] of Object.entries(req.body[key])) {
-				if (config.log.morgan.hiddenBodyFields.includes(`${key}.${k}`))
-					req.body[key][k] = '***'
+				if (config.log.morgan.hiddenBodyFields.includes(`${key}.${k}`)) req.body[key][k] = '***'
 			}
 		}
 	}
