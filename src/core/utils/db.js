@@ -5,7 +5,6 @@ const { errorHandler } = require('./error')
 
 const connect = async () => {
 	try {
-		mongoose.set('strictQuery', false)
 		await mongoose.connect(config.db.mongo.uri, config.db.mongo.options)
 		log({
 			message: `db-conn-success | ${config.db.mongo.name} | ${config.db.mongo.host}:${config.db.mongo.port}`,

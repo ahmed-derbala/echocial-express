@@ -10,7 +10,6 @@ The backend of echocial, the social echo
 - mongoose
 - cluster: configurable in config
 - api limiter, helmet, compression
-- use_strict: true by default
 - --max-old-space-size=32000
 - prettier before commit and push (npm run push -- "commit message")
 - postman collection
@@ -40,4 +39,9 @@ npm run update
 # restore packages: restore backup already saved in /backups
 ```
 npm run restore
+```
+
+# clean packages: delete and reinstall packages
+```
+npm run clean
 ```
