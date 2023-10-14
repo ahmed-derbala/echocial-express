@@ -9,14 +9,16 @@ const { errorHandler } = require('../../core/utils/error')
 
 router.get(
 	'/',
-	// authenticate(),
+	authenticate(),
+	[query('page').isNumeric().notEmpty().optional(), query('limit').isNumeric().notEmpty().optional(), query('searchText').trim().isString().optional()],
+	validatorCheck,
 	async (req, res) => {
-		return reputationsSrvc
-			.getReputations()
-			.then((data) => {
-				return res.status(200).json({ data, status: 200 })
-			})
-			.catch((err) => errorHandler({ err, req, res }))
+		try {
+			const result = await reputationsSrvc.getReputations({ page: req.query.page, limit: req.query.limit, searchText: req.query.searchText })
+			return res.status(result.status).json(result)
+		} catch (err) {
+			errorHandler({ err, req, res })
+		}
 	}
 )
 

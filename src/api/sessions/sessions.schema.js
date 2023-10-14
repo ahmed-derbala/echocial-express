@@ -12,11 +12,15 @@ const schema = new mongoose.Schema(
 			ref: 'users',
 			required: true
 		},
-		headers: {
-			type: Object,
-			required: true
-		},
-		ip: { type: String, required: true }
+		req: {
+			headers: {
+				'user-agent': {
+					type: Object,
+					required: true
+				}
+			},
+			ip: { type: String, required: true }
+		}
 	},
 	{ timestamps: true }
 )

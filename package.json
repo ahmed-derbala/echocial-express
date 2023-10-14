@@ -24,7 +24,7 @@
     "restart": "pm2 delete all && start:prod-pm2-monit",
     "stop": "pm2 stop all",
     "delete": "pm2 delete all",
-    "push": "npm run format && git add . && git commit -m",
+    "push": "cp src/config/config.js src/config/config.sample.js && npm run format && git add . && git commit -m",
     "postpush": "git push && npm run start:default",
     "pull": "git pull origin main && npm run i && npm run start:default",
     "clean": "rm -f package-lock.json && rm -r -f node_modules && npm cache clean -f && npm run i && npm run start:default",

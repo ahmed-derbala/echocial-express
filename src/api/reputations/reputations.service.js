@@ -3,12 +3,18 @@ const { errorHandler } = require('../../core/utils/error')
 const { paginate } = require('../../core/helpers/pagination')
 const { log } = require('../../core/log/log')
 
-module.exports.getReputations = async (params) => {
-	return paginate({ model: ReputationsModel })
-		.then((users) => {
-			return users
-		})
-		.catch((err) => errorHandler({ err }))
+module.exports.getReputations = async ({ page, limit, searchText }) => {
+	try {
+		let paginateOptions = { model: ReputationsModel, page, limit }
+		if (searchText) {
+			paginateOptions.match = { 'facebook.id': { $regex: searchText, $options: 'i' } }
+		}
+		const reputations = await paginate(paginateOptions)
+		reputations.status = 200
+		return reputations
+	} catch (err) {
+		errorHandler({ err })
+	}
 }
 
 module.exports.createReputation = async ({ facebook, rating }) => {

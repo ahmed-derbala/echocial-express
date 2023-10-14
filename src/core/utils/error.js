@@ -63,10 +63,10 @@ exports.errorHandler = ({ err, req, res, next, caller }) => {
 	}
 	log(errObject)
 	if (res) {
-		console.log('error returned with res')
+		//console.log('error returned with res')
 		return res.status(status).json(errObject)
 	}
-	console.log('errObject no res')
+	//console.log('errObject no res')
 	return errObject
 }
 
