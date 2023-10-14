@@ -23,4 +23,9 @@ const schema = new mongoose.Schema(
 
 schema.plugin(uniqueValidator)
 
-module.exports = mongoose.model('sessions', schema)
+const sessionsCollection = 'sessions'
+
+module.exports = {
+	SessionsModel: mongoose.model(sessionsCollection, schema),
+	sessionsCollection
+}

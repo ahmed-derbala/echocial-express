@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const { UsersModel } = require(`../users/users.schema`)
-const Sessions = require(`../sessions/sessions.schema`)
+const { SessionsModel } = require(`../sessions/sessions.schema`)
 const bcrypt = require('bcrypt')
 const { errorHandler } = require('../../core/utils/error')
 const jwt = require('jsonwebtoken')
@@ -21,10 +21,10 @@ module.exports.signup = async ({ email, password, phone, profile }) => {
 		.then((createdUser) => {
 			createdUser = createdUser.toJSON()
 			delete createdUser.password
-			if (createdUser.username == null) {
-				return UsersModel.updateOne({ _id: createdUser._id }, { username: createdUser._id })
+			if (createdUser.userName == null) {
+				return UsersModel.updateOne({ _id: createdUser._id }, { userName: createdUser._id })
 					.then((updatedUser) => {
-						createdUser.username = createdUser._id
+						createdUser.userName = createdUser._id
 						return createdUser
 					})
 					.catch((err) => errorHandler({ err }))
@@ -34,41 +34,43 @@ module.exports.signup = async ({ email, password, phone, profile }) => {
 		.catch((err) => errorHandler({ err }))
 }
 
-module.exports.signin = async ({ email, username, password, req }) => {
-	console.log(username, 'username')
-	let fetchKey = { email }
-	if (username) fetchKey = { username }
-	console.log(fetchKey, 'fetchKey')
-	return await UsersModel.findOne(fetchKey)
-		.lean()
-		.select('+password')
-		.then((fetchedUser) => {
-			if (fetchedUser == null) {
-				return { message: 'user not found', data: null, status: 404 }
-			}
-			//user found, check password
-			const passwordCompare = bcrypt.compareSync(password, fetchedUser.password)
+module.exports.signin = async ({ loginId, password, req }) => {
+	try {
+		let $or = [{ email: loginId }, { userName: loginId }, { 'phone.shortNumber': loginId }]
+		if (mongoose.isValidObjectId(loginId)) $or.push({ _id: loginId })
 
-			delete fetchedUser.password //we dont need password anymore
-			if (passwordCompare == false) {
-				return { message: 'password incorrect', data: null, status: 409 }
-			}
-			const token = jwt.sign({ user: fetchedUser, ip: req.ip, userAgent: req.headers['user-agent'] }, config.auth.jwt.privateKey, { expiresIn: '30d' })
+		return await UsersModel.findOne({ $or })
+			.lean()
+			.select('+password +phone email isActive')
+			.then((fetchedUser) => {
+				if (!fetchedUser) {
+					if (config.NODE_ENV === 'production') return { message: 'loginId or password is not correct', data: null, status: 409 }
+					return { message: 'no user found with that loginId', data: null, status: 409 }
+				}
+				//user found, check password
+				const passwordCompare = bcrypt.compareSync(password, fetchedUser.password)
 
-			return Sessions.create({
-				token,
-				user: fetchedUser,
-				headers: req.headers,
-				ip: req.ip
-			})
-				.then((session) => {
+				delete fetchedUser.password //we dont need password anymore
+				if (passwordCompare == false) {
+					if (config.NODE_ENV === 'production') return { message: 'loginId or password is not correct', data: null, status: 409 }
+					return { message: 'password incorrect', data: null, status: 409 }
+				}
+				const token = jwt.sign({ user: fetchedUser, ip: req.ip, userAgent: req.headers['user-agent'] }, config.auth.jwt.privateKey, { expiresIn: '30d' })
+
+				return SessionsModel.create({
+					token,
+					user: fetchedUser,
+					headers: req.headers,
+					ip: req.ip
+				}).then((session) => {
 					return {
 						status: 200,
 						message: 'success',
 						data: { user: fetchedUser, token }
 					}
 				})
-				.catch((err) => errorHandler({ err }))
-		})
-		.catch((err) => errorHandler({ err }))
+			})
+	} catch (err) {
+		errorHandler({ err })
+	}
 }

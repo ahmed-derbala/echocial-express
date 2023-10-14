@@ -40,6 +40,77 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "http://192.168.100.247:5001/api/auth/signin",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"loginId\":\"ahmed.derbala@esprit.tn\",\n    //\"loginId\": \"652af4467a3a9c8e04cf6c61\",\n    \"password\": \"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.100.247:5001/api/auth/signin",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"100",
+								"247"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "http://192.168.100.247:5001/api/auth/signup",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"ahmed.derbala@esprit.tn\",\n    \"password\":\"123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://192.168.100.247:5001/api/auth/signup",
+							"protocol": "http",
+							"host": [
+								"192",
+								"168",
+								"100",
+								"247"
+							],
+							"port": "5001",
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	]
 }

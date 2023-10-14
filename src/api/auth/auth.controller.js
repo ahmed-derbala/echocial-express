@@ -5,6 +5,7 @@ const validatorCheck = require(`../../core/utils/error`).validatorCheck
 const { authenticate } = require(`../../core/auth/auth`)
 const authSrvc = require('./auth.service')
 const { errorHandler } = require('../../core/utils/error')
+const { data } = require('../../core/log/logger')
 
 router.post(
 	'/signup',
@@ -29,14 +30,14 @@ router.post(
 	}
 )
 
-router.post('/signin', [check('email').isEmail().optional(), check('username').isString().optional(), check('password').isString().notEmpty()], validatorCheck, async (req, res) => {
-	const { email, password, userName } = req.body
-	return authSrvc
-		.signin({ email, userName, password, req })
-		.then((result) => {
-			return res.status(result.status).json(result)
-		})
-		.catch((err) => errorHandler({ err, req, res }))
+router.post('/signin', [check('loginId').trim().isString().notEmpty(), check('password').trim().isString().notEmpty()], validatorCheck, async (req, res) => {
+	try {
+		const { loginId, password } = req.body
+		const result = await authSrvc.signin({ loginId, password, req })
+		return res.status(result.status).json(result)
+	} catch (err) {
+		errorHandler({ err, req, res })
+	}
 })
 
 router.post('/signout', authenticate(), async (req, res) => {
