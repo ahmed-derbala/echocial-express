@@ -17,7 +17,7 @@ The backend of echocial, the social echo
 
 # first time: set config.js, install modules and run. Default port = 5000, can be changed in /src/config/config.js
 ```
-npm run start:first-time
+npm run first-time
 ```
 
 # postman collection
