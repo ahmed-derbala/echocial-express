@@ -3,6 +3,7 @@
   "version": "1.0.1",
   "description": "Backend of Echocial. A mobile-first app for online reputation",
   "author": "Ahmed Derbala <ahmed.derbala@esprit.tn>",
+  "main": "src/main.js",
   "private": true,
   "engines": {
     "node": "18"

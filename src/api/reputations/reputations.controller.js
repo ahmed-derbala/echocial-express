@@ -9,7 +9,7 @@ const { errorHandler } = require('../../core/utils/error')
 
 router.get(
 	'/',
-	authenticate(),
+	//authenticate(),
 	[query('page').isNumeric().notEmpty().optional(), query('limit').isNumeric().notEmpty().optional(), query('searchText').trim().isString().optional()],
 	validatorCheck,
 	async (req, res) => {
