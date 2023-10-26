@@ -1,6 +1,29 @@
 #!/usr/bin/env node
 'use strict'
 console.clear()
+const fs = require('fs')
+/*
+if (process.env.NODE_ENV) {
+	const envFilePath = `${process.cwd()}/src/config/${process.env.NODE_ENV}.config.js`
+	if (fs.existsSync(envFilePath)) {
+		envConfig = require(envFilePath)
+	} else {
+		console.log(`specific ${envFilePath} was not found. loading config.js only`)
+	}
+}
+*/
+const defaultConfigFilePath = `${process.cwd()}/src/config/config.js`
+if (!fs.existsSync(defaultConfigFilePath)) {
+	console.error(`${defaultConfigFilePath} is required.`)
+	if (process.env.NODE_ENV) {
+		const envConfigFilePath = `${process.cwd()}/src/config/${process.env.NODE_ENV}.config.js`
+		if (fs.existsSync(envConfigFilePath)) {
+			console.log(`${envConfigFilePath} is optionnal.`)
+		}
+	}
+	process.exit(1)
+}
+
 const { log } = require(`./core/log/log`)
 const db = require('./core/utils/db')
 

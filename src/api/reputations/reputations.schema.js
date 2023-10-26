@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 //const enums = require('../../helpers/enums')
-//const schemas = require('../../helpers/schemas')
+const schemas = require('../../core/schemas/schemas')
 const { log } = require(`../../core/log/log`)
 const config = require('../../config/config')
 
@@ -37,13 +37,23 @@ const ReputationsSchema = new mongoose.Schema(
 				required: false
 			}
 		},
+		phone: {
+			type: schemas.phone
+		},
 		kind: {
 			type: String,
 			enum: ['users', 'shops']
 		},
 		userId: {
+			//the user who the reputation belongs to
 			type: mongoose.Schema.Types.ObjectId,
 			ref: 'users'
+		},
+		byUserId: {
+			//the user who created the reputation
+			type: mongoose.Schema.Types.ObjectId,
+			ref: 'users',
+			required: true
 		},
 		isActive: {
 			type: Boolean,

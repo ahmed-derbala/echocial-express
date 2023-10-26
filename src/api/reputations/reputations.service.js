@@ -17,7 +17,18 @@ module.exports.getReputations = async ({ page, limit, searchText }) => {
 	}
 }
 
-module.exports.createReputation = async ({ facebook, rating }) => {
+module.exports.getUserReputation = async ({ userId }) => {
+	try {
+		const data = await ReputationsModel.findOne({ userId }).lean()
+		let status = 200
+		if (!data) status = 204
+		return { status, data }
+	} catch (err) {
+		errorHandler({ err })
+	}
+}
+
+module.exports.createReputation = async ({ facebook, rating, byUserId }) => {
 	try {
 		const fetchedReputation = await ReputationsModel.findOne({
 			facebook: { id: facebook.id }
@@ -29,7 +40,7 @@ module.exports.createReputation = async ({ facebook, rating }) => {
 			}
 
 		rating.ratersCount = 1
-		return ReputationsModel.create({ facebook, rating }).then((createdReputation) => {
+		return ReputationsModel.create({ facebook, rating, byUserId }).then((createdReputation) => {
 			return createdReputation
 		})
 	} catch (err) {

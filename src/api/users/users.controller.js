@@ -19,33 +19,10 @@ router.get(
 	}
 )
 
-router.get(
-	'/profile/:username',
-	// authenticate(),
-	(req, res) => {
-		return usersSrvc
-			.getProfile({ username: req.params.username })
-			.then((data) => {
-				return res.status(200).json(data)
-			})
-			.catch((err) => errorHandler({ err, req, res }))
-	}
-)
-
-router.get('/me/profile/', authenticate(), (req, res) => {
+router.get('/profile', authenticate(), (req, res) => {
 	try {
-		return usersSrvc.getMyProfile({ userId: req.user._id }).then((data) => {
-			return res.status(200).json({ data, status: 200 })
-		})
-	} catch (err) {
-		errorHandler({ err, req, res })
-	}
-})
-
-router.get('/me/reputation', authenticate(), (req, res) => {
-	try {
-		return usersSrvc.getMyReputation({ userId: req.user._id }).then((data) => {
-			return res.status(200).json({ data })
+		return usersSrvc.getProfile({ loginId: req.query.loginId, userId: req.user._id }).then((data) => {
+			return res.status(200).json(data)
 		})
 	} catch (err) {
 		errorHandler({ err, req, res })

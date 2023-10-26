@@ -39,7 +39,7 @@ module.exports.signin = async ({ loginId, password, req }) => {
 		let $or = [{ email: loginId }, { userName: loginId }, { 'phone.shortNumber': loginId }]
 		if (mongoose.isValidObjectId(loginId)) $or.push({ _id: loginId })
 
-		return await UsersModel.findOne({ $or })
+		return UsersModel.findOne({ $or })
 			.lean()
 			.select('+password +phone email isActive')
 			.then((fetchedUser) => {

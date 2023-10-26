@@ -50,6 +50,7 @@ exports.errorHandler = ({ err, req, res, next, caller }) => {
 		}
 	}
 
+	errObject.status = status
 	if (!errObject.message) errObject.message = 'error'
 
 	if (req) {
@@ -79,4 +80,8 @@ exports.validatorCheck = (req, res, next) => {
 		return this.errorHandler({ err: errors, req, res })
 	}
 	return next()
+}
+
+exports.objectIdValidator = (value) => {
+	return mongoose.Types.ObjectId.isValid(value)
 }
