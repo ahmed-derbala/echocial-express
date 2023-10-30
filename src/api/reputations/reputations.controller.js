@@ -50,9 +50,9 @@ router.post(
 )
 
 router.post(
-	'/:reputationId',
+	'/',
 	authenticate(),
-	[body('facebook').notEmpty(), body('facebook.id').notEmpty(), body('facebook.url').notEmpty(), param('reputationId').custom(objectIdValidator)],
+	[body('facebook').notEmpty(), body('facebook.id').notEmpty(), body('facebook.url').notEmpty(), query('reputationId').custom(objectIdValidator)],
 	validatorCheck,
 	async (req, res) => {
 		const { facebook } = req.body

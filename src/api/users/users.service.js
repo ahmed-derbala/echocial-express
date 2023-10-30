@@ -28,11 +28,3 @@ module.exports.getProfile = async ({ loginId, userId }) => {
 		errorHandler({ err })
 	}
 }
-
-module.exports.getMyProfile = async ({ userId }) => {
-	try {
-		return UsersModel.findOne({ _id: userId }).select('profile').lean()
-	} catch (err) {
-		errorHandler({ err })
-	}
-}
