@@ -1,7 +1,7 @@
 const mongoose = require('mongoose')
 const { usersCollection } = require('../users/users.schema')
-const { log } = require(`../../core/log/log`)
-const config = require('../../config/config')
+const { log } = require(`../../core/log`)
+const config = require('../../config')
 
 const PostsSchema = new mongoose.Schema(
 	{

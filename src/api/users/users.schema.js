@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
-const config = require(`../../config/config`)
+const config = require(`../../config`)
 const schemas = require('../../core/schemas/schemas')
 const enums = require('../../core/enums/enums')
 

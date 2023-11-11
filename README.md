@@ -15,7 +15,7 @@ Backend of Echocial. A mobile-first app for online reputation
 - postman collection
 
 
-# first time: set config.js, install modules and run. Default port = 5000, can be changed in /src/config/config.js
+# first time: set config.js, install modules and run. Default port = 5000, can be changed in /src/config.js
 ```
 npm run first-time
 ```

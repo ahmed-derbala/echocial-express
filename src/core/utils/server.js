@@ -1,5 +1,5 @@
-const config = require(`../../config/config`)
-const { log } = require(`../log/log`)
+const config = require(`../../config`)
+const { log } = require(`../log`)
 
 /**
  * Module dependencies.

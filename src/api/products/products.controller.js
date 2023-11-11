@@ -2,7 +2,7 @@ const express = require('express')
 const router = express.Router()
 const { check, query, param } = require('express-validator')
 const validatorCheck = require(`../../core/utils/error`).validatorCheck
-const { authenticate } = require(`../../core/auth/auth`)
+const { authenticate } = require(`../../core/auth`)
 
 const { errorHandler } = require('../../core/utils/error')
 const productsSrvc = require('./products.service')

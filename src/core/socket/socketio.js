@@ -1,5 +1,5 @@
-const { log } = require('../log/log')
-const config = require(`../../config/config`)
+const { log } = require('../log/')
+const config = require(`../../config`)
 
 exports.socketio = ({ server }) => {
 	let socket = require('socket.io')(server, config.socketio.options)

@@ -1,5 +1,5 @@
 const fs = require('fs')
-const { log } = require(`../log/log`)
+const { log } = require(`../log`)
 
 module.exports.routes = (app) => {
 	let directories = fs.readdirSync(`${process.cwd()}/src/api/`)

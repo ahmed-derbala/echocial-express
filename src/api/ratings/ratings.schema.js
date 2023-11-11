@@ -2,8 +2,8 @@ const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 //const enums = require('../../helpers/enums')
 //const schemas = require('../../helpers/schemas')
-const { log } = require(`../../core/log/log`)
-const config = require('../../config/config')
+const { log } = require(`../../core/log`)
+const config = require('../../config')
 
 const RatingsSchema = new mongoose.Schema(
 	{

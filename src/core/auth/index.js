@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken')
 const { SessionsModel } = require(`../../api/sessions/sessions.schema`)
 const { errorHandler } = require('../utils/error')
-const config = require(`../../config/config`)
+const config = require(`../../config`)
 
 exports.authenticate = (params) => {
 	return function (req, res, next) {

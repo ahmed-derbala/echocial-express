@@ -80,10 +80,11 @@ let db = {
 const { createLogger, format, transports } = require('winston')
 const { combine, timestamp, label, prettyPrint, colorize } = format
 require('winston-mongodb')
+
 const transportsOptions = {
 	file: {
 		level: 'startup', //the level to start logging to file
-		filename: `${process.cwd()}/logs/${app.name}.log`,
+		filename: `${process.cwd()}/logs/${app.name}-${app.version}.log`,
 		handleExceptions: true,
 		maxsize: 250_000, //1 million = 1 mb
 		maxFiles: 2,
@@ -95,7 +96,6 @@ const transportsOptions = {
 			})
 		)
 	},
-
 	console: {
 		level: 'startup', //the level to start logging to console
 		json: true,
@@ -109,21 +109,20 @@ const transportsOptions = {
 			colorize({ all: true }) //this must be always called at the end to make sure of colors
 		)
 	},
-
 	mongo: {
-		level: 'warn', //the level to start logging to mongodb
+		level: 'startup', //the level to start logging to mongodb
 		db: db.mongo.uri,
 		options: {
 			useUnifiedTopology: true
 		},
 		decolorize: true,
 		expireAfterSeconds: 360000, //100 hours
-		collection: 'logs',
+		collection: `logs-${app.version}`,
 		format: format.metadata()
 	}
 }
 
-const levels = {
+const levelsPriority = {
 	error: 0,
 	warn: 1,
 	verbose: 2,
@@ -133,17 +132,7 @@ const levels = {
 	startup: 6
 }
 
-const colors = {
-	error: 'black redBG',
-	warn: 'black yellowBG',
-	verbose: 'black greenBG',
-	socket: 'magenta',
-	debug: 'white',
-	success: 'green',
-	startup: 'white blueBG'
-}
-
-const levelNames = {
+const levelsNames = {
 	error: 'error',
 	warn: 'warn',
 	verbose: 'verbose',
@@ -187,38 +176,59 @@ module.exports = {
 		createLoggerOptions: {
 			transports: [
 				//comment or delete transports you dont want to use
-				//new transports.File(transportsOptions.file),
+				new transports.File(transportsOptions.file),
 				new transports.Console(transportsOptions.console),
 				new transports.MongoDB(transportsOptions.mongo)
 			],
-			exitOnError: false,
-			levels,
+			levels: levelsPriority,
+			exitOnError: true,
 			silent: false //silent all transports
 		},
 		transportsOptions,
-		colors,
-		levels,
-		levelNames,
-		level: {
-			allowed: [levelNames.error, levelNames.warn, levelNames.verbose, levelNames.socket, levelNames.debug, levelNames.success, levelNames.startup]
+		levels: {
+			isActive: true, //level item
+			priority: levelsPriority,
+			colors: {
+				error: 'black redBG',
+				warn: 'black yellowBG',
+				verbose: 'black greenBG',
+				socket: 'magenta',
+				debug: 'white',
+				success: 'green',
+				startup: 'white blueBG'
+			},
+			names: levelsNames,
+			allowed: [levelsNames.error, levelsNames.warn, levelsNames.verbose, levelsNames.socket, levelsNames.debug, levelsNames.success, levelsNames.startup]
 		},
 		label: {
 			isActive: true
 		},
 		req: {
-			isActive: true
+			isActive: true,
+			headers: {
+				isActive: true,
+				tid: {
+					isActive: true
+				},
+				token: {
+					isActive: false
+				},
+				ip: {
+					isActive: true
+				}
+			}
 		},
 		memory: {
-			isActive: false,
+			isActive: true,
 			unit: 1000000000 //1000000000=GB,1000000=MB
 		},
 		error: {
-			isActive: false
+			isActive: true
 		},
 		morgan: {
 			//more infos: https://www.npmjs.com/package/morgan
-			tokenString: `{"status"::status,"method":":method", "url":":url", "user": :user ,"body": :body,"tid":":tid" ,"responseTime"::response-time}`,
-			//tokenString: `{"status"::status,"method":":method", "url":":url", "user": :user ,"body": :body,"tid":":tid" ,"responseTime"::response-time,"ip":":ip","browser":":browser", "os":":os", "platform":":platform" ,"origin":":origin", "isBot":":isBot", "referrer":":referrer"}`,
+			//tokenString: `{"status"::status,"method":":method", "url":":url", "user": :user ,"body": :body,"headers": :headers ,"responseTime"::response-time}`,
+			tokenString: `{"status"::status,"method":":method", "url":":url", "user": :user ,"body": :body,"headers": :headers ,"responseTime"::response-time,"browser":":browser", "os":":os", "platform":":platform" ,"origin":":origin", "isBot":":isBot", "referrer":":referrer"}`,
 			hiddenBodyFields: ['password', 'user.password'] //[] for none, display these keys as *** in terminal
 		}
 	},

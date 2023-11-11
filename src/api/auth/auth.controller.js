@@ -2,10 +2,9 @@ const express = require('express')
 const router = express.Router()
 const { check, query, param } = require('express-validator')
 const validatorCheck = require(`../../core/utils/error`).validatorCheck
-const { authenticate } = require(`../../core/auth/auth`)
+const { authenticate } = require(`../../core/auth`)
 const authSrvc = require('./auth.service')
 const { errorHandler } = require('../../core/utils/error')
-const { data } = require('../../core/log/logger')
 
 router.post(
 	'/signup',

@@ -1,7 +1,7 @@
 const packagejson = require(`../../../package.json`)
 const fs = require('fs')
 const ignoreFolders = ['node_modules', 'helpers', '.git', 'config', '.vscode']
-const config = require('../../config/config')
+const config = require('../../config')
 
 /**
  * load files in a directory based on discriminator

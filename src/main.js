@@ -12,7 +12,7 @@ if (process.env.NODE_ENV) {
 	}
 }
 */
-const defaultConfigFilePath = `${process.cwd()}/src/config/config.js`
+const defaultConfigFilePath = `${process.cwd()}/src/config/index.js`
 if (!fs.existsSync(defaultConfigFilePath)) {
 	console.error(`${defaultConfigFilePath} is required.`)
 	if (process.env.NODE_ENV) {
@@ -24,7 +24,7 @@ if (!fs.existsSync(defaultConfigFilePath)) {
 	process.exit(1)
 }
 
-const { log } = require(`./core/log/log`)
+const { log } = require(`./core/log`)
 const db = require('./core/utils/db')
 
 db.connect()

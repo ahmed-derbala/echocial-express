@@ -1,13 +1,11 @@
 const morgan = require('morgan')
-const config = require(`../../config/config`)
-const { log } = require(`./log`)
+const config = require(`../../config`)
+const { log, reqDefaultLog } = require(`.`)
 const _ = require('lodash')
 const { errorHandler } = require('../utils/error')
 
-morgan.token('ip', (req) => req.headers['x-forwarded-for'])
-
 morgan.token('user', (req) => {
-	if (!req.user) return JSON.stringify({})
+	if (!req.user) return '{}'
 	return JSON.stringify(req.user)
 })
 
@@ -53,8 +51,12 @@ morgan.token('origin', (req) => {
 	return req.headers.origin
 })
 
-morgan.token('tid', (req) => {
-	return req.headers.tid
+morgan.token('headers', (req) => {
+	if (!config.log.req.headers.isActive) return '{}'
+	let headers = {}
+	//if (config.log.req.headers.token.isActive)
+	//headers.token =
+	return JSON.stringify({ ip: req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : '-', tid: req.headers.tid, token: req.headers.token })
 })
 
 const stream = {
@@ -71,7 +73,7 @@ const stream = {
 		if (_.inRange(req.status, 200, 399)) level = 'verbose'
 		if (_.inRange(req.status, 400, 499)) level = 'warn'
 
-		if (level != 'error') log({ req, level, message: 'morgan_log' }) //we only need to log non error requests cause they will be logged in errorHandler
+		if (level != 'error') log({ req, level, message: reqDefaultLog }) //we only need to log non error requests cause they will be logged in errorHandler
 	}
 }
 

@@ -3,6 +3,7 @@ const { errorHandler } = require('../../core/utils/error')
 const { paginate } = require('../../core/helpers/pagination')
 const { ReputationsModel } = require(`../reputations/reputations.schema`)
 const mongoose = require('mongoose')
+const { log } = require('../../core/log')
 
 module.exports.getUsers = async (params) => {
 	return paginate({ model: UsersModel })
@@ -12,8 +13,9 @@ module.exports.getUsers = async (params) => {
 		.catch((err) => errorHandler({ err }))
 }
 
-module.exports.getProfile = async ({ loginId, userId }) => {
+module.exports.getProfile = async ({ loginId, userId, req }) => {
 	try {
+		log({ message: 'profile service', level: 'debug', req })
 		if (!loginId) loginId = userId
 		let $or = [{ email: loginId }, { userName: loginId }, { 'phone.shortNumber': loginId }]
 		if (mongoose.isValidObjectId(loginId)) $or.push({ _id: loginId })

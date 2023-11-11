@@ -1,7 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const { body, query, param } = require('express-validator')
-const { authenticate } = require(`../../core/auth/auth`)
+const { authenticate } = require(`../../core/auth`)
 const reputationsSrvc = require('./reputations.service')
 const { errorHandler, objectIdValidator, validatorCheck } = require('../../core/utils/error')
 

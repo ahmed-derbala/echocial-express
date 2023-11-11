@@ -1,7 +1,7 @@
 const { ReputationsModel } = require(`./reputations.schema`)
 const { errorHandler } = require('../../core/utils/error')
 const { paginate } = require('../../core/helpers/pagination')
-const { log } = require('../../core/log/log')
+const { log } = require('../../core/log')
 
 module.exports.getReputations = async ({ page, limit, searchText }) => {
 	try {

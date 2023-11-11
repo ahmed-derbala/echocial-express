@@ -1,5 +1,5 @@
 const { validationResult } = require('express-validator')
-const { log } = require(`../log/log`)
+const { log, sanitizeReq } = require(`../log`)
 /**
  * handle errors
  * @param {Object} error
@@ -54,13 +54,7 @@ exports.errorHandler = ({ err, req, res, next, caller }) => {
 	if (!errObject.message) errObject.message = 'error'
 
 	if (req) {
-		errObject.req = {}
-		errObject.req.status = status
-		errObject.req.method = req.method
-		errObject.req.url = req.originalUrl
-		errObject.req.ip = req.headers['x-forwarded-for']
-		errObject.req.user = req.user
-		errObject.req.body = req.body
+		errObject.req = sanitizeReq(req)
 	}
 	log(errObject)
 	if (res) {

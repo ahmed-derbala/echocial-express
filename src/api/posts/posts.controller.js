@@ -3,7 +3,7 @@ const router = express.Router()
 const postsCtrl = require(`./posts.controller`)
 const { check, query, param } = require('express-validator')
 const validatorCheck = require(`../../core/utils/error`).validatorCheck
-const { authenticate } = require(`../../core/auth/auth`)
+const { authenticate } = require(`../../core/auth`)
 const postsService = require('./posts.service')
 
 /*router.get('/', function(req, res, next) {

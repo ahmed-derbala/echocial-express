@@ -4,7 +4,7 @@ const { SessionsModel } = require(`../sessions/sessions.schema`)
 const bcrypt = require('bcrypt')
 const { errorHandler } = require('../../core/utils/error')
 const jwt = require('jsonwebtoken')
-const config = require(`../../config/config`)
+const config = require(`../../config`)
 
 module.exports.signup = async ({ email, password, phone, profile }) => {
 	//console.log(params,"servc params")

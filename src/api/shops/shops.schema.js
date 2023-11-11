@@ -3,7 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 const enums = require('../../helpers/enums')
 const schemas = require('../../helpers/schemas')
 const { log } = require(`../../utils/log`)
-const config = require('../../config/config')
+const config = require('../../config')
 
 const ShopsSchema = new mongoose.Schema(
 	{
