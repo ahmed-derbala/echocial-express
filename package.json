@@ -9,7 +9,7 @@
     "node": "18"
   },
   "scripts": {
-    "first-time": "cp src/config.sample.js src/config.js && npm run i && npm run start:local",
+    "first-time": "npm run i && npm run start:local",
     "i": "npm i -f",
     "i:prod": "NODE_ENV=production npm ci -f --omit=dev",
     "format": "prettier --write \"src/**/*.js\"",

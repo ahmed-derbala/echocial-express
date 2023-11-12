@@ -15,7 +15,7 @@ module.exports.getUsers = async (params) => {
 
 module.exports.getProfile = async ({ loginId, userId, req }) => {
 	try {
-		log({ message: 'profile service', level: 'debug', req })
+		log({ message: `requesting profile of userId=${userId} ...`, level: 'debug', req })
 		if (!loginId) loginId = userId
 		let $or = [{ email: loginId }, { userName: loginId }, { 'phone.shortNumber': loginId }]
 		if (mongoose.isValidObjectId(loginId)) $or.push({ _id: loginId })

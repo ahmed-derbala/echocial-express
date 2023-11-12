@@ -3,6 +3,7 @@ const config = require(`../../config`)
 const { log, reqDefaultLog } = require(`.`)
 const _ = require('lodash')
 const { errorHandler } = require('../utils/error')
+const { removeEmptyKeys } = require('../helpers/removeEmptyKeys')
 
 morgan.token('user', (req) => {
 	if (!req.user) return '{}'

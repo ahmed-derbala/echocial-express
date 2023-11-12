@@ -5,12 +5,7 @@ uploads/
 backups/
 
 #config files
-src/config/production.config.js
-src/config/staging.config.js
-src/config/preprod.config.js
-src/config/development.config.js
-src/config/local.config.js
-
+src/config/*.config.js
 
 # Logs
 logs/

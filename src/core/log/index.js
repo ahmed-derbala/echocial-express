@@ -4,6 +4,7 @@
  */
 const config = require(`../../config`)
 const logger = require('./logger')
+const { removeEmptyKeys } = require('../helpers/removeEmptyKeys')
 /**
  * log function
  * @param {Object} log
@@ -29,6 +30,8 @@ module.exports.log = ({ level, label, error, message, req }) => {
 	}
 	if (config.log.memory.isActive) logObject.memory = parseFloat((process.memoryUsage.rss() / config.log.memory.unit).toFixed(3))
 
+	logObject = removeEmptyKeys(logObject)
+
 	logger[level](logObject)
 }
 
@@ -48,6 +51,7 @@ let sanitizeReq = (module.exports.sanitizeReq = (req) => {
 	if (config.log.req.headers.tid.isActive) headers.tid = req.headers.tid
 
 	result.headers = headers
+	result = removeEmptyKeys(result)
 	return result
 })
 
