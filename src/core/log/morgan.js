@@ -51,12 +51,21 @@ morgan.token('origin', (req) => {
 	return req.headers.origin
 })
 
+morgan.token('ip', (req) => {
+	return req.ip
+})
+
+morgan.token('originalUrl', (req) => {
+	return req.originalUrl
+})
+
 morgan.token('headers', (req) => {
 	if (!config.log.req.headers.isActive) return '{}'
 	let headers = {}
-	//if (config.log.req.headers.token.isActive)
-	//headers.token =
-	return JSON.stringify({ ip: req.headers['x-forwarded-for'] ? req.headers['x-forwarded-for'] : '-', tid: req.headers.tid, token: req.headers.token })
+	if (config.log.req.headers.token.isActive) headers.token = req.headers.token
+	if (config.log.req.headers.tid.isActive) headers.tid = req.headers.tid
+
+	return JSON.stringify(headers)
 })
 
 const stream = {

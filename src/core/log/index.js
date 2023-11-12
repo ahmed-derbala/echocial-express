@@ -22,7 +22,7 @@ module.exports.log = ({ level, label, error, message, req }) => {
 	logObject.message = message ? message : null
 	if (config.log.req.isActive) {
 		if (message === reqDefaultLog) {
-			logObject.req = req ? req : null
+			logObject.req = req ? req : null //morgan format, see morgan.tokenString in config
 		} else {
 			logObject.req = req ? sanitizeReq(req) : null
 		}
@@ -36,17 +36,16 @@ let sanitizeReq = (module.exports.sanitizeReq = (req) => {
 	let result = {
 		status: req.status,
 		method: req.method,
-		url: req.originalUrl,
+		originalUrl: req.originalUrl,
 		user: req.user,
-		body: req.body
+		body: req.body,
+		ip: req.ip
 	}
 	if (!config.log.req.headers.isActive) return result
-	let headers = {
-		ip: req.headers['x-forwarded-for'],
-		token: req.headers.token,
-		tid: req.headers.tid
-	}
-	if (!config.log.req.headers.token.isActive) delete headers.token
+
+	let headers = {}
+	if (config.log.req.headers.token.isActive) headers.token = req.headers.token
+	if (config.log.req.headers.tid.isActive) headers.tid = req.headers.tid
 
 	result.headers = headers
 	return result
