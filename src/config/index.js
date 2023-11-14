@@ -36,7 +36,6 @@ let app = {
 		standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
 		legacyHeaders: false // Disable the `X-RateLimit-*` headers
 	},
-	use_strict: true,
 	corsOptions: {
 		origin: '*',
 		//methods: "GET,PUT,POST,DELETE,PATCH",
@@ -105,7 +104,7 @@ const transportsOptions = {
 				format: 'YYYY-MM-DD--HH:mm:ss.SSS'
 			}),
 			format.json(),
-			prettyPrint(), //print every json key in a seperate row for clearer reading
+			prettyPrint(), //print every json key in a seperate row for clearer reading. comment to print log on a single line
 			colorize({ all: true }) //this must be always called at the end to make sure of colors
 		)
 	},
@@ -149,7 +148,7 @@ if (process.env.NODE_ENV) {
 		envConfig = require(envFilePath)
 		console.log(`optionnal ${envFilePath} is loaded`)
 	} else {
-		console.log(`optionnal ${envFilePath} was not found. loading config.js only`)
+		console.log(`optionnal ${envFilePath} was not found. loading config/index.js only`)
 	}
 }
 module.exports = {
@@ -220,6 +219,9 @@ module.exports = {
 			unit: 1000000000 //1000000000=GB,1000000=MB
 		},
 		error: {
+			isActive: true
+		},
+		caller: {
 			isActive: true
 		},
 		morgan: {

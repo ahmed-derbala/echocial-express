@@ -1,5 +1,7 @@
 const { validationResult } = require('express-validator')
 const { log, sanitizeReq } = require(`../log`)
+const noLogStatuses = [401]
+
 /**
  * handle errors
  * @param {Object} error
@@ -8,16 +10,16 @@ const { log, sanitizeReq } = require(`../log`)
  * @param {Response} error.res response object
  * @param {Next} error.next next object
  */
-exports.errorHandler = ({ err, req, res, next, caller }) => {
-	//console.log(this.errorHandler[0]);
-	//console.log('err',err)
-	//console.log('errorHandler...')
-	//console.error( err.code)
-
-	let status = 500
-	let errObject = {}
+exports.errorHandler = ({ err, req, res, next }) => {
+	let status = 500,
+		errObject = {}
+	const stack = new Error().stack
+	let caller = null
+	if (stack) {
+		caller = stack.split('\n')[2].trim()
+	}
+	errObject.caller = caller
 	errObject.level = 'error'
-	//errObject.arguments=arguments
 
 	if (err) {
 		if (typeof err == 'object') {
@@ -38,7 +40,7 @@ exports.errorHandler = ({ err, req, res, next, caller }) => {
 				if (err.name == 'ValidationError' || err.code == 11000) {
 					status = 409
 				}
-				if (err.name == 'TokenExpiredError') {
+				if (['JsonWebTokenError', 'TokenExpiredError'].includes(err.name)) {
 					status = 401
 				}
 			}
@@ -56,7 +58,7 @@ exports.errorHandler = ({ err, req, res, next, caller }) => {
 	if (req) {
 		errObject.req = sanitizeReq(req)
 	}
-	log(errObject)
+	if (!noLogStatuses.includes(status)) log(errObject)
 	if (res) {
 		//console.log('error returned with res')
 		return res.status(status).json(errObject)

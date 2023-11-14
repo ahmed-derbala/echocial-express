@@ -24,7 +24,7 @@ exports.authenticate = (params) => {
 			req.headers.token = req.headers.token.replace('Bearer ', '')
 
 			//verify token
-			return jwt.verify(req.headers.token, config.auth.jwt.privateKey, (err, decoded) => {
+			return jwt.verify(req.headers.token, config.auth.jwt.privateKey, async (err, decoded) => {
 				if (err) {
 					//if token is not required move on
 					if (params.tokenRequired == false) {
@@ -33,27 +33,23 @@ exports.authenticate = (params) => {
 					return errorHandler({ err, req, res, next })
 				}
 				//check if token is in session
-				return SessionsModel.findOne({ token: req.headers.token })
-					.select('token')
-					.lean()
-					.then((session) => {
-						if (session == null) {
-							return res.status(403).json({ message: 'No session created with provided token' })
-						}
-						//console.log(decoded, 'decoded');
-						//check if we have valid user object
-						if (decoded.user == null) {
-							return res.status(401).json({
-								message: `token has no valid user object`,
-								data: decoded
-							})
-						}
-						if (req.headers['user-agent'] != decoded.req.headers['user-agent']) {
-							return res.status(401).json({ message: `token must be used in one device` })
-						}
-						req.user = decoded.user
-						return next()
+				const session = await SessionsModel.findOne({ token: req.headers.token }).select('token').lean()
+				if (session == null) {
+					return res.status(403).json({ message: 'No session created with provided token' })
+				}
+				//console.log(decoded, 'decoded');
+				//check if we have valid user object
+				if (decoded.user == null) {
+					return res.status(401).json({
+						message: `token has no valid user object`,
+						data: decoded
 					})
+				}
+				if (req.headers['user-agent'] != decoded.req.headers['user-agent']) {
+					return res.status(401).json({ message: `token must be used in one device` })
+				}
+				req.user = decoded.user
+				return next()
 			})
 		} catch (err) {
 			errorHandler({ err, req, res })
