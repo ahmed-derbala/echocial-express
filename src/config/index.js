@@ -28,7 +28,7 @@ let app = {
 			return `${backend.url}${this.endpoint}`
 		}
 	},
-	cluster: 0, //os.cpus().length,//a number, 0 to disable
+	cluster: 2, //os.cpus().length,//a number, 0 to disable
 	responseTimeAlert: 20000, //time in ms before considering a request timeout
 	apiLimiter: {
 		windowMs: 15 * 60 * 1000, // 15 minutes
@@ -116,7 +116,7 @@ const transportsOptions = {
 		},
 		decolorize: true,
 		expireAfterSeconds: 360000, //100 hours
-		collection: `logs-${app.version}`,
+		collection: `logs`,
 		format: format.metadata()
 	}
 }

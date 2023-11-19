@@ -77,6 +77,10 @@ const stream = {
 			return errorHandler({ err: 'REQ_NOT_PARSED', req })
 		}
 
+		if (req.responseTime > config.app.responseTimeAlert) {
+			log({ level: 'warn', label: 'request-timeout', req, message: `request took more than ${config.app.responseTimeAlert}ms` })
+		}
+
 		if (req.status == 422) return
 
 		let level = 'error'

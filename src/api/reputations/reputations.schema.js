@@ -85,7 +85,7 @@ const ReputationsCollection = 'reputations'
 
 const ReputationsModel = mongoose.model(ReputationsCollection, ReputationsSchema)
 ReputationsModel.on('index', (error) => {
-	if (error) log({ level: config.log.levelNames.error, message: error })
+	if (error) log({ level: config.log.levels.names.error, message: error })
 })
 
 module.exports = {

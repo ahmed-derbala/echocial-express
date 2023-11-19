@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 'use strict'
-console.clear()
+//console.clear()
 const fs = require('fs')
 /*
 if (process.env.NODE_ENV) {
