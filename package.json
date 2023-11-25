@@ -20,7 +20,7 @@
     "start:default": "npm run start:local",
     "start:code": "code . && npm run start:default",
     "start:local": "NODE_ENV=local nodemon --max-old-space-size=8000 --trace-deprecation src/main.js",
-    "start:local-pm2": "pm2 start ecosystem.config.js --env local && pm2 monit",
+    "start:local-pm2": "pm2 start src/config/pm2.config.js --env local && pm2 monit",
     "start:dev": "NODE_ENV=development nodemon --max-old-space-size=32000 src/main.js",
     "reload": "pm2 reload echocial",
     "stop": "pm2 stop all",

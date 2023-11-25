@@ -5,7 +5,7 @@ uploads/
 backups/
 
 #config files
-src/config/*.config.js
+src/config/production.config.js
 
 # Logs
 logs/

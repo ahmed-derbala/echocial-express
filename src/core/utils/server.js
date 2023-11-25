@@ -65,11 +65,10 @@ if (config.app.cluster > 0) {
 server.setTimeout(0) //make sure timeout is disabled , wait forever
 
 process.on('SIGINT', () => {
-	console.log('Received SIGINT signal. Gracefully shutting down...')
-
+	log({ level: 'error', message: 'Received SIGINT signal. Gracefully shutting down...' })
 	// Close server connections
 	server.close(() => {
-		console.log('Server closed. Exiting...')
+		log({ level: 'error', message: 'Server closed. Exiting...' })
 		process.exit(0)
 	})
 })
