@@ -64,7 +64,7 @@ exports.errorHandler = ({ err, req, res, next }) => {
 		return res.status(status).json(errObject)
 	}
 	//console.log('errObject no res')
-	return errObject
+	throw errObject
 }
 
 /**

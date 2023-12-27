@@ -1,12 +1,12 @@
 {
-  "name": "echocial",
-  "version": "1.0.1",
-  "description": "Backend of Echocial. A mobile-first app for online reputation",
+  "name": "fth",
+  "version": "1.0.0",
+  "description": "FTH",
   "author": "Ahmed Derbala <ahmed.derbala@esprit.tn>",
   "main": "src/main.js",
   "private": true,
   "engines": {
-    "node": "18"
+    "node": "20"
   },
   "scripts": {
     "first-time": "npm run i && npm run start:local",
@@ -25,18 +25,18 @@
     "reload": "pm2 reload echocial",
     "stop": "pm2 stop all",
     "delete": "pm2 delete all",
-    "monit":"pm2 monit",
+    "monit": "pm2 monit",
     "push": "npm run format && git add . && git commit -m",
     "postpush": "git push && npm run start:default",
     "pull": "git pull origin main && npm run i && npm run start:default",
-    "clean": "rm -f package-lock.json && rm -r -f node_modules && npm cache clean -f && npm run i && npm run start:default",
+    "clean": "rm -f package-lock.json && rm -r -f node_modules && rm -r -f backups && npm cache clean -f && npm run i && npm run start:default",
     "clean:prod": "rm -r -f node_modules && npm cache clean -f && npm run i:prod",
     "update": "rm -r -f backups/* && cp package.json backups/package.json.backup && cp package-lock.json backups/package-lock.json.backup 2>/dev/null; true && mv node_modules backups/node_modules.backup 2>/dev/null; true && npm i -D npm-check-updates -f && ncu -u && npm run clean",
     "restore": "cp backups/package.json.backup package.json && cp backups/package-lock.json.backup package-lock.json && mv backups/node_modules.backup node_modules && npm run start:default"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/ahmed-derbala/echocial-express"
+    "url": "https://github.com/ahmed-derbala/fth"
   },
   "keywords": [
     "echocial"
@@ -46,14 +46,16 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "ejs": "^3.1.9",
     "express": "^5.0.0-beta.1",
+    "express-ejs-layouts": "^2.5.1",
     "express-rate-limit": "^7.1.4",
     "express-useragent": "^1.0.15",
     "express-validator": "^7.0.1",
     "express-winston": "^4.2.0",
     "helmet": "^7.1.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.0",
+    "mongoose": "^8.0.1",
     "mongoose-unique-validator": "^4.0.0",
     "morgan": "^1.10.0",
     "pm2": "^5.3.0",
@@ -64,7 +66,7 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.1",
-    "npm-check-updates": "^16.14.6",
-    "prettier": "^3.0.3"
+    "npm-check-updates": "^16.14.11",
+    "prettier": "^3.1.0"
   }
 }

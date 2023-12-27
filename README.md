@@ -1,7 +1,7 @@
 # echocial
 Backend of Echocial. A mobile-first app for online reputation
 # features
-- javascript with express 5
+- javascript node.js 20 with express 5
 - everything is configurable in src/config
 - clean architecture
 - pm2 

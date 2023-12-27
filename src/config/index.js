@@ -7,7 +7,7 @@ const ip = require('ip')
 const fs = require('fs')
 
 const backend = {
-	port: 5001,
+	port: 5000,
 	host: `${ip.address()}`,
 	protocol: 'http://',
 	get url() {
@@ -40,6 +40,12 @@ let app = {
 		origin: '*',
 		//methods: "GET,PUT,POST,DELETE,PATCH",
 		credentials: true
+	},
+	helmet: {
+		isActive: false,
+		options: {
+			crossOriginResourcePolicy: false
+		}
 	}
 }
 
