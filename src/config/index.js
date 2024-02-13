@@ -247,18 +247,12 @@ const defaultConfig = {
 //loading envirment config file if exists
 let envConfig = {}
 if (process.env.NODE_ENV) {
-	/*const envFilePath = `${process.cwd()}/src/config/${process.env.NODE_ENV}.config.js`
+	const envFilePath = `${process.cwd()}/src/config/${process.env.NODE_ENV}.config.js`
 	if (fs.existsSync(envFilePath)) {
 		envConfig = require(envFilePath)
-	} else {*/
-	fs.writeFileSync(
-		`src/config/${process.env.NODE_ENV}.config.js`,
-		`//please use this file to override config keys instead of modifying config/index.js
-		 //ll
-module.exports = ${JSON.stringify({ ...defaultConfig })}
-`
-	)
-	//}
+	} else {
+		fs.copyFileSync(`${process.cwd()}/src/config/index.js`, `${process.cwd()}/src/config/${process.env.NODE_ENV}.config.js`)
+	}
 }
 
 module.exports = { ...defaultConfig, ...envConfig }
