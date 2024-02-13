@@ -14,6 +14,7 @@ const backend = {
 		return `${this.protocol}${this.host}:${this.port}`
 	}
 }
+
 /**
  * app
  */
@@ -53,7 +54,6 @@ const port = parseInt(process.env.DATABASE_PORT, 10) || 27017
 const name = packagejson.name
 const maxPoolSize = 200 //number > 0 otherwise ignored, default 200, more infos: https://mongoosejs.com/docs/connections.html#connection_pools
 const minPoolSize = 5 //number > 0 otherwise ignored, default 5, more infos: https://mongoosejs.com/docs/connections.html#connection_pools
-
 let uri = ``
 
 if (!user && !password) uri = `mongodb://${host}:${port}/${name}`
@@ -141,19 +141,7 @@ const levelsNames = {
 	startup: 'startup'
 }
 
-//loading envirment config file if exists
-let envConfig = {}
-if (process.env.NODE_ENV) {
-	const envFilePath = `${process.cwd()}/src/config/${process.env.NODE_ENV}.config.js`
-	if (fs.existsSync(envFilePath)) {
-		envConfig = require(envFilePath)
-		console.log(`optionnal ${envFilePath} is loaded`)
-	} else {
-		console.log(`optionnal ${envFilePath} was not found. loading config/index.js only`)
-	}
-}
-
-module.exports = {
+const defaultConfig = {
 	NODE_ENV: process.env.NODE_ENV || 'local',
 	app,
 	backend,
@@ -253,6 +241,24 @@ module.exports = {
 	users: {
 		roles: ['admin', 'user'],
 		types: ['type1', 'type2']
-	},
-	...envConfig
+	}
 }
+
+//loading envirment config file if exists
+let envConfig = {}
+if (process.env.NODE_ENV) {
+	/*const envFilePath = `${process.cwd()}/src/config/${process.env.NODE_ENV}.config.js`
+	if (fs.existsSync(envFilePath)) {
+		envConfig = require(envFilePath)
+	} else {*/
+	fs.writeFileSync(
+		`src/config/${process.env.NODE_ENV}.config.js`,
+		`//please use this file to override config keys instead of modifying config/index.js
+		 //ll
+module.exports = ${JSON.stringify({ ...defaultConfig })}
+`
+	)
+	//}
+}
+
+module.exports = { ...defaultConfig, ...envConfig }

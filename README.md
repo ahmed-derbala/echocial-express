@@ -31,7 +31,7 @@ docs/echocial.postman_collection.json
 http://127.0.0.1:5001/swagger
 ```
 
-# update packages: please create /backups directory to keep backup of current packages
+# update packages: update all packages to the latest version
 ```
 npm run update
 ```

@@ -31,7 +31,7 @@
     "pull": "git pull origin main && npm run i && npm run start:local",
     "clean": "rm -f package-lock.json && rm -r -f node_modules && npm cache clean -f && npm run i && npm run start:local",
     "clean:prod": "rm -r -f node_modules && npm cache clean -f && npm run i:prod",
-    "update": "rm -r -f backups/* && cp package.json backups/package.json.backup && cp package-lock.json backups/package-lock.json.backup 2>/dev/null; true && mv node_modules backups/node_modules.backup 2>/dev/null; true && npm i -D npm-check-updates -f && ncu -u && npm run clean",
+    "update": "rm -r -f backups/* && mkdir backups && cp package.json backups/package.json.backup && cp package-lock.json backups/package-lock.json.backup 2>/dev/null; true && mv node_modules backups/node_modules.backup 2>/dev/null; true && npm i -D npm-check-updates -f && ncu -u && npm run clean",
     "restore": "cp backups/package.json.backup package.json && cp backups/package-lock.json.backup package-lock.json && mv backups/node_modules.backup node_modules && npm run start:local",
     "clup": "rm -f package-lock.json && rm -r -f node_modules && npm cache clean -f && npm i -D npm-check-updates -f && ncu -u && npm run i && npm run start:local"
   },
@@ -53,8 +53,9 @@
     "express-validator": "^7.0.1",
     "express-winston": "^4.2.0",
     "helmet": "^7.1.0",
+    "ip": "^1.1.8",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.1.1",
+    "mongoose": "^8.1.2",
     "mongoose-unique-validator": "^5.0.0",
     "morgan": "^1.10.0",
     "pm2": "^5.3.1",
@@ -65,7 +66,7 @@
   },
   "devDependencies": {
     "nodemon": "^3.0.3",
-    "npm-check-updates": "^16.14.14",
+    "npm-check-updates": "^16.14.15",
     "prettier": "^3.2.5"
   }
 }
