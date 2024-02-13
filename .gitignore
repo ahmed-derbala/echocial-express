@@ -7,6 +7,7 @@ backups/
 #config files
 src/config/production.config.js
 src/config/development.config.js
+src/config/local.config.js
 
 
 # Logs

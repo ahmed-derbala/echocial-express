@@ -141,6 +141,7 @@ const levelsNames = {
 	startup: 'startup'
 }
 
+//loading envirment config file if exists
 let envConfig = {}
 if (process.env.NODE_ENV) {
 	const envFilePath = `${process.cwd()}/src/config/${process.env.NODE_ENV}.config.js`
@@ -151,6 +152,7 @@ if (process.env.NODE_ENV) {
 		console.log(`optionnal ${envFilePath} was not found. loading config/index.js only`)
 	}
 }
+
 module.exports = {
 	NODE_ENV: process.env.NODE_ENV || 'local',
 	app,
