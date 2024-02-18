@@ -2,20 +2,20 @@
 'use strict'
 console.clear()
 const fs = require('fs')
+const { log } = require(`./core/log`)
 
 const defaultConfigFilePath = `${process.cwd()}/src/config/index.js`
 if (!fs.existsSync(defaultConfigFilePath)) {
-	console.error(`${defaultConfigFilePath} is required.`)
+	log({ level: 'error', message: `${defaultConfigFilePath} is required.` })
 	if (process.env.NODE_ENV) {
 		const envConfigFilePath = `${process.cwd()}/src/config/${process.env.NODE_ENV}.config.js`
 		if (fs.existsSync(envConfigFilePath)) {
-			console.log(`${envConfigFilePath} is optionnal.`)
+			log({ level: 'debug', message: `${envConfigFilePath} is optionnal.` })
 		}
 	}
 	process.exit(1)
 }
 
-const { log } = require(`./core/log`)
 const config = require('./config')
 
 /**

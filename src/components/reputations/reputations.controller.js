@@ -1,75 +1,50 @@
 const express = require('express')
 const router = express.Router()
-const { body, query, param } = require('express-validator')
 const { authenticate } = require(`../../core/auth`)
-const reputationsSrvc = require('./reputations.service')
-const { errorHandler, objectIdValidator } = require('../../core/utils/error')
+const { getReputationsSrvc, updateRatingSrvc, getUserReputationSrvc, createReputationSrvc } = require('./reputations.service')
+const { errorHandler } = require('../../core/utils/error')
+const { validate } = require('../../core/validation')
+const { createReputationVld, updateReputationVld, getReputationsVld } = require('./reputations.validator')
+const { resp } = require('../../core/helpers/resp')
 
-router.get(
-	'/',
-	authenticate(),
-	[query('page').isNumeric().notEmpty().optional(), query('limit').isNumeric().notEmpty().optional(), query('searchText').trim().isString().optional()],
-
-	async (req, res) => {
-		try {
-			const result = await reputationsSrvc.getReputations({ page: req.query.page, limit: req.query.limit, searchText: req.query.searchText })
-			return res.status(result.status).json(result)
-		} catch (err) {
-			errorHandler({ err, req, res })
-		}
+router.get('/', validate(getReputationsVld), authenticate(), async (req, res) => {
+	try {
+		const result = await getReputationsSrvc({ page: req.query.page, limit: req.query.limit, searchText: req.query.searchText })
+		return resp({ status: 200, json: result, req, res })
+	} catch (err) {
+		return errorHandler({ err, req, res })
 	}
-)
+})
+
+router.post('/', validate(createReputationVld), authenticate(), async (req, res) => {
+	try {
+		const { facebook, rating } = req.body
+		const ctrlResp = await createReputationSrvc({
+			facebook,
+			rating,
+			byUserId: req.user._id
+		})
+		return resp({ status: 200, json: ctrlResp, req, res })
+	} catch (err) {
+		errorHandler({ err, res, req })
+	}
+})
+
+router.put('/', validate(updateReputationVld), authenticate(), async (req, res) => {
+	const { facebook } = req.body
+	return updateRatingSrvc({ facebook })
+		.then((data) => {
+			return res.status(200).json(data)
+		})
+		.catch((err) => errorHandler({ err, req, res }))
+})
 
 router.get('/me', authenticate(), async (req, res) => {
 	try {
-		const result = await reputationsSrvc.getUserReputation({ userId: req.user._id })
+		const result = await getUserReputationSrvc({ userId: req.user._id })
 		return res.status(result.status).json(result)
 	} catch (err) {
 		errorHandler({ err, req, res })
 	}
 })
-
-router.post(
-	'/',
-	authenticate(),
-	[body('facebook').isObject(), body('facebook.id').notEmpty(), body('facebook.url').notEmpty(), body('rating').isObject(), body('rating.currentValue').notEmpty()],
-
-	async (req, res) => {
-		try {
-			const { facebook, rating } = req.body
-			const reputation = await reputationsSrvc.createReputation({
-				facebook,
-				rating,
-				byUserId: req.user._id
-			})
-			return res.status(200).json({ data: reputation, status: 200 })
-		} catch (err) {
-			errorHandler({ err, res, req })
-		}
-	}
-)
-
-router.post(
-	'/',
-	authenticate(),
-	[body('facebook').notEmpty(), body('facebook.id').notEmpty(), body('facebook.url').notEmpty(), query('reputationId').custom(objectIdValidator)],
-
-	async (req, res) => {
-		const { facebook } = req.body
-		return reputationsSrvc
-			.updateRating({ facebook })
-			.then((data) => {
-				return res.status(200).json(data)
-			})
-			.catch((err) => errorHandler({ err, req, res }))
-	}
-)
-
-router.get('/blocking', async (req, res) => {
-	//setTimeout(()=>res.send('done'),10000)
-	const now = new Date().getTime()
-	while (new Date().getTime() < now + 10000) {}
-	res.send('done')
-})
-
 module.exports = router

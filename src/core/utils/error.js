@@ -67,7 +67,3 @@ exports.errorHandler = ({ err, req, res, next }) => {
 	//console.log('errObject no res')
 	return errObject
 }
-
-exports.objectIdValidator = (value) => {
-	return mongoose.Types.ObjectId.isValid(value)
-}

@@ -11,4 +11,10 @@ router.get('/blocking', async (req, res) => {
 	res.send('done')
 })
 
+router.post(
+	'/test',
+
+	async (req, res) => {}
+)
+
 module.exports = router

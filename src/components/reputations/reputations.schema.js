@@ -4,6 +4,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 const schemas = require('../../core/schemas')
 const { log } = require(`../../core/log`)
 const config = require('../../config')
+const { usersCollection } = require('../users/users.schema')
 
 const ReputationsSchema = new mongoose.Schema(
 	{
@@ -45,14 +46,14 @@ const ReputationsSchema = new mongoose.Schema(
 			enum: ['users', 'shops']
 		},
 		userId: {
-			//the user who the reputation belongs to
+			//the user who the reputation belongs to, optionnal
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'users'
+			ref: usersCollection
 		},
 		byUserId: {
 			//the user who created the reputation
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'users',
+			ref: usersCollection,
 			required: true
 		},
 		isActive: {
@@ -81,14 +82,14 @@ ReputationsSchema.plugin(uniqueValidator)
 
 ReputationsSchema.index({ 'facebook.id': 1, 'instagram.id': 1, 'linkdin.id': 1 }, { unique: true })
 
-const ReputationsCollection = 'reputations'
+const reputationsCollection = 'reputations'
 
-const ReputationsModel = mongoose.model(ReputationsCollection, ReputationsSchema)
+const ReputationsModel = mongoose.model(reputationsCollection, ReputationsSchema)
 ReputationsModel.on('index', (error) => {
 	if (error) log({ level: config.log.levels.names.error, message: error })
 })
 
 module.exports = {
 	ReputationsModel,
-	ReputationsCollection
+	reputationsCollection
 }

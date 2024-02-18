@@ -1,6 +1,6 @@
 {
   "name": "echocial",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Backend of Echocial. A mobile-first app for online reputation",
   "author": "Ahmed Derbala <derbala.ahmed531992@gmail.com>",
   "main": "src/main.js",

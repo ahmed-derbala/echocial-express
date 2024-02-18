@@ -11,3 +11,7 @@ exports.validate = (validator) => {
 		return next()
 	}
 }
+
+exports.objectIdValidator = (value) => {
+	return mongoose.Types.ObjectId.isValid(value)
+}

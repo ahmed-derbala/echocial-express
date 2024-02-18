@@ -1,23 +1,18 @@
 const { ReputationsModel } = require(`./reputations.schema`)
 const { errorHandler } = require('../../core/utils/error')
-const { paginateMongodb } = require('../../core/db/mongodb/pagination')
 const { log } = require('../../core/log')
+const { getReputationsRepo } = require('./reputations.repository')
 
-module.exports.getReputations = async ({ page, limit, searchText }) => {
+module.exports.getReputationsSrvc = async ({ page, limit, searchText }) => {
 	try {
-		let paginateMongodbOptions = { model: ReputationsModel, page, limit }
-		if (searchText) {
-			paginateMongodbOptions.match = { 'facebook.id': { $regex: searchText, $options: 'i' } }
-		}
-		const reputations = await paginateMongodb(paginateMongodbOptions)
-		reputations.status = 200
+		const reputations = await getReputationsRepo({ page, limit, searchText })
 		return reputations
 	} catch (err) {
-		errorHandler({ err })
+		return errorHandler({ err })
 	}
 }
 
-module.exports.getUserReputation = async ({ userId }) => {
+module.exports.getUserReputationSrvc = async ({ userId }) => {
 	try {
 		const data = await ReputationsModel.findOne({ userId }).lean()
 		let status = 200
@@ -28,7 +23,7 @@ module.exports.getUserReputation = async ({ userId }) => {
 	}
 }
 
-module.exports.createReputation = async ({ facebook, rating, byUserId }) => {
+module.exports.createReputationSrvc = async ({ facebook, rating, byUserId }) => {
 	try {
 		const fetchedReputation = await ReputationsModel.findOne({
 			facebook: { id: facebook.id }
@@ -48,7 +43,7 @@ module.exports.createReputation = async ({ facebook, rating, byUserId }) => {
 	}
 }
 
-module.exports.updateRating = async ({ reputationId, rating }) => {
+module.exports.updateRatingSrvc = async ({ reputationId, rating }) => {
 	const fetchedReputation = await ReputationsModel.findOne({
 		_id: reputationId
 	}).lean()
