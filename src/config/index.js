@@ -41,7 +41,14 @@ let app = {
 		origin: '*',
 		//methods: "GET,PUT,POST,DELETE,PATCH",
 		credentials: true
-	}
+	},
+	helmet: {
+		isActive: false,
+		options: {
+			crossOriginResourcePolicy: false
+		}
+	},
+	views: false
 }
 
 /**
@@ -60,7 +67,9 @@ if (!user && !password) uri = `mongodb://${host}:${port}/${name}`
 else uri = `mongodb://${user}:${password}@${host}:${port}/${name}`
 
 let db = {
-	mongo: {
+	primary: 'mongodb',
+	mongodb: {
+		isActive: true,
 		host,
 		port,
 		name,
@@ -110,7 +119,7 @@ const transportsOptions = {
 	},
 	mongo: {
 		level: 'startup', //the level to start logging to mongodb
-		db: db.mongo.uri,
+		db: db.mongodb.uri,
 		options: {
 			useUnifiedTopology: true
 		},
@@ -128,17 +137,19 @@ const levelsPriority = {
 	socket: 3,
 	debug: 4,
 	success: 5,
-	startup: 6
+	startup: 6,
+	shutdown: 7
 }
 
 const levelsNames = {
 	error: 'error',
 	warn: 'warn',
 	verbose: 'verbose',
-	socket: 'socket',
+	socketio: 'socketio',
 	debug: 'debug',
 	success: 'success',
-	startup: 'startup'
+	startup: 'startup',
+	shutdown: 'shutdown'
 }
 
 const defaultConfig = {
@@ -161,6 +172,8 @@ const defaultConfig = {
 	},
 	db,
 	log: {
+		kind: 'winston', //winston, simple
+		reqDefaultLog: 'morgan_log',
 		isActive: true,
 		createLoggerOptions: {
 			transports: [
@@ -187,7 +200,7 @@ const defaultConfig = {
 				startup: 'white blueBG'
 			},
 			names: levelsNames,
-			allowed: [levelsNames.error, levelsNames.warn, levelsNames.verbose, levelsNames.socket, levelsNames.debug, levelsNames.success, levelsNames.startup]
+			allowed: [levelsNames.error, levelsNames.warn, levelsNames.verbose, levelsNames.socketio, levelsNames.debug, levelsNames.success, levelsNames.startup, levelsNames.shutdown]
 		},
 		label: {
 			isActive: true
@@ -229,8 +242,8 @@ const defaultConfig = {
 	socketio: {
 		options: {
 			cors: {
-				// origin: "*",//doesnt work
-				origin: ['http://127.0.0.1:3666', 'http://localhost:3666'],
+				origin: '*',
+				//origin: ['http://127.0.0.1:3666', 'http://localhost:3666'],
 				credentials: true,
 				method: ['GET', 'POST'],
 				transports: ['websocket', 'polling']

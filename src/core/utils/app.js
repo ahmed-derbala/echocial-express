@@ -16,10 +16,11 @@ const swaggerUi = require('swagger-ui-express')
 const swaggerSpec = require('../swagger/swagger')
 
 let app = express()
+
 app.use(cors(config.app.corsOptions))
 app.use('/', rateLimit(config.app.apiLimiter))
 app.use(compression())
-app.use(helmet({ crossOriginResourcePolicy: false }))
+if (config.app.helmet.isActive) app.use(helmet(config.app.helmet.options))
 app.use(tidHandler)
 app.use(useragent.express())
 app.use(express.json())
@@ -39,7 +40,20 @@ app.use(
 
 app.use(config.app.swagger.endpoint, swaggerUi.serve, swaggerUi.setup(swaggerSpec.mainDef))
 
-loaders.routes(app) //load routes
+if (config.app.views) {
+	// view engine setup
+	const expressLayouts = require('express-ejs-layouts')
+
+	app.use(expressLayouts)
+	app.set('layout', './index/views/layout', { author: 'app' })
+	app.set('views', `${process.cwd()}/src/components`)
+	app.set('view engine', 'ejs')
+	app.use(express.static(`public`))
+
+	loaders.load({ app, rootDir: '/components', urlPrefix: '/', fileSuffix: '.render.js' }) //load views
+}
+
+loaders.load({ app, rootDir: '/components', urlPrefix: '/api/', fileSuffix: '.controller.js' }) //load api
 
 //when no api route matched
 app.use((req, res, next) => {

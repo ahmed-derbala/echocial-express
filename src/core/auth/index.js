@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { SessionsModel } = require(`../../api/sessions/sessions.schema`)
+const { SessionsModel } = require(`../../components/sessions/sessions.schema`)
 const { errorHandler } = require('../utils/error')
 const config = require(`../../config`)
 

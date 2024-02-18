@@ -1,5 +1,6 @@
 const { validationResult } = require('express-validator')
-const { log, sanitizeReq } = require(`../log`)
+const { log } = require(`../log`)
+const { sanitizeReq } = require('../log/sanitize-req')
 const noLogStatuses = [401]
 
 /**
@@ -65,17 +66,6 @@ exports.errorHandler = ({ err, req, res, next }) => {
 	}
 	//console.log('errObject no res')
 	return errObject
-}
-
-/**
- * checking errors returned by validator, it should be called directly after validator on routes
- */
-exports.validatorCheck = (req, res, next) => {
-	const errors = validationResult(req)
-	if (!errors.isEmpty()) {
-		return this.errorHandler({ err: errors, req, res })
-	}
-	return next()
 }
 
 exports.objectIdValidator = (value) => {
