@@ -10,7 +10,7 @@ const { resp } = require('../../core/helpers/resp')
 router.get('/', validate(getReputationsVld), authenticate(), async (req, res) => {
 	try {
 		const result = await getReputationsSrvc({ page: req.query.page, limit: req.query.limit, searchText: req.query.searchText })
-		return resp({ status: 200, json: result, req, res })
+		return resp({ status: 200, ...result, req, res })
 	} catch (err) {
 		return errorHandler({ err, req, res })
 	}

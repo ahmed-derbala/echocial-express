@@ -3,25 +3,10 @@ const { errorHandler } = require('../../core/utils/error')
 const { paginateMongodb } = require('../../core/db/mongodb/pagination')
 const { RatingsModel } = require(`./ratings.schema`)
 const reputationsSrvc = require('../reputations/reputations.service')
+const { findOneRatingRepo, updateRatingCurrentValueRepo } = require('./ratings.repository')
+const { log } = require('../../core/log')
 
-/*
-module.exports.getReputations = async (params) => {
-	return paginate({ model: ReputationsModel })
-		.then(users => {
-			return users
-		})
-		.catch(err => errorHandler({ err }))
-}
-
-module.exports.createReputaion = async ({facebook}) => {
-	return ReputationsModel.create({facebook})
-		.then(createdReputaion => {
-			return createdReputaion
-		})
-		.catch(err => errorHandler({ err }))
-}
-*/
-module.exports.setRating = async ({ userId, currentValue, reputationId }) => {
+module.exports.createOrUpdateRatingSrvc = async ({ userId, currentValue, reputationId }) => {
 	const existedRating = await RatingsModel.findOne({
 		userId,
 		reputationId
@@ -57,4 +42,21 @@ module.exports.setRating = async ({ userId, currentValue, reputationId }) => {
 			return { reputationUpdatedRating, updatedRating }
 		})
 		.catch((err) => errorHandler({ err }))
+}
+
+module.exports.updateRatingCurrentValueSrvc = async ({ currentValue, userId, reputationId }) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const fetchedRating = await findOneRatingRepo({ reputationId, userId })
+			if (!fetchedRating) {
+				log({ level: 'warn', message: `no rating found with ${JSON.stringify({ userId, reputationId })}` })
+				return resolve(null)
+			}
+
+			const updatedRatingInfos = await updateRatingCurrentValueRepo({ ratingId, newCurrentValue: currentValue, oldCurrentValue: fetchedRating.currentValue })
+			resolve(updatedRatingInfos)
+		} catch (err) {
+			reject(errorHandler({ err }))
+		}
+	})
 }

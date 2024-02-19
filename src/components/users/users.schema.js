@@ -57,6 +57,10 @@ const schema = new mongoose.Schema(
 		address: {
 			type: schemas.address,
 			select: false
+		},
+		settings: {
+			type: schemas.settings,
+			select: false
 		}
 	},
 	{ timestamps: true }
