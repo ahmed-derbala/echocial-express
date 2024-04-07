@@ -53,7 +53,7 @@ module.exports.signin = async ({ loginId, password, req }) => {
 			if (config.NODE_ENV === 'production') return { message: 'loginId or password is not correct', data: null, status: 409 }
 			return { message: 'password incorrect', data: null, status: 409 }
 		}
-		const token = jwt.sign({ user: fetchedUser, req: { ip: req.ip, headers: { 'user-agent': req.headers['user-agent'] } } }, config.auth.jwt.privateKey, { expiresIn: '30d' })
+		const token = jwt.sign({ user: fetchedUser, req: { ip: req.ip, headers: { 'user-agent': req.headers['user-agent'] } } }, config.auth.jwt.privateKey, { expiresIn: config.auth.jwt.expiresIn })
 
 		SessionsModel.create({
 			token,
@@ -63,8 +63,8 @@ module.exports.signin = async ({ loginId, password, req }) => {
 				ip: req.ip
 			}
 		})
-
-		return fetchedUser
+		console.log({ fetchedUser })
+		return { user: fetchedUser, token }
 	} catch (err) {
 		errorHandler({ err })
 	}

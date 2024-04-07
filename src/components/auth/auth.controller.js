@@ -33,7 +33,7 @@ router.post('/signin', [check('loginId').trim().isString().notEmpty(), check('pa
 	try {
 		const { loginId, password } = req.body
 		const signinResp = await authSrvc.signin({ loginId, password, req })
-		return resp({ status: 200, json: signinResp, req, res })
+		return resp({ status: 200, data: signinResp, req, res })
 	} catch (err) {
 		errorHandler({ err, req, res })
 	}

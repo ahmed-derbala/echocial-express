@@ -3,7 +3,7 @@ const { errorHandler } = require('../../core/utils/error')
 const { paginateMongodb } = require('../../core/db/mongodb/pagination')
 const mongoose = require('mongoose')
 const { log } = require('../../core/log')
-const { createUserRepo, findOneUserRepo } = require('./users.repository')
+const { createUserRepo, findOneUserRepo, updateUserRepo } = require('./users.repository')
 
 module.exports.getUsers = async (params) => {
 	return paginate({ model: UsersModel })

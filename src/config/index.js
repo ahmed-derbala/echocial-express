@@ -167,7 +167,8 @@ const defaultConfig = {
 	auth: {
 		saltRounds: 10,
 		jwt: {
-			privateKey: packagejson.name
+			privateKey: packagejson.name,
+			expiresIn: '90d'
 		}
 	},
 	db,
