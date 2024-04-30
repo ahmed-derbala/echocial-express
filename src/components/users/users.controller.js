@@ -19,7 +19,7 @@ router.get('/', authenticate(), async (req, res) => {
 router.get('/profile', authenticate(), async (req, res) => {
 	try {
 		const profile = await usersSrvc.getProfile({ loginId: req.query.loginId, userId: req.user._id, req })
-		return resp({ status: 200, json: profile, req, res })
+		return resp({ status: 200, data: profile, req, res })
 	} catch (err) {
 		errorHandler({ err, req, res })
 	}

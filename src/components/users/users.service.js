@@ -20,12 +20,7 @@ module.exports.getProfile = async ({ loginId, userId, req }) => {
 		let $or = [{ email: loginId }, { userName: loginId }, { 'phone.shortNumber': loginId }]
 		if (mongoose.isValidObjectId(loginId)) $or.push({ _id: loginId })
 
-		return UsersModel.findOne({ $or })
-			.select('+profile')
-			.lean()
-			.then((data) => {
-				return { status: 200, data }
-			})
+		return UsersModel.findOne({ $or }).select('+profile').lean()
 	} catch (err) {
 		errorHandler({ err })
 	}
