@@ -1,12 +1,12 @@
 {
   "name": "echocial",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Backend of Echocial. A mobile-first app for online reputation",
   "author": "Ahmed Derbala <derbala.ahmed531992@gmail.com>",
   "main": "src/main.js",
   "private": true,
   "engines": {
-    "node": "20"
+    "node": "22"
   },
   "repository": {
     "type": "git",
@@ -51,25 +51,25 @@
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "express": "^5.0.0-beta.1",
-    "express-rate-limit": "^7.2.0",
+    "express-rate-limit": "^7.4.0",
     "express-useragent": "^1.0.15",
-    "express-validator": "^7.0.1",
+    "express-validator": "^7.2.0",
     "express-winston": "^4.2.0",
     "helmet": "^7.1.0",
     "ip": "^2.0.1",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.3.2",
-    "mongoose-unique-validator": "^5.0.0",
+    "mongoose": "^8.5.3",
+    "mongoose-unique-validator": "^5.0.1",
     "morgan": "^1.10.0",
-    "pm2": "^5.3.1",
+    "pm2": "^5.4.2",
     "socket.io": "^4.7.5",
-    "swagger-ui-express": "^5.0.0",
-    "winston": "^3.13.0",
+    "swagger-ui-express": "^5.0.1",
+    "winston": "^3.14.2",
     "winston-mongodb": "^5.1.1"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0",
-    "npm-check-updates": "^16.14.20",
-    "prettier": "^3.2.5"
+    "nodemon": "^3.1.4",
+    "npm-check-updates": "^17.0.6",
+    "prettier": "^3.3.3"
   }
 }

@@ -46,9 +46,13 @@ router.post('/signup', validate(signupVld), async (req, res) => {
 
 router.post('/signin', validate(signinVld), async (req, res) => {
 	try {
-		const { signinKey, signinKind, password } = req.body
-		const signinResp = await signinSrvc({ signinKey, signinKind, password, req })
-		return resp({ status: 200, data: signinResp, req, res })
+		const { email, username, phone, password } = req.body
+		const filter = pickOneFilter({ filters: { email, username, phone } })
+		const user = await signinSrvc({ filter, password, select: '_id' })
+		if (!user) return resp({ status: 400, data: null, message: `no user found with ${filter}`, req, res })
+
+		const token = createNewSession({ user, req })
+		return resp({ status: 200, data: { user, token }, req, res })
 	} catch (err) {
 		errorHandler({ err, req, res })
 	}

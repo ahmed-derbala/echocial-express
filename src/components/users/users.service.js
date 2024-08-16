@@ -1,11 +1,9 @@
 const { UsersModel } = require(`./users.schema`)
 const { errorHandler } = require('../../core/utils/error')
-const { paginateMongodb } = require('../../core/db/mongodb/pagination')
 const mongoose = require('mongoose')
 const { log } = require('../../core/log')
 const { createUserRepo, findOneUserRepo, updateUserRepo } = require('./users.repository')
 const bcrypt = require('bcrypt')
-const jwt = require('jsonwebtoken')
 const config = require(`../../config`)
 const { makeAuthKeyQuery } = require('./users.helper')
 
@@ -82,28 +80,23 @@ module.exports.createUserSrvc = async ({ email, username, phone, password }) => 
 		*/
 }
 
-module.exports.signinSrvc = async ({ signinKey, signinKind, password, req }) => {
+module.exports.signinSrvc = async ({ filter, password }) => {
 	try {
-		const authKeyQuery = makeAuthKeyQuery({ key: signinKey, kind: signinKind })
-
-		//let $or = [{ email: loginId }, { username: loginId }, { 'phone.shortNumber': loginId }]
-		//if (mongoose.isValidObjectId(loginId)) $or.push({ _id: loginId })
-
-		let fetchedAuth = await findOneAuthSrvc({ key: signinKey, kind: signinKind, select: '+password' })
-		if (!fetchedAuth) {
+		let user = await findOneUserSrvc({ filter, select: '+password' })
+		if (!user) {
 			if (config.NODE_ENV === 'production') return { message: 'loginId or password is not correct', data: null, status: 409 }
 			return { message: 'no user found with that loginId', data: null, status: 409 }
 		}
 		//user found, check password
-		const passwordCompare = bcrypt.compareSync(password, fetchedAuth.password)
+		const passwordCompare = bcrypt.compareSync(password, user.password)
 
-		delete fetchedAuth.password //we dont need password anymore
+		delete user.password //we dont need password anymore
 		if (passwordCompare == false) {
 			if (config.NODE_ENV === 'production') return { message: 'loginId or password is not correct', data: null, status: 409 }
 			return { message: 'password incorrect', data: null, status: 409 }
 		}
 
-		return { auth: fetchedAuth, token }
+		return user
 	} catch (err) {
 		errorHandler({ err })
 	}
