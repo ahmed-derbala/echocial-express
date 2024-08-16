@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 //const enums = require('../../helpers/enums')
-const schemas = require('../../core/schemas')
 const { log } = require(`../../core/log`)
 const config = require('../../config')
 const { usersCollection } = require('../users/users.schema')
+const phoneSchema = require('../../core/schemas/phone.schema')
 
 const ReputationsSchema = new mongoose.Schema(
 	{
@@ -39,7 +39,7 @@ const ReputationsSchema = new mongoose.Schema(
 			}
 		},
 		phone: {
-			type: schemas.phone
+			type: phoneSchema
 		},
 		kind: {
 			type: String,

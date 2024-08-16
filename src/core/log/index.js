@@ -15,14 +15,14 @@ const { removeEmptyKeys } = require('../helpers/removeEmptyKeys')
  * @param {string} log.level
  * @param {string} log.message
  */
-let log = (module.exports.log = ({ level, label, error, message, req }) => {
+let log = (module.exports.log = ({ level, label, error, message, req, data }) => {
 	switch (config.log.kind) {
 		case 'winston':
-			winstonLogger({ level, label, error, message, req })
+			winstonLogger({ level, label, error, message, req, data })
 			break
 
 		case 'simple':
-			simplelogger({ level, label, error, message, req })
+			simplelogger({ level, label, error, message, req, data })
 			break
 	}
 })

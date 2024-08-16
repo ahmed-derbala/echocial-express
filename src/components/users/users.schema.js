@@ -1,33 +1,39 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 const config = require(`../../config`)
-const schemas = require('../../core/schemas')
+const phoneSchema = require('../../core/schemas/phone.schema')
+const addressSchema = require('../../core/schemas/address.schema')
+const settingsSchema = require('../../core/schemas/settings.schema')
+const profileSchema = require('../../core/schemas/profile.schema')
+
 const enums = require('../../core/enums')
 
 const schema = new mongoose.Schema(
 	{
-		profile: {
-			type: schemas.profile,
-			select: false
-		},
-		userName: {
+		username: {
 			type: String,
 			required: false
 		},
 		email: {
 			type: String,
-			required: true,
-			unique: false //true
+			required: false,
+			unique: true
+		},
+		phone: {
+			type: phoneSchema,
+			select: false,
+			required: false
 		},
 		password: {
 			type: String,
 			required: true,
 			select: false
 		},
-		phone: {
-			type: schemas.phone,
+		profile: {
+			type: profileSchema,
 			select: false
 		},
+
 		role: {
 			type: Object,
 			enum: config.users.roles,
@@ -55,11 +61,11 @@ const schema = new mongoose.Schema(
 			}
 		],
 		address: {
-			type: schemas.address,
+			type: addressSchema,
 			select: false
 		},
 		settings: {
-			type: schemas.settings,
+			type: settingsSchema,
 			select: false
 		}
 	},

@@ -1,9 +1,9 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 const enums = require('../../helpers/enums')
-const schemas = require('../../helpers/schemas')
 const { log } = require(`../../utils/log`)
 const config = require('../../config')
+const phoneSchema = require('../../core/schemas/phone.schema')
 
 const ShopsSchema = new mongoose.Schema(
 	{
@@ -17,7 +17,7 @@ const ShopsSchema = new mongoose.Schema(
 			unique: false //true
 		},
 		phone: {
-			type: schemas.phone,
+			type: phoneSchema,
 			select: false
 		},
 		category: {

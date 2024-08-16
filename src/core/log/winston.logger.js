@@ -6,7 +6,7 @@ const { sanitizeReq } = require('./sanitize-req')
 winston.addColors(config.log.levels.colors)
 const logger = winston.createLogger(config.log.createLoggerOptions)
 
-const winstonLogger = ({ level, label, error, message, req }) => {
+const winstonLogger = ({ level, label, error, message, req, data }) => {
 	let logObject = {}
 	level = level ? level : 'debug'
 	if (!config.log.isActive || !config.log.levels.allowed.includes(level)) return null
@@ -14,6 +14,8 @@ const winstonLogger = ({ level, label, error, message, req }) => {
 	if (config.log.levels.isActive) logObject.level = level
 	if (config.log.label.isActive) logObject.label = label ? label : null
 	if (config.log.error.isActive) logObject.error = error ? error : null
+	if (config.log.data.isActive) logObject.data = data ? data : null
+
 	logObject.message = message ? message : null
 	if (config.log.req.isActive) {
 		if (message === config.log.reqDefaultLog) {

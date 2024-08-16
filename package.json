@@ -8,6 +8,13 @@
   "engines": {
     "node": "20"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ahmed-derbala/echocial-express"
+  },
+  "keywords": [
+    "echocial"
+  ],
   "scripts": {
     "first-time:local": "cp src/config/index.js src/config/local.config.js && npm run i && npm run start:local",
     "first-time:prod": "cp src/config/index.js src/config/production.config.js && npm run i && npm run start:prod-pm2-monit",
@@ -37,13 +44,6 @@
     "restore": "cp backups/package.json.backup package.json && cp backups/package-lock.json.backup package-lock.json && mv backups/node_modules.backup node_modules && npm run start:local",
     "ncu": "npm i -D npm-check-updates -f && ncu -u"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ahmed-derbala/echocial-express"
-  },
-  "keywords": [
-    "echocial"
-  ],
   "dependencies": {
     "bcrypt": "^5.1.1",
     "cli-color": "^2.0.4",

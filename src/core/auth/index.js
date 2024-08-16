@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken')
-const { SessionsModel } = require(`../../components/sessions/sessions.schema`)
+const { SessionsModel } = require(`./sessions.schema`)
 const { errorHandler } = require('../utils/error')
 const config = require(`../../config`)
 
@@ -55,4 +55,19 @@ exports.authenticate = (params) => {
 			errorHandler({ err, req, res })
 		}
 	}
+}
+
+exports.createNewSession = ({ user, req }) => {
+	const token = jwt.sign({ user, req: { ip: req.ip, headers: { 'user-agent': req.headers['user-agent'] } } }, config.auth.jwt.privateKey, { expiresIn: config.auth.jwt.expiresIn })
+
+	SessionsModel.create({
+		token,
+		user,
+		req: {
+			headers: req.headers,
+			ip: req.ip
+		}
+	})
+
+	return token
 }

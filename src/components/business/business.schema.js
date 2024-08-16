@@ -1,10 +1,10 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
-const schemas = require('../../helpers/schemas')
+const phoneSchema = require('../../core/schemas/phone.schema')
 
 const schema = new mongoose.Schema(
 	{
-		userName: {
+		username: {
 			type: String,
 			required: false
 		},
@@ -14,7 +14,7 @@ const schema = new mongoose.Schema(
 			unique: false //true
 		},
 		phone: {
-			type: schemas.phone,
+			type: phoneSchema,
 			select: false
 		},
 		isActive: {
