@@ -1,13 +1,23 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
-//const enums = require('../../helpers/enums')
 const { log } = require(`../../core/log`)
 const config = require('../../config')
 const { usersCollection } = require('../users/users.schema')
 const phoneSchema = require('../../core/schemas/phone.schema')
-
+const { langEnum } = require('../../core/enums/lang.enum')
 const ReputationsSchema = new mongoose.Schema(
 	{
+		experience: {
+			text: {
+				type: String,
+				required: false
+			},
+			lang: {
+				type: String,
+				required: false,
+				enum: langEnum
+			}
+		},
 		facebook: {
 			id: {
 				type: String,
@@ -45,12 +55,12 @@ const ReputationsSchema = new mongoose.Schema(
 			type: String,
 			enum: ['users', 'shops']
 		},
-		userId: {
+		owner: {
 			//the user who the reputation belongs to, optionnal
 			type: mongoose.Schema.Types.ObjectId,
 			ref: usersCollection
 		},
-		byUserId: {
+		createdBy: {
 			//the user who created the reputation
 			type: mongoose.Schema.Types.ObjectId,
 			ref: usersCollection,

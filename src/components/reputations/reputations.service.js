@@ -23,7 +23,7 @@ module.exports.getUserReputationSrvc = async ({ userId }) => {
 	}
 }
 
-module.exports.createReputationSrvc = async ({ facebook, rating, byUserId }) => {
+module.exports.createReputationSrvc = async ({ facebook, rating, createdBy }) => {
 	try {
 		const fetchedReputation = await ReputationsModel.findOne({
 			facebook: { id: facebook.id }
