@@ -4,24 +4,21 @@ const { check, query, param } = require('express-validator')
 const { authenticate } = require(`../../core/auth`)
 const ratingsSrvc = require('./ratings.service')
 const { errorHandler } = require('../../core/utils/error')
-const { patchRatingVld } = require('./ratings.validator')
+const { patchRatingVld, createRatingVld } = require('./ratings.validator')
 const { validate } = require('../../core/validation')
-const { updateRatingCurrentValueSrvc } = require('./ratings.service')
+const { updateRatingCurrentValueSrvc, createOrUpdateRatingSrvc } = require('./ratings.service')
 const { resp } = require('../../core/helpers/resp')
 const { log } = require('../../core/log')
 const { ratingNotFoundTrns } = require('./ratings.transalation')
 
-router.post('/', authenticate(), [check('currentValue').notEmpty().isNumeric(), check('reputationId').notEmpty()], async (req, res) => {
+router.post('/', authenticate(), validate(createRatingVld), async (req, res) => {
 	try {
-		return ratingsSrvc
-			.setRating({
-				userId: req.user._id,
-				currentValue: req.body.currentValue,
-				reputationId: req.body.reputationId
-			})
-			.then((data) => {
-				return res.status(200).json({ status: 200, data })
-			})
+		const rating = await createOrUpdateRatingSrvc({
+			userId: req.user._id,
+			currentValue: req.body.currentValue,
+			reputationId: req.body.reputationId
+		})
+		return resp({ status: 200, data: rating, req, res })
 	} catch (err) {
 		errorHandler({ err, req, res })
 	}

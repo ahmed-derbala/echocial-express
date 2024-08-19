@@ -1,3 +1,1 @@
-exports.langEnum = {
-	names: ['en', 'ar', 'fr', 'tn', 'tn-fr', 'tn-ar']
-}
+exports.langEnum = ['en', 'ar', 'fr', 'tn']

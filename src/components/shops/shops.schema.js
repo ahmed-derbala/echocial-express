@@ -24,13 +24,10 @@ const ShopsSchema = new mongoose.Schema(
 			type: string,
 			enum: enums.categories.Shops
 		},
-		userId: {
+		owner: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: 'users'
-		},
-		enterpriseId: {
-			type: mongoose.Schema.Types.ObjectId,
-			ref: 'enterprises'
+			ref: 'users',
+			required: false
 		},
 		isActive: {
 			type: Boolean,

@@ -35,9 +35,8 @@ module.exports.createReputationSrvc = async ({ facebook, rating, createdBy }) =>
 			}
 
 		rating.ratersCount = 1
-		return ReputationsModel.create({ facebook, rating, byUserId }).then((createdReputation) => {
-			return createdReputation
-		})
+		const createdReputation = await ReputationsModel.create({ facebook, rating, createdBy })
+		return createdReputation
 	} catch (err) {
 		errorHandler({ err })
 	}

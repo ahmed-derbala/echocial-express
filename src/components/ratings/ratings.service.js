@@ -35,7 +35,7 @@ module.exports.createOrUpdateRatingSrvc = async ({ userId, currentValue, reputat
 		}
 	)
 		.then(async (updatedRating) => {
-			const reputationUpdatedRating = await reputationsSrvc.updateRating({
+			const reputationUpdatedRating = await reputationsSrvc.updateRatingSrvc({
 				reputationId,
 				rating: { currentValue }
 			})

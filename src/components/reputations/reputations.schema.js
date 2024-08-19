@@ -51,14 +51,12 @@ const ReputationsSchema = new mongoose.Schema(
 		phone: {
 			type: phoneSchema
 		},
-		kind: {
+		linkedToKind: {
 			type: String,
 			enum: ['users', 'shops']
 		},
-		owner: {
-			//the user who the reputation belongs to, optionnal
-			type: mongoose.Schema.Types.ObjectId,
-			ref: usersCollection
+		linkedToId: {
+			type: mongoose.Schema.Types.ObjectId
 		},
 		createdBy: {
 			//the user who created the reputation

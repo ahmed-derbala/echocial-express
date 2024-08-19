@@ -22,9 +22,9 @@ router.post('/', validate(createReputationVld), authenticate(), async (req, res)
 		const ctrlResp = await createReputationSrvc({
 			facebook,
 			rating,
-			byUserId: req.user._id
+			createdBy: req.user._id
 		})
-		return resp({ status: 200, json: ctrlResp, req, res })
+		return resp({ status: 200, data: ctrlResp, req, res })
 	} catch (err) {
 		errorHandler({ err, res, req })
 	}
