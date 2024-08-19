@@ -21,7 +21,8 @@ module.exports.makeAuthKeyQuery = ({ key, kind }) => {
 }
 
 module.exports.pickOneFilter = ({ filters }) => {
-	const keyWithValue = Object.keys(filters).find((key) => filters[key] !== null)
+	console.log(filters)
+	const keyWithValue = Object.keys(filters).find((key) => filters[key] !== null && filters[key] !== undefined)
 
 	return { [keyWithValue]: filters[keyWithValue] }
 }

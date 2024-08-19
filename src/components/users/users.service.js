@@ -104,6 +104,7 @@ module.exports.signinSrvc = async ({ filter, password }) => {
 
 const findOneUserSrvc = (module.exports.findOneUserSrvc = async ({ filter, select }) => {
 	try {
+		log({ level: 'debug', data: { filter, select } })
 		const fetchedUser = await findOneUserRepo({ filter, select })
 		return fetchedUser
 	} catch (err) {
