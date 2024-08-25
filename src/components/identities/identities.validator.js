@@ -5,4 +5,4 @@ module.exports.updateReputationVld = [body('facebook').notEmpty(), body('faceboo
 
 module.exports.createReputationVld = [body('facebook').isObject(), body('facebook.id').notEmpty(), body('facebook.url').notEmpty(), body('rating').isObject(), body('rating.currentValue').notEmpty()]
 
-module.exports.getReputationsVld = [query('page').isNumeric().notEmpty().optional(), query('limit').isNumeric().notEmpty().optional(), query('searchText').trim().isString().optional()]
+module.exports.getidentitiesVld = [query('page').isNumeric().notEmpty().optional(), query('limit').isNumeric().notEmpty().optional(), query('searchText').trim().isString().optional()]

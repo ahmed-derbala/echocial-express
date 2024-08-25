@@ -1,19 +1,17 @@
 const express = require('express')
 const router = express.Router()
-const { check, query, param } = require('express-validator')
 const { authenticate } = require(`../../core/auth`)
-const ratingsSrvc = require('./ratings.service')
 const { errorHandler } = require('../../core/utils/error')
-const { patchRatingVld, createRatingVld } = require('./ratings.validator')
+const { patchRatingVld, createRatingVld } = require('./reviews.validator')
 const { validate } = require('../../core/validation')
-const { updateRatingCurrentValueSrvc, createOrUpdateRatingSrvc } = require('./ratings.service')
+const { updateRatingCurrentValueSrvc, createOrUpdatereviewsrvc, findReviews } = require('./reviews.service')
 const { resp } = require('../../core/helpers/resp')
 const { log } = require('../../core/log')
-const { ratingNotFoundTrns } = require('./ratings.transalation')
+const { ratingNotFoundTrns } = require('./reviews.transalation')
 
-router.post('/', authenticate(), validate(createRatingVld), async (req, res) => {
+router.post('/create', authenticate(), validate(createRatingVld), async (req, res) => {
 	try {
-		const rating = await createOrUpdateRatingSrvc({
+		const rating = await createOrUpdatereviewsrvc({
 			userId: req.user._id,
 			currentValue: req.body.currentValue,
 			reputationId: req.body.reputationId
@@ -43,4 +41,14 @@ router.patch('/', validate(patchRatingVld), authenticate(), async (req, res) => 
 	//})
 })
 
+router.post('/find', authenticate(), async (req, res) => {
+	try {
+		const { page, limit } = req.query
+		const { match, select } = req.body
+		const reviews = await findReviews({ match, select, page, limit })
+		return resp({ status: 200, data: reviews, req, res })
+	} catch (err) {
+		errorHandler({ err, req, res })
+	}
+})
 module.exports = router

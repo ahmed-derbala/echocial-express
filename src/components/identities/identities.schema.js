@@ -4,19 +4,11 @@ const { log } = require(`../../core/log`)
 const config = require('../../config')
 const { usersCollection } = require('../users/users.schema')
 const phoneSchema = require('../../core/schemas/phone.schema')
-const { langEnum } = require('../../core/enums/lang.enum')
-const ReputationsSchema = new mongoose.Schema(
+const schema = new mongoose.Schema(
 	{
-		experience: {
-			text: {
-				type: String,
-				required: false
-			},
-			lang: {
-				type: String,
-				required: false,
-				enum: langEnum
-			}
+		name: {
+			type: String,
+			required: true
 		},
 		facebook: {
 			id: {
@@ -48,15 +40,14 @@ const ReputationsSchema = new mongoose.Schema(
 				required: false
 			}
 		},
+		web: {
+			url: {
+				type: String,
+				required: false
+			}
+		},
 		phone: {
 			type: phoneSchema
-		},
-		linkedToKind: {
-			type: String,
-			enum: ['users', 'shops']
-		},
-		linkedToId: {
-			type: mongoose.Schema.Types.ObjectId
 		},
 		createdBy: {
 			//the user who created the reputation
@@ -69,7 +60,7 @@ const ReputationsSchema = new mongoose.Schema(
 			default: true
 		},
 		rating: {
-			currentValue: {
+			value: {
 				type: Number,
 				required: true
 			},
@@ -81,23 +72,30 @@ const ReputationsSchema = new mongoose.Schema(
 				type: Date,
 				default: Date.now()
 			}
+		},
+		linkedToKind: {
+			type: String,
+			enum: ['users', 'shops']
+		},
+		linkedToId: {
+			type: mongoose.Schema.Types.ObjectId
 		}
 	},
 	{ timestamps: true }
 )
 
-ReputationsSchema.plugin(uniqueValidator)
+schema.plugin(uniqueValidator)
 
-ReputationsSchema.index({ 'facebook.id': 1, 'instagram.id': 1, 'linkdin.id': 1 }, { unique: true })
+schema.index({ 'facebook.id': 1, 'instagram.id': 1, 'linkdin.id': 1 }, { unique: true })
 
-const reputationsCollection = 'reputations'
+const identitiesCollection = 'identities'
 
-const ReputationsModel = mongoose.model(reputationsCollection, ReputationsSchema)
-ReputationsModel.on('index', (error) => {
+const identitiesModel = mongoose.model(identitiesCollection, schema)
+identitiesModel.on('index', (error) => {
 	if (error) log({ level: config.log.levels.names.error, message: error })
 })
 
 module.exports = {
-	ReputationsModel,
-	reputationsCollection
+	identitiesModel,
+	identitiesCollection
 }

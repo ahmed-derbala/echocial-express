@@ -1,16 +1,16 @@
-const { ReputationsModel } = require(`./reputations.schema`)
+const { identitiesModel } = require(`./identities.schema`)
 const { errorHandler } = require('../../core/utils/error')
 const { paginateMongodb } = require('../../core/db/mongodb/pagination')
 const { log } = require('../../core/log')
 
-module.exports.getReputationsRepo = async ({ page, limit, searchText }) => {
+module.exports.getidentitiesRepo = async ({ page, limit, searchText }) => {
 	try {
-		let paginateMongodbOptions = { model: ReputationsModel, page, limit }
+		let paginateMongodbOptions = { model: identitiesModel, page, limit }
 		if (searchText) {
 			paginateMongodbOptions.match = { 'facebook.id': { $regex: searchText, $options: 'i' } }
 		}
-		const reputations = await paginateMongodb(paginateMongodbOptions)
-		return reputations
+		const identities = await paginateMongodb(paginateMongodbOptions)
+		return identities
 	} catch (err) {
 		return errorHandler({ err })
 	}

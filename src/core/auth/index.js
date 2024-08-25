@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken')
 const { SessionsModel } = require(`./sessions.schema`)
 const { errorHandler } = require('../utils/error')
 const config = require(`../../config`)
+const { resp } = require('../helpers/resp')
 
 exports.authenticate = (params) => {
 	return function (req, res, next) {
@@ -19,7 +20,7 @@ exports.authenticate = (params) => {
 
 			if (req.headers.token == null && params.tokenRequired == true) {
 				if (config.NODE_ENV === 'production') return res.status(403).json({ message: 'Please signin' })
-				return res.status(403).json({ message: 'No token found on headers, cookies or query' })
+				return resp({ message: 'No token found on headers, cookies or query', status: 403, data: null, req, res })
 			}
 			req.headers.token = req.headers.token.replace('Bearer ', '')
 
@@ -35,18 +36,21 @@ exports.authenticate = (params) => {
 				//check if token is in session
 				const session = await SessionsModel.findOne({ token: req.headers.token }).select('token').lean()
 				if (session == null) {
-					return res.status(403).json({ message: 'No session created with provided token' })
+					return resp({ message: 'No session created with provided token', data: null, status: 403, req, res })
 				}
 				//console.log(decoded, 'decoded');
 				//check if we have valid user object
 				if (decoded.user == null) {
-					return res.status(401).json({
+					return resp({
 						message: `token has no valid user object`,
-						data: decoded
+						data: decoded,
+						status: 401,
+						req,
+						res
 					})
 				}
 				if (req.headers['user-agent'] != decoded.req.headers['user-agent']) {
-					return res.status(401).json({ message: `token must be used in one device` })
+					return resp({ message: `token must be used in one device`, status: 401, data: null, req, res })
 				}
 				req.user = decoded.user
 				return next()

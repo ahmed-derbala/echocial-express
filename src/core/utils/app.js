@@ -14,6 +14,7 @@ const { tidHandler } = require('../helpers/tid')
 const { errorHandler } = require('./error')
 const swaggerUi = require('swagger-ui-express')
 const swaggerSpec = require('../swagger/swagger')
+const { resp } = require('../helpers/resp')
 
 let app = express()
 
@@ -57,7 +58,7 @@ loaders.load({ app, rootDir: '/components', urlPrefix: '/api/', fileSuffix: '.co
 
 //when no api route matched
 app.use((req, res, next) => {
-	return res.status(404).json({ message: `${req.originalUrl} does not exist`, data: null })
+	return resp({ status: 404, label: 'route_not_found', message: `${req.originalUrl} does not exist`, data: null, req, res })
 })
 
 //when error occurs

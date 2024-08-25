@@ -1,15 +1,15 @@
 const express = require('express')
 const router = express.Router()
 const { authenticate } = require(`../../core/auth`)
-const { getReputationsSrvc, updateRatingSrvc, getUserReputationSrvc, createReputationSrvc } = require('./reputations.service')
+const { getidentitiesSrvc, updateRatingSrvc, getUseridentitiesrvc, createidentitiesrvc } = require('./identities.service')
 const { errorHandler } = require('../../core/utils/error')
 const { validate } = require('../../core/validation')
-const { createReputationVld, updateReputationVld, getReputationsVld } = require('./reputations.validator')
+const { createReputationVld, updateReputationVld, getidentitiesVld } = require('./identities.validator')
 const { resp } = require('../../core/helpers/resp')
 
-router.get('/', validate(getReputationsVld), authenticate(), async (req, res) => {
+router.get('/', validate(getidentitiesVld), authenticate(), async (req, res) => {
 	try {
-		const result = await getReputationsSrvc({ page: req.query.page, limit: req.query.limit, searchText: req.query.searchText })
+		const result = await getidentitiesSrvc({ page: req.query.page, limit: req.query.limit, searchText: req.query.searchText })
 		return resp({ status: 200, ...result, req, res })
 	} catch (err) {
 		return errorHandler({ err, req, res })
@@ -19,7 +19,7 @@ router.get('/', validate(getReputationsVld), authenticate(), async (req, res) =>
 router.post('/', validate(createReputationVld), authenticate(), async (req, res) => {
 	try {
 		const { facebook, rating } = req.body
-		const ctrlResp = await createReputationSrvc({
+		const ctrlResp = await createidentitiesrvc({
 			facebook,
 			rating,
 			createdBy: req.user._id
@@ -41,7 +41,7 @@ router.put('/', validate(updateReputationVld), authenticate(), async (req, res) 
 
 router.get('/me', authenticate(), async (req, res) => {
 	try {
-		const result = await getUserReputationSrvc({ userId: req.user._id })
+		const result = await getUseridentitiesrvc({ userId: req.user._id })
 		return res.status(result.status).json(result)
 	} catch (err) {
 		errorHandler({ err, req, res })
