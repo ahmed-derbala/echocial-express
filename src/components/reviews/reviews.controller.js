@@ -2,21 +2,24 @@ const express = require('express')
 const router = express.Router()
 const { authenticate } = require(`../../core/auth`)
 const { errorHandler } = require('../../core/utils/error')
-const { patchRatingVld, createRatingVld } = require('./reviews.validator')
+const { patchRatingVld, createReviewVld } = require('./reviews.validator')
 const { validate } = require('../../core/validation')
-const { updateRatingCurrentValueSrvc, createOrUpdatereviewsrvc, findReviews } = require('./reviews.service')
+const { updateRatingCurrentValueSrvc, createReviewSrvc, findReviews } = require('./reviews.service')
 const { resp } = require('../../core/helpers/resp')
 const { log } = require('../../core/log')
 const { ratingNotFoundTrns } = require('./reviews.transalation')
+const { findOneIdentitySrvc, createIdentitySrvc } = require('../identities/identities.service')
 
-router.post('/create', authenticate(), validate(createRatingVld), async (req, res) => {
+router.post('/create', authenticate(), validate(createReviewVld), async (req, res) => {
 	try {
-		const rating = await createOrUpdatereviewsrvc({
-			userId: req.user._id,
-			currentValue: req.body.currentValue,
-			reputationId: req.body.reputationId
-		})
-		return resp({ status: 200, data: rating, req, res })
+		const { story, value, identityId } = req.body
+		let identity = await findOneIdentitySrvc({ match: { _id: identityId }, select: '_id' })
+		if (!identity) {
+			return resp({ status: 409, label: 'identity_not_found', message: `identity with _id=${identityId} not found`, data: null, req, res })
+		}
+
+		const review = await createReviewSrvc({ story, userId: req.user._id, value, identityId })
+		return resp({ status: 200, data: review, req, res })
 	} catch (err) {
 		errorHandler({ err, req, res })
 	}

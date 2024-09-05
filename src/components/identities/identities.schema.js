@@ -11,7 +11,7 @@ const schema = new mongoose.Schema(
 			required: true
 		},
 		facebook: {
-			id: {
+			username: {
 				type: String,
 				required: true
 			},
@@ -21,7 +21,7 @@ const schema = new mongoose.Schema(
 			}
 		},
 		instagram: {
-			id: {
+			username: {
 				type: String,
 				required: false
 			},
@@ -31,7 +31,7 @@ const schema = new mongoose.Schema(
 			}
 		},
 		linkedin: {
-			id: {
+			username: {
 				type: String,
 				required: false
 			},
@@ -62,11 +62,11 @@ const schema = new mongoose.Schema(
 		rating: {
 			value: {
 				type: Number,
-				required: true
+				required: false
 			},
 			ratersCount: {
 				type: Number,
-				required: true
+				required: false
 			},
 			updatedAt: {
 				type: Date,
@@ -86,16 +86,16 @@ const schema = new mongoose.Schema(
 
 schema.plugin(uniqueValidator)
 
-schema.index({ 'facebook.id': 1, 'instagram.id': 1, 'linkdin.id': 1 }, { unique: true })
+schema.index({ 'facebook.username': 1, 'instagram.username': 1, 'linkdin.username': 1 }, { unique: true })
 
-const identitiesCollection = 'identities'
+const IdentitiesCollection = 'identities'
 
-const identitiesModel = mongoose.model(identitiesCollection, schema)
-identitiesModel.on('index', (error) => {
+const IdentitiesModel = mongoose.model(IdentitiesCollection, schema)
+IdentitiesModel.on('index', (error) => {
 	if (error) log({ level: config.log.levels.names.error, message: error })
 })
 
 module.exports = {
-	identitiesModel,
-	identitiesCollection
+	IdentitiesModel,
+	IdentitiesCollection
 }

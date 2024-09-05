@@ -49,8 +49,10 @@ exports.authenticate = (params) => {
 						res
 					})
 				}
-				if (req.headers['user-agent'] != decoded.req.headers['user-agent']) {
-					return resp({ message: `token must be used in one device`, status: 401, data: null, req, res })
+				if (req.headers['user-agent'] !== decoded.req.headers['user-agent']) {
+					let data = null
+					if (config.NODE_ENV !== 'production') data = { reqUserAgent: req.headers['user-agent'], decodedUserAgent: decoded.req.headers['user-agent'] }
+					return resp({ message: `token must be used in one device`, status: 401, data, req, res })
 				}
 				req.user = decoded.user
 				return next()

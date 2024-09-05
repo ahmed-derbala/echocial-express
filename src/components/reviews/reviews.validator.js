@@ -3,4 +3,10 @@ const { body, query } = require('express-validator')
 
 module.exports.patchRatingVld = [body('currentValue').notEmpty().isNumeric(), body('reputationId').custom(objectIdValidator)]
 
-module.exports.createRatingVld = [body('currentValue').notEmpty().isNumeric(), body('reputationId').notEmpty()]
+module.exports.createReviewVld = [
+	body('story').isObject(),
+	body('story.text').notEmpty(),
+	body('story.lang').notEmpty(),
+	body('value').notEmpty().isNumeric(),
+	body('identityId').custom(objectIdValidator)
+]

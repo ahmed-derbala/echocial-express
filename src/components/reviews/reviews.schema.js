@@ -3,7 +3,7 @@ const uniqueValidator = require('mongoose-unique-validator')
 const { log } = require(`../../core/log`)
 const config = require('../../config')
 const { langEnum } = require('../../core/enums/lang.enum')
-const { identitiesCollection } = require('../identities/identities.schema')
+const { IdentitiesCollection } = require('../identities/identities.schema')
 const schema = new mongoose.Schema(
 	{
 		story: {
@@ -28,7 +28,7 @@ const schema = new mongoose.Schema(
 		},
 		identityId: {
 			type: mongoose.Schema.Types.ObjectId,
-			ref: identitiesCollection,
+			ref: IdentitiesCollection,
 			required: true
 		},
 		isActive: {
@@ -41,16 +41,16 @@ const schema = new mongoose.Schema(
 
 schema.plugin(uniqueValidator)
 
-schema.index({ userId: 1, reputationId: 1 }, { unique: true })
+schema.index({ userId: 1, identityId: 1 }, { unique: true })
 
 const reviewsCollection = 'reviews'
 
-const reviewsModel = mongoose.model(reviewsCollection, schema)
-reviewsModel.on('index', (error) => {
+const ReviewsModel = mongoose.model(reviewsCollection, schema)
+ReviewsModel.on('index', (error) => {
 	if (error) log({ level: config.log.levelNames.error, message: error })
 })
 
 module.exports = {
-	reviewsModel,
+	ReviewsModel,
 	reviewsCollection
 }

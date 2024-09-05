@@ -1,10 +1,10 @@
 const express = require('express')
 const router = express.Router()
 const { authenticate } = require(`../../core/auth`)
-const { getidentitiesSrvc, updateRatingSrvc, getUseridentitiesrvc, createidentitiesrvc } = require('./identities.service')
+const { getidentitiesSrvc, updateRatingSrvc, getUseridentitiesrvc, createIdentitySrvc } = require('./identities.service')
 const { errorHandler } = require('../../core/utils/error')
 const { validate } = require('../../core/validation')
-const { createReputationVld, updateReputationVld, getidentitiesVld } = require('./identities.validator')
+const { createIdentityVld, updateReputationVld, getidentitiesVld } = require('./identities.validator')
 const { resp } = require('../../core/helpers/resp')
 
 router.get('/', validate(getidentitiesVld), authenticate(), async (req, res) => {
@@ -16,15 +16,11 @@ router.get('/', validate(getidentitiesVld), authenticate(), async (req, res) => 
 	}
 })
 
-router.post('/', validate(createReputationVld), authenticate(), async (req, res) => {
+router.post('/create', validate(createIdentityVld), authenticate(), async (req, res) => {
 	try {
-		const { facebook, rating } = req.body
-		const ctrlResp = await createidentitiesrvc({
-			facebook,
-			rating,
-			createdBy: req.user._id
-		})
-		return resp({ status: 200, data: ctrlResp, req, res })
+		const { name, facebook, rating } = req.body
+		const identity = await createIdentitySrvc({ name, facebook, rating, createdBy: req.user._id })
+		return resp({ status: 200, data: identity, req, res })
 	} catch (err) {
 		errorHandler({ err, res, req })
 	}

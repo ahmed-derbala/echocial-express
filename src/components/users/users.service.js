@@ -82,7 +82,7 @@ module.exports.createUserSrvc = async ({ email, username, phone, password }) => 
 
 module.exports.signinSrvc = async ({ filter, password }) => {
 	try {
-		let user = await findOneUserSrvc({ filter, select: '+password' })
+		let user = await findOneUserSrvc({ filter, select: { _id: 1, password: 1 } })
 		if (!user) {
 			if (config.NODE_ENV === 'production') return { message: 'loginId or password is not correct', data: null, status: 409 }
 			return { message: 'no user found with that loginId', data: null, status: 409 }

@@ -1,50 +1,18 @@
-//const { identitiesModel } = require(`./identities.schema`)
 const { errorHandler } = require('../../core/utils/error')
-const { paginateMongodb } = require('../../core/db/mongodb/pagination')
-const { reviewsModel } = require(`./reviews.schema`)
-const identitiesSrvc = require('../identities/identities.service')
-const { findOneRatingRepo, updateRatingCurrentValueRepo, findReviewsRepo } = require('./reviews.repository')
+const { findOneIdentitySrvc } = require('../identities/identities.service')
+const { findOneRatingRepo, updateRatingCurrentValueRepo, findReviewsRepo, createReviewRepo } = require('./reviews.repository')
 const { log } = require('../../core/log')
 
-module.exports.createOrUpdatereviewsrvc = async ({ userId, currentValue, reputationId }) => {
-	const existedRating = await reviewsModel
-		.findOne({
-			userId,
-			reputationId
-		})
-		.lean()
-	if (!existedRating) {
-		//this is the first time the user create a rating for this reputation
-		return reviewsModel.create({
-			currentValue,
-			history: [{ value: currentValue, createdAt: Date.now() }],
-			userId,
-			reputationId
-		})
-	}
-
-	//the user already rated this repuattion, update it
-	return reviewsModel
-		.updateOne(
-			{ _id: existedRating._id },
-			{
-				currentValue,
-				history: {
-					$push: {
-						value: currentValue,
-						createdAt: Date.now()
-					}
-				}
-			}
-		)
-		.then(async (updatedRating) => {
-			const reputationUpdatedRating = await identitiesSrvc.updatereviewsrvc({
-				reputationId,
-				rating: { currentValue }
-			})
-			return { reputationUpdatedRating, updatedRating }
-		})
-		.catch((err) => errorHandler({ err }))
+module.exports.createReviewSrvc = async ({ story, userId, value, identityId }) => {
+	return new Promise(async (resolve, reject) => {
+		try {
+			const review = await createReviewRepo({ story, userId, value, identityId })
+			console.log({ review })
+			return resolve(review)
+		} catch (err) {
+			reject(errorHandler({ err }))
+		}
+	})
 }
 
 module.exports.updateRatingCurrentValueSrvc = async ({ currentValue, userId, reputationId }) => {

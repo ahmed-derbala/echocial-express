@@ -58,7 +58,7 @@ loaders.load({ app, rootDir: '/components', urlPrefix: '/api/', fileSuffix: '.co
 
 //when no api route matched
 app.use((req, res, next) => {
-	return resp({ status: 404, label: 'route_not_found', message: `${req.originalUrl} does not exist`, data: null, req, res })
+	return resp({ status: 404, label: 'route_not_found', message: `${req.method} ${req.originalUrl} does not exist`, data: null, req, res })
 })
 
 //when error occurs

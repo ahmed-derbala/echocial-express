@@ -14,6 +14,7 @@ const noLogStatuses = [401]
 exports.errorHandler = ({ err, req, res, next }) => {
 	let status = 500,
 		errObject = {}
+	if (err.status) status = err.status
 	const stack = new Error().stack
 	let caller = null
 	if (stack) {
@@ -61,9 +62,7 @@ exports.errorHandler = ({ err, req, res, next }) => {
 	}
 	if (!noLogStatuses.includes(status)) log(errObject)
 	if (res) {
-		//console.log('error returned with res')
 		return res.status(status).json(errObject)
 	}
-	//console.log('errObject no res')
 	return errObject
 }
