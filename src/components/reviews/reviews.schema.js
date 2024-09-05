@@ -7,6 +7,7 @@ const { IdentitiesCollection } = require('../identities/identities.schema')
 const schema = new mongoose.Schema(
 	{
 		story: {
+			//can be null, so only rating value
 			text: {
 				type: String,
 				required: false
