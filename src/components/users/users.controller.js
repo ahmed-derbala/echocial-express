@@ -10,13 +10,11 @@ const { validate } = require('../../core/validation')
 const { findOneUserSrvc, signinSrvc, createUserSrvc } = require('./users.service')
 const { pickOneFilter } = require('./users.helper')
 
-router.get('/', authenticate(), async (req, res) => {
-	return usersSrvc
-		.getUsers()
-		.then((data) => {
-			return res.status(200).json(data)
-		})
-		.catch((err) => errorHandler({ err, req, res }))
+router.get('/:username', authenticate(), async (req, res) => {
+	const { username } = req.params
+	const user = await findOneUserSrvc({ match: { username } })
+	if (!user) return resp({ status: 202, message: 'user not found', data: null, req, res })
+	return resp({ status: 200, message: 'user found', data: user, req, res })
 })
 
 router.get('/profile', authenticate(), async (req, res) => {
@@ -30,8 +28,8 @@ router.get('/profile', authenticate(), async (req, res) => {
 
 router.post('/signup', validate(signupVld), async (req, res) => {
 	const { email, username, phone, password } = req.body
-	const filter = pickOneFilter({ filters: { email, username, phone } })
-	const existedUser = await findOneUserSrvc({ filter, select: '_id' })
+	const match = pickOneFilter({ filters: { email, username, phone } })
+	const existedUser = await findOneUserSrvc({ match, select: '_id' })
 	if (existedUser) {
 		return resp({ status: 409, message: 'user already exist', data: null, req, res })
 	}

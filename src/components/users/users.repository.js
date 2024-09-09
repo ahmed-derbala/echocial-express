@@ -12,22 +12,30 @@ module.exports.updateUserRepo = async ({ identity, newData }) => {
 	}
 }
 
-module.exports.findOneUserRepo = async ({ filter, select }) => {
+module.exports.findOneUserRepo = async ({ match, select }) => {
 	try {
-		const user = await UsersModel.findOne(filter).select(select).lean()
+		const user = await UsersModel.findOne(match).select(select).lean()
+		//console.log(user,match)
 		return user
 	} catch (err) {
 		return errorHandler({ err })
 	}
 }
 
-module.exports.createUserRepo = async ({ email, username, phone, password }) => {
+module.exports.createUserRepo = async ({ email, username, phone, password, profile }) => {
 	try {
 		let singedupUser = await UsersModel.create({ email, username, phone, password })
+		let updateData = {}
 		if (!username) {
 			username = singedupUser._id
-			const updatedSingedupUser = await UsersModel.updateOne({ _id: singedupUser._id }, { username })
+			updateData.username = username
 		}
+		if (!profile) {
+			profile = {}
+			profile.displayName = username
+			updateData.profile = profile
+		}
+		if (updateData) await UsersModel.updateOne({ _id: singedupUser._id }, updateData)
 
 		singedupUser = singedupUser.toJSON()
 		delete singedupUser.password

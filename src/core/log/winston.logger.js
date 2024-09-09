@@ -16,7 +16,7 @@ const winstonLogger = ({ level, label, error, message, req, data }) => {
 	if (config.log.error.isActive) logObject.error = error ? error : null
 	if (config.log.data.isActive) logObject.data = data ? data : null
 
-	logObject.message = message ? message : null
+	logObject.message = message ? message : 'no_message'
 	if (config.log.req.isActive) {
 		if (message === config.log.reqDefaultLog) {
 			logObject.req = req ? req : null //morgan format, see morgan.tokenString in config

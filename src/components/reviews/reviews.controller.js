@@ -47,7 +47,10 @@ router.patch('/', validate(patchRatingVld), authenticate(), async (req, res) => 
 router.post('/find', authenticate(), async (req, res) => {
 	try {
 		const { page, limit } = req.query
-		const { match, select } = req.body
+		let { match, select } = req.body
+		//by default fetch reviews with stories
+		if (!match) match = {}
+		if (!match.story) match.story = { $exists: true }
 		const reviews = await findReviews({ match, select, page, limit })
 		return resp({ status: 200, data: reviews, req, res })
 	} catch (err) {

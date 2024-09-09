@@ -12,16 +12,16 @@
     "type": "git",
     "url": "https://github.com/ahmed-derbala/echocial-express"
   },
-  "keywords": [
-    "echocial"
-  ],
+  "keywords": [ 
+    "echocial" 
+  ], 
   "scripts": {
     "first-time:local": "cp src/config/index.js src/config/local.config.js && npm run i && npm run start:local",
     "first-time:prod": "cp src/config/index.js src/config/production.config.js && npm run i && npm run start:prod-pm2-monit",
     "i": "npm i -f",
     "i:prod": "NODE_ENV=production npm ci -f --omit=dev",
     "format": "prettier --write \"src/**/*.js\"",
-    "start": "node --max-old-space-size=32000 src/main.js",
+    "start": "node --watch --max-old-space-size=32000 src/main.js",
     "start:prod": "NODE_ENV=production node --max-old-space-size=32000 src/main.js",
     "start:prod-pm2": "npm run i:prod && NODE_ENV=production pm2 start --name echocial src/main.js -i max --node-args='--max-old-space-size=32000' -f",
     "start:prod-pm2-monit": "npm run start:prod-pm2 && pm2 monit",

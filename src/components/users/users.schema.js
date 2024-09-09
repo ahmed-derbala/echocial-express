@@ -33,7 +33,6 @@ const schema = new mongoose.Schema(
 			type: profileSchema,
 			select: false
 		},
-
 		role: {
 			type: Object,
 			enum: config.users.roles,
@@ -72,7 +71,7 @@ const schema = new mongoose.Schema(
 	{ timestamps: true }
 )
 
-schema.plugin(uniqueValidator)
+//schema.plugin(uniqueValidator)
 const usersCollection = 'users'
 
 module.exports = {
