@@ -86,7 +86,7 @@ const schema = new mongoose.Schema(
 
 schema.plugin(uniqueValidator)
 
-schema.index({ 'facebook.username': 1, 'instagram.username': 1, 'linkdin.username': 1 }, { unique: true })
+schema.index({ 'facebook.username': 1 }, { unique: true })
 
 const IdentitiesCollection = 'identities'
 

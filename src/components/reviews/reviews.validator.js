@@ -7,6 +7,6 @@ module.exports.createReviewVld = [
 	//body('story').isObject(),
 	//body('story.text').notEmpty(),
 	//body('story.lang').notEmpty(),
-	body('value').notEmpty().isNumeric(),
+	body('value').isNumeric(),
 	body('identityId').custom(objectIdValidator)
 ]

@@ -75,9 +75,68 @@ module.exports.updateRatingSrvc = async ({ reputationId, rating }) => {
 		.catch((err) => errorHandler({ err }))
 }
 
+function makeQueryObjectFilter(obj) {
+	// Check if the input is a valid object
+	if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) {
+		return obj
+	}
+
+	// Create a new object to hold the transformed result
+	const result = {}
+
+	// Iterate through the keys of the input object
+	for (const key in obj) {
+		if (typeof obj[key] === 'object' && obj[key] !== null) {
+			// Get the nested key and value
+			const nestedKey = Object.keys(obj[key])[0]
+			result[`${key}.${nestedKey}`] = obj[key][nestedKey]
+		} else {
+			// Directly copy non-object properties
+			result[key] = obj[key]
+		}
+	}
+
+	return result
+}
+
+function isObjectEmpty(obj) {
+	if (typeof obj !== 'object' || obj === null) {
+		return false // Not an object
+	}
+
+	// If object is empty at the top level
+	if (Object.keys(obj).length === 0) {
+		return true
+	}
+
+	// Check for nested objects
+	for (const key in obj) {
+		const value = obj[key]
+
+		if (typeof value === 'object' && value !== null) {
+			// Recursively check if the nested object is empty
+			if (!isObjectEmpty(value)) {
+				return false // Found a nested object that is not empty
+			}
+		} else {
+			// If any non-object property exists, the object is not empty
+			return false
+		}
+	}
+
+	// All properties were either empty or nested empty objects
+	return true
+}
+
+function checkAndReturn(obj) {
+	return isObjectEmpty(obj) ? null : obj
+}
+
 module.exports.findOneIdentitySrvc = async ({ match, select }) => {
 	try {
-		const identity = await findOneIdentityRepo({ match, select })
+		if (!checkAndReturn(match)) return null
+		const processedMatch = makeQueryObjectFilter(match)
+		const identity = await findOneIdentityRepo({ match: processedMatch, select })
 		return identity
 	} catch (err) {
 		return errorHandler({ err })

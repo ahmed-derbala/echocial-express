@@ -12,9 +12,9 @@
     "type": "git",
     "url": "https://github.com/ahmed-derbala/echocial-express"
   },
-  "keywords": [ 
-    "echocial" 
-  ], 
+  "keywords": [
+    "echocial"
+  ],
   "scripts": {
     "first-time:local": "cp src/config/index.js src/config/local.config.js && npm run i && npm run start:local",
     "first-time:prod": "cp src/config/index.js src/config/production.config.js && npm run i && npm run start:prod-pm2-monit",
@@ -50,7 +50,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
-    "express": "^5.0.0-beta.1",
+    "express": "^5.0.0",
     "express-rate-limit": "^7.4.0",
     "express-useragent": "^1.0.15",
     "express-validator": "^7.2.0",
@@ -58,7 +58,7 @@
     "helmet": "^7.1.0",
     "ip": "^2.0.1",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.6.1",
+    "mongoose": "^8.6.2",
     "mongoose-unique-validator": "^5.0.1",
     "morgan": "^1.10.0",
     "pm2": "^5.4.2",

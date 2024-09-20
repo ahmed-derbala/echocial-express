@@ -32,10 +32,10 @@ module.exports.updateRatingCurrentValueSrvc = async ({ currentValue, userId, rep
 	})
 }
 
-module.exports.findReviews = async ({ match, select, page, limit }) => {
+module.exports.findReviewsSrvc = async ({ match, select, page, limit, populate }) => {
 	return new Promise(async (resolve, reject) => {
 		try {
-			const fetchedReviews = await findReviewsRepo({ match, select, page, limit })
+			const fetchedReviews = await findReviewsRepo({ match, select, page, limit, populate })
 			return resolve(fetchedReviews)
 		} catch (err) {
 			reject(errorHandler({ err }))
