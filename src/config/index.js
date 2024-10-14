@@ -120,9 +120,7 @@ const transportsOptions = {
 	mongo: {
 		level: 'startup', //the level to start logging to mongodb
 		db: db.mongodb.uri,
-		options: {
-			useUnifiedTopology: true
-		},
+		options: {},
 		decolorize: true,
 		expireAfterSeconds: 360000, //100 hours
 		collection: `logs`,
